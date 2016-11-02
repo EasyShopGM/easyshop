@@ -1,0 +1,11 @@
+{
+  "user": {
+    "id": 12345,
+    "name": "John Doe",
+    "phones": {
+      "home": "800-123-4567",
+      "mobile": "877-123-1234"
+    },
+    "status": "active"
+  }
+}
