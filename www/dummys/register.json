@@ -1,0 +1,15 @@
+{
+  "userRegister": {
+    "id": 12345,
+    "firstName": "John",
+    "lastName": "Doe",
+    "mobileNo": {
+      "home": "800-123-4567",
+      "mobile": "877-123-1234"
+    },
+    "dateOfBirth": "18/04/1973",
+    "eMail": "JohnDoe@mail.com",
+    "password": "xxxx",
+    "status": "Registred"
+  }
+}

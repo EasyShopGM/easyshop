@@ -62,59 +62,47 @@
 		<div class="">
 			<form style="color:#fff;" class="form">
 
+				<div style="width:70%;margin:0 auto;" class="list">
+					<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
+						<span style="font-size: 13px;" class="input-label">Country</span>
+						<input type="text" placeholder="Country">
+	  				</label>
+					<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
+						<span style="font-size: 13px;" class="input-label">City</span>
+						<input type="text" placeholder="City">
+	  				</label>
+				</div>
 
 				<div style="width:70%;margin:0 auto;" class="list">
 					<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-		<span style="font-size: 13px;" class="input-label">Country</span>
-		<input type="text" placeholder="Country">
-	  </label>
+						<span style="font-size: 13px;" class="input-label">State</span>
+						<input type="text" placeholder="State">
+	  				</label>
 					<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-		<span style="font-size: 13px;" class="input-label">City</span>
-		<input type="text" placeholder="City">
-	  </label>
-
-
+						<span style="font-size: 13px;" class="input-label">Zip Code</span>
+						<input type="text" placeholder="Zip Code">
+	  				</label>
 				</div>
+
 				<div style="width:70%;margin:0 auto;" class="list">
 					<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-		<span style="font-size: 13px;" class="input-label">State</span>
-		<input type="text" placeholder="State">
-	  </label>
-					<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-		<span style="font-size: 13px;" class="input-label">Zip Code</span>
-		<input type="text" placeholder="Zip Code">
-	  </label>
-
-
+						<span style="font-size: 13px;" class="input-label">Address1</span>
+						<input type="text" placeholder="Address1">
+	  				</label>
+					<!--			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">-->
+					<!--<span style="font-size: 13px;" class="input-label">Comment</span>-->
+					<!--<textarea style="background: transparent none repeat scroll 0% 0%;" type="text" placeholder="Comment"></textarea>-->
+					<!-- </label>-->
 				</div>
-				<div style="width:70%;margin:0 auto;" class="list">
-					<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-		<span style="font-size: 13px;" class="input-label">Address1</span>
-		<input type="text" placeholder="Address1">
-	  </label>
-
-		<!--			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">-->
-		<!--<span style="font-size: 13px;" class="input-label">Comment</span>-->
-		<!--<textarea style="background: transparent none repeat scroll 0% 0%;" type="text" placeholder="Comment"></textarea>-->
-	 <!-- </label>-->
-
-
-				</div>
-
-
-
-
-
 
 			</form>
+
 		</div>
 		<div style="text-align:center;" class="">
 			<a href="#"><button style="margin-top:20px;width: 70%; background-color: rgb(255, 255, 255); border-color: rgb(255, 255, 255); color: rgb(70, 159, 226); border-radius: 42px; box-shadow: 0px 1px 0px rgb(104, 97, 97);" class="button button-positive">
-  Next
-</button></a>
-
+  				Next
+			</button></a>
 		</div>
-
 
 		<ion-list>
 			<ion-item ng-repeat="x in CustomerList" href="#/app/browse?CustId={{x.nCustomerId}}">
