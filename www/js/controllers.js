@@ -35,10 +35,10 @@ $timeout( function(){ window.location = "#/app/home"; }, 3000);
 .controller('productdetail', function ($scope, $http,$location) {
  
 })
-.controller('playlists', function ($scope, $http,$location) {
+.controller('userprofile', function ($scope, $http,$location) {
  
 })
-.controller('login', function ($state, $ionicLoading, $rootScope, $scope, $http, $location, SrvCall, $sessionStorage) {
+.controller('login', function ($state, $ionicLoading, $rootScope, $scope, $http, $location, SrvCallOauth, $sessionStorage) {
  
  if($sessionStorage.userLoged){
       $state.go("app.home");
@@ -51,8 +51,9 @@ $timeout( function(){ window.location = "#/app/home"; }, 3000);
     }); 
     
     //SrvCall.async('dummys/login.json', 'GET', '').success(function(resp) {
-    SrvCall.async('https://api.stormpath.com/v1/accounts/3bmLIdu6nbCEO7EzpxipZb', 'GET', '').success(function(resp) {
-     //console.log(resp)
+    SrvCallOauth.async(url_backend_oauth + AUTH, 'GET', '').success(function(resp) {
+     console.log(resp)
+     console.log(resp.items[0].username)
      //Apaga el evento cargando
      $ionicLoading.hide();
      $rootScope.userLoged = resp.user;

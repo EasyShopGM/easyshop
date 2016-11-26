@@ -100,10 +100,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 controller: 'shipping'
        
     })
-	
-	
-	
-	
+
 	
 	.state('app.productdetail', {
         url: "/productdetail",
@@ -115,6 +112,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
     })
 
+	.state('app.userprofile', {
+        url: "/userprofile",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/userprofile.html",
+                controller: 'userprofile'
+            }
+        }
+    })
 		
 
 

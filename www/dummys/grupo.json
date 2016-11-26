@@ -1,11 +1,7 @@
 {
   "user": {
-    "id": 12345,
-    "name": "John Doe",
-    "phones": {
-      "home": "800-123-4567",
-      "mobile": "877-123-1234"
-    },
+    "email": "gustavo.arenas73@gmail.com",
+    "username": "Gustavo",
     "grupos": [{
       "grupoid": "casa",
       "participacion" : "Total",

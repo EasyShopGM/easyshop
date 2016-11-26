@@ -26,6 +26,7 @@ var url_backend_oauth = "/backend_prod";
 
 ////URL SERVICES
 var REGISTER                = "/v1/applications/4EYncfTJgPkfPquDYKbBM/accounts";
+var AUTH                    = "/v1/applications/4EYncfTJgPkfPquDYKbBM/accounts?username=Burro";
 // var OAUTH                = "/mobile/login/";
 //var SING_UP               = "/mobile/signup/";
 //var LOGIN                   = "/mobile/login.json";
