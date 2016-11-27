@@ -82,25 +82,28 @@ $timeout( function(){ window.location = "#/app/home"; }, 3000);
         template: '<ion-spinner icon="android"></ion-spinner>'
     }); 
     
-    SrvCallOauth.async(url_backend_oauth + REGISTER, 'POST', {'givenName': $scope.userRegister.firstName, 'surname': $scope.userRegister.lastName, 'username': $scope.userRegister.username,'email': $scope.userRegister.eMail,'password':$scope.userRegister.password, 'customData': {'favoriteColor': $scope.userRegister.favcolor}}).success(function(resp) {
-     
-     console.log(resp)
-     
-     //Apaga el evento cargando
-     $ionicLoading.hide();
-     $rootScope.userLoged = resp.userRegister;
-     $sessionStorage.userLoged = $rootScope.userLoged;
-     $state.go("app.home");
-     
-     }).error(function(resp){
-             console.log(resp)
-            //Apaga el evento cargando
-            $ionicLoading.hide();
-                $ionicPopup.alert({
-                        title: 'Ups!',
-                        template: resp,
-                        okText: 'OK!'
-                });     
+    SrvCallOauth.async(url_backend_oauth + REGISTER, 'POST', {'givenName': $scope.userRegister.firstName, 'surname': $scope.userRegister.lastName, 'username': $scope.userRegister.username,'email': $scope.userRegister.eMail,'password':$scope.userRegister.password, 'customData': {'favoriteColor': $scope.userRegister.favcolor, 'foto': 'https://www.gravatar.com/avatar/90c89a212acf87b6abe02937b388e740?s=32&d=retro'}})
+    .success(function(resp) {
+        
+        console.log(resp)
+        //Apaga el evento cargando
+        $ionicLoading.hide();
+        $rootScope.userLoged = resp;
+        console.log($rootScope.userLoged);
+        $sessionStorage.userLoged = $rootScope.userLoged;
+        $state.go("app.home");
+        
+    }).error(function(resp){
+        
+        console.log(resp)
+        //Apaga el evento cargando
+        $ionicLoading.hide();
+            $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                    
+            });     
     });
  } 
 })
