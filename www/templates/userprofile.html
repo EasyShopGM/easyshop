@@ -1,69 +1,97 @@
-  
+<ion-view title="Profile">
+
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon" style="color: #FFFFFF;"></button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right">
+  </ion-nav-buttons>
+
   <style>
-  .scroll-content {
-    background: url(img/loginbg.png) no-repeat center center fixed;
-	-webkit-background-size: 100% 100%;
-  -moz-background-size: 100% 100%;
-  -o-background-size: 100% 100%;
-  background-size: 100% 100%;
-  }
-  
-  .item .item-content.activated{
-	background-color: #5E87B0;
-	color: #FFF;
-	} 
-	.form{
-  float:left;
-  height:86%;
-  width:100%;
-  box-sizing:border-box;
-  padding: 20px;
-}
-::-webkit-input-placeholder {
-    color: #363636 !important;
-	font-weight: bold;
-	font-size: 12px;
-}
-:-moz-placeholder {
-    color: #363636 !important;
-	font-weight: bold;
-	font-size: 12px;
-}
-::-moz-placeholder {
-    color: #363636 !important;
-	font-weight: bold;
-	font-size: 12px;
-}
-:-ms-input-placeholder {
-    color: #363636 !important;
-	font-weight: bold;
-	font-size: 12px;
-}
-
+    .scroll-content {
+      background: url(img/loginbg.png) no-repeat center center fixed;
+      -webkit-background-size: 100% 100%;
+      -moz-background-size: 100% 100%;
+      -o-background-size: 100% 100%;
+      background-size: 100% 100%;
+    }
+    
+    .item .item-content.activated {
+      background-color: #5E87B0;
+      color: #FFF;
+    }
+    
+    .form {
+      float: left;
+      height: 86%;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+    }
+    
+     ::-webkit-input-placeholder {
+      color: #363636 !important;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    
+     :-moz-placeholder {
+      color: #363636 !important;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    
+     ::-moz-placeholder {
+      color: #363636 !important;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    
+     :-ms-input-placeholder {
+      color: #363636 !important;
+      font-weight: bold;
+      font-size: 12px;
+    }
   </style>
-<ion-content ng-controller="userprofile">
+  <ion-content ng-controller="userprofile">
 
 
-  <div style="width:70%;margin:0 auto;" class="list">
-    <img style="padding-top: 40px; width:75px;" src="img/ios7-person-outline.png"></img>
 
-  </div>
-  <div style="width:70%;margin:0 auto;" class="list">
-    <label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-      <span style="font-size: 13px;" class="input-label">Username</span>
-      <input type="text" placeholder="Email" ng-model="user.email">
+    <div style="padding-top: 5%; width:70%;margin:0 auto;" class="list">
+      <!-- <img style="width:75px;" src="img/ios7-person-outline.png"></img> -->
+      <img style="width: 60%;border-radius: 193%; margin: 0 auto;display: block;" src={{customdataloged.foto}}></img>
+    </div>
+
+    <div style="padding-top: 10%; width:70%;margin:0 auto;" class="list">
+
+      <label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
+      <span style="font-size: 13px;" class="label">Name</span>
+      <input type="text" placeholder={{userloged.fullName}} ng-model="user.fullName">
     </label>
-    <label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-      <span style="font-size: 13px;" class="input-label">Password</span>
-      <input type="text" placeholder="name" ng-model="user.name"
-    </label>
-  </div>
 
-  <div style="text-align: center;margin-top: 20px;">
-    <a href="#/app/home" style="width: 70%; background-color: rgb(255, 255, 255); border-color: rgb(255, 255, 255); color: rgb(70, 159, 226); border-radius: 42px; box-shadow: 0px 1px 0px rgb(104, 97, 97);" class="button button-positive">
+      <label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
+      <span style="font-size: 13px;" class="label">Email</span>
+      <input type="text" placeholder={{userloged.email}} ng-model="user.email">
+    </label>
+
+      <label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
+      <span style="font-size: 13px;" class="label">Group Asociate</span>
+      <input type="text" placeholder='Sin grupo asociado' >
+    </label>
+    
+      <label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
+      <span style="font-size: 13px;" class="label">State</span>
+      <input type="text" placeholder={{userloged.status}} ng-model="user.status">
+    </label>
+
+
+    </div>
+
+    <div style="text-align: center;margin-top: 20px;">
+      <a href="#/app/home" style="width: 70%; background-color: rgb(255, 255, 255); border-color: rgb(255, 255, 255); color: rgb(70, 159, 226); border-radius: 42px; box-shadow: 0px 1px 0px rgb(104, 97, 97);" class="button button-positive">
       Volver
     </a>
-  </div>
+    </div>
 
-</ion-content>
+  </ion-content>
 </ion-view>

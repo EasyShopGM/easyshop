@@ -86,15 +86,15 @@ angular.module('starter.services', [])
 })
 
 .factory('SrvCall', function($http, $ionicLoading, $ionicPopup, $rootScope) {
-    
+
     var srv_response = {
     async: function(urlsrv, method_, params_) {
-        
+
        // $http returns a promise, which has a then function, which also returns a promise
       var promise = $http({
                       method: method_,
                       url: urlsrv,
-                      params: params_,
+                      data: params_,
                       headers: {'Accept': 'application/json'}
                     }).success(function(response){
                         //console.log(response.surveys);
@@ -111,6 +111,7 @@ angular.module('starter.services', [])
 
 .factory('SrvCallOauth', function($http, $ionicLoading, $ionicPopup, $rootScope, Base64) {
     var base64_secret = 'Basic ' + Base64.encode(api_key + ':' + api_secret);
+
     var srv_response = {
     async: function(urlsrv, method_, params_) {
         
