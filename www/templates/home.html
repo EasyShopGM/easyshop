@@ -1,11 +1,11 @@
-<ion-view title= joda + "{{userloged.username}}">
+<ion-view title= "Ofertas - Novedades">
 
 	<ion-nav-buttons side="left">
 		<button menu-toggle="left" class="button button-icon icon ion-navicon" style="color: #FFFFFF;"></button>
 	</ion-nav-buttons>
 
 	<ion-nav-buttons side="right">
-		<button class="button button-icon1 button-icon icon ion-ios-cart" style="color: #FFFFFF;"></button>
+		<!-- <button class="button button-icon1 button-icon icon ion-ios-cart" style="color: #FFFFFF;"></button> -->
 	</ion-nav-buttons>
 
 	<style>
@@ -15,9 +15,8 @@
 	</style>
 
 	<ion-content style="background-color:#f2f2f2">
-		<ion-item class="list card" ng-repeat="product in products">
-			<!-- {{product.title}} -->
-			<div style="margin-left: 8%; display: block;" class="list card">
+		<ion-item class="list card" ng-repeat = "product in products">
+			<div style="margin-bottom: 0%; margin-left: 8%; display: block;" class="list card">
 				<div>
 					<div>
 						<p style="padding-top: 0px; font-weight: bold; color: black; font-size: 90%; padding-left: 10px;" class="">
@@ -26,7 +25,7 @@
 					</div>
 				</div>
 				<div style="border-bottom: 1px solid rgb(201, 201, 201);z-index: 999;" class="item item-image">
-					<img class="catagory_img" src={{product.link}}>
+					<img class="catagory_img" ng-src="{{product.link}}" />
 				</div>
 				<div class="row">
 					<div class="col-50">
@@ -41,45 +40,14 @@
 						</p>
 					</div>
 					<div class="col">
-						<a href="#/app/productlist" style="min-height: 25px;line-height: 25px;border-color: #55acee;border-radius:14px;padding: 0px 7px;font-size: 12px;background-color: #55acee;color: #fff;float: right;" class="button icon-right ion-chevron-right button-calm viewmore">View More</a>
+						<a href="#/app/productlist?id={{product.id}}" style="margin-top: 11%; min-height: 25px;line-height: 25px;border-color: #55acee;border-radius:14px;padding: 0px 7px;font-size: 12px;background-color: #55acee;color: #fff;float: right;" class="button icon-right ion-chevron-right button-calm viewmore">View More</a>
 					</div>
 				</div>
 			</div>
-			<div style="padding-top: 0%;" class="col">
-				
-				<img  style="padding-top: 0%; width: 10%;border-radius: 50%; margin-left: 90%; " src='/img/{{product.market}}.png'>
+			<div style="padding-top: -30%;" class="col">
+				<button  ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-cart" ng-visible="false" ng-click="addlist({{product}})"></button>
+				<img  style="padding-top: 4%; width: 10%;border-radius: 50%; margin-left: 70%;" ng-src="/img/{{product.market}}.png" />
 			</div>
 		</ion-item>
-			<!-- <div class="list card">
-				<div style="border-bottom: 1px solid rgb(201, 201, 201);z-index: 999;" class="item item-image">
-					<img class="catagory_img" src="img/product2.png">
-				</div>
-				<div class="row">
-					<div class="col-50">
-						<p style="padding-top: 5px;font-weight: bold; color: rgb(95, 95, 95); font-size: 12px; padding-left: 10px;" class="">
-							Sony Headphones
-						</p>
-					</div>
-					<div class="col">
-						<a href="#/app/productlist" style="min-height: 25px;line-height: 25px;border-color: #55acee;border-radius:14px;padding: 0px 7px;font-size: 12px;background-color: #55acee;color: #fff;float: right;" class="button icon-right ion-chevron-right button-calm viewmore">View More</a>
-					</div>
-				</div>
-			</div>
-			<div class="list card">
-				<div style="border-bottom: 1px solid rgb(201, 201, 201);z-index: 999;" class="item item-image">
-					<img class="catagory_img" src="img/product3.png">
-				</div>
-				<div class="row">
-					<div class="col-50">
-						<p style="padding-top: 5px;font-weight: bold; color: rgb(95, 95, 95); font-size: 12px; padding-left: 10px;" class="">
-							Logitech Mouse
-						</p>
-					</div>
-					<div class="col">
-						<a href="#/app/productlist" style="min-height: 25px;line-height: 25px;border-color: #55acee;border-radius:14px;padding: 0px 7px;font-size: 12px;background-color: #55acee;color: #fff;float: right;" class="button icon-right ion-chevron-right button-calm viewmore">View More</a>
-					</div>
-				</div>
-			</div>
-		</ion-item> -->
 	</ion-content>
 </ion-view>

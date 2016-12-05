@@ -1,0 +1,81 @@
+<ion-view title="Listas de compras">
+
+	<ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon" style="color: #FFFFFF;"></button>
+
+	</ion-nav-buttons>
+
+	<ion-nav-buttons side="right">
+		<button class="button button-icon1 button-icon icon ion-ios-cart" style="color: #FFFFFF;"></button>
+
+
+	</ion-nav-buttons>
+
+
+	<style>
+		.catagory_img {
+			width: 40% !important;
+		}
+		
+		.button2 {
+			border-color: #fff;
+			background-color: #55acee;
+			color: #FFF;
+			position: relative;
+			display: inline-block;
+			margin: 0;
+			padding: 0 12px;
+			min-width: 52px;
+			min-height: 25px;
+			border-right: 1px solid white;
+			border-style: solid;
+			border-radius: 2px;
+			vertical-align: top;
+			text-align: center;
+			text-overflow: ellipsis;
+			font-size: 16px;
+			line-height: 25px;
+			cursor: pointer;
+		}
+		
+		.button-bar>.button2 {
+			-webkit-box-flex: 1;
+			-webkit-flex: 1;
+			-moz-box-flex: 1;
+			-moz-flex: 1;
+			-ms-flex: 1;
+			font-size: 14px;
+			flex: 1;
+			display: block;
+			overflow: hidden;
+			padding: 0 16px;
+			width: 0;
+			border-radius: 0;
+			text-align: center;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	</style>
+
+	<ion-content style="background-color:#f2f2f2">
+		<ion-toggle ng-checked="false" ng-model="showDelete">
+			Seleccione el producto a elminar
+		</ion-toggle>
+
+		<ion-list show-delete="showDelete">
+			<ion-item ng-repeat="item in items">
+
+				<div class="col">
+					<div>
+						Producto {{item.id}}
+					</div>
+					<div>
+						<button class="button button-icon1 button-icon icon ion-ios-cart" ng-click="comprar();">
+							
+						</button>
+					</div>
+					<ion-delete-button class="ion-plus-circled" ng-click="eliminar({{item.id}});"></ion-delete-button>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>
