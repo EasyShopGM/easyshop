@@ -1,8 +1,11 @@
 angular.module('starter.controllers', [])
-    .controller('AppCtrl', function($sessionStorage, $state, $scope, $ionicModal, $timeout, $http) {
+    .controller('AppCtrl', function($sessionStorage, $state, $rootScope, $scope, $ionicModal, $timeout, $http) {
         // Form data for the login modal
         $scope.logout = function() {
             $sessionStorage.$reset();
+            //$rootScope.customdataloged = '';
+            //$rootScope.tokenloged = '';
+            //$rootScope.userloged = '';
             $state.go("login");
         }
 
@@ -10,7 +13,7 @@ angular.module('starter.controllers', [])
 
     })
 
-.controller('first', function($scope, $http) {
+.controller('first', function($scope, $http, $timeout) {
 
     $timeout(function() {
         window.location = "#/app/newsoffers";
@@ -181,17 +184,25 @@ angular.module('starter.controllers', [])
         if ($sessionStorage.userloged) {
             $state.go("app.newsoffers");
         }
-
+        
+ 
         $scope.login = function() {
             //inicia el evento cargando y bloquea la pantalla
+            
             $ionicLoading.show({
                 template: '<ion-spinner icon="android"></ion-spinner>'
             });
+            //if ($scope.username != '') {
+            //    console.log('acac' + $scope.username.length);
+            //}
+            
             var base64_login = Base64.encode($scope.user.username + ':' + $scope.user.password);
             var data_login = {
                 'type': 'basic',
                 'value': base64_login
             };
+
+            
 
             SrvCallOauth.async(url_backend_oauth + AUTH, 'POST', data_login)
                 .success(function(resp) {
@@ -206,12 +217,14 @@ angular.module('starter.controllers', [])
                 //Apaga el evento cargando
                 $ionicLoading.hide();
                 $ionicPopup.alert({
-                    title: 'Ups!',
+                    title: 'Autentication',
                     template: resp,
                     okText: 'OK!'
                 });
             });
+            
         }
+        
 
         $scope.userlogin = function(userlogin_) {
 
