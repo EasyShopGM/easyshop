@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
         // Form data for the login modal
         $scope.logout = function() {
             $sessionStorage.$reset();
-            $state.go("main_page");
+            $state.go("login");
         }
 
 
@@ -13,12 +13,12 @@ angular.module('starter.controllers', [])
 .controller('first', function($scope, $http) {
 
     $timeout(function() {
-        window.location = "#/app/home";
+        window.location = "#/app/newsoffers";
     }, 3000);
 
 })
 
-.controller('Home', function($rootScope, $scope, $http, $location, $ionicPopup) {
+.controller('newsoffers', function($rootScope, $scope, $http, $location, $ionicPopup, $sessionStorage, $state) {
 
     $scope.products = [{
         id: 1,
@@ -77,7 +77,7 @@ angular.module('starter.controllers', [])
     $scope.addlist = function(product_) {
         $scope.data = {}
             
-        if ($rootScope.userloged) {
+        if ($sessionStorage.userloged) {
                 
             
             var url_ = product_.link;
@@ -110,12 +110,13 @@ angular.module('starter.controllers', [])
         var alertPopup = $ionicPopup.alert({
             title: 'EasyShop',
             template: '<img src = /img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
-            
+        
         });
 
         alertPopup.then(function(res) {
      
         });
+            $state.go("login");
     }
    };
    
@@ -172,13 +173,13 @@ angular.module('starter.controllers', [])
     
         
         $scope.cancelar = function() {
-            $state.go("app.home");
+            $state.go("app.newsoffers");
         }
     })
     .controller('login', function($state, $ionicLoading, $rootScope, $scope, $http, $location, SrvCallOauth, $sessionStorage, $ionicPopup, Base64) {
 
         if ($sessionStorage.userloged) {
-            $state.go("app.home");
+            $state.go("app.newsoffers");
         }
 
         $scope.login = function() {
@@ -197,6 +198,8 @@ angular.module('starter.controllers', [])
                     //Apaga el evento cargando
                     $ionicLoading.hide();
                     $scope.userlogin(resp);
+                    $state.go("app.newsoffers");
+       
                 })
 
             .error(function(resp) {
@@ -223,7 +226,6 @@ angular.module('starter.controllers', [])
                     $sessionStorage.userloged = $rootScope.userloged;
                     $sessionStorage.tokenloged = url_backend_oauth + AUTH_DATA + token;
                     $scope.customlogin(url_backend_oauth + AUTH_DATA + token + AUTH_DATA_CUSTOMDATA);
-                    $state.go("app.home");
                 })
 
             .error(function(resp) {
@@ -257,7 +259,7 @@ angular.module('starter.controllers', [])
         }
 
         $scope.cancelar = function() {
-            $state.go("app.home");
+            $state.go("app.newsoffers");
         }
 
 
@@ -292,7 +294,7 @@ angular.module('starter.controllers', [])
                 $rootScope.userloged = resp;
                 console.log($rootScope.userloged);
                 $sessionStorage.userLoged = $rootScope.userloged;
-                $state.go("app.home");
+                $state.go("app.newsoffers");
 
             }).error(function(resp) {
 
