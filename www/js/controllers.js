@@ -134,26 +134,46 @@ angular.module('starter.controllers', [])
     console.log($scope.warehousetitle);
     
     $scope.items = [{
-        id: 0
+        id: 1,
+        name: "tomate en lata",
+        quantity: "4"
     }, {
-        id: 1
+        id: 2,
+        name: "Cuadril",
+        quantity: "1.4Kg"
     }, {
-        id: 2
+        id: 3,
+        name: "Cerveza",
+        quantity: "1"
     }, {
-        id: 3
+        id: 4,
+        name: "Papa blanca",
+        quantity: "1Kg"
     }, {
-        id: 4
+        id: 5,
+        name: "Naranja",
+        quantity: "2Kg"
     }, {
-        id: 5
+        id: 6,
+        name: "Lavandina",
+        quantity: "1.5L"
     }];        
 
     
-    $scope.comprar = function() {
-        console.log("compro");
+    $scope.adquirido = function() {
+        console.log("Adquirido");
     };
     
-    $scope.eliminar = function(id_) {
-        console.log("elimino" + id_);
+    $scope.descartado = function(id_) {
+        console.log("editar" + id_);
+    }
+    
+    $scope.descartado = function(id_) {
+        console.log("descartado" + id_);
+    }
+    
+    $scope.doRefresh = function() {
+        console.log("descartado");
     }
     
 })
