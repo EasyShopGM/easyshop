@@ -127,7 +127,11 @@ angular.module('starter.controllers', [])
     
 })
 
-.controller('shoppinglist', function($scope, $http, $location, $sessionStorage, $state) {
+.controller('shoppinglist', function($scope, $http, $location, $sessionStorage, $state, $stateParams) {
+    
+    $scope.warehousetitle = $stateParams.warehouse;
+    
+    console.log($scope.warehousetitle);
     
     $scope.items = [{
         id: 0
@@ -141,7 +145,8 @@ angular.module('starter.controllers', [])
         id: 4
     }, {
         id: 5
-    }];
+    }];        
+
     
     $scope.comprar = function() {
         console.log("compro");
@@ -150,6 +155,32 @@ angular.module('starter.controllers', [])
     $scope.eliminar = function(id_) {
         console.log("elimino" + id_);
     }
+    
+})
+
+.controller('warehouseslist', function($scope, $http, $location, $sessionStorage, $state) {
+    
+    $scope.warehouse={};
+    
+    $scope.warehouses = [{
+        id: 0,
+        description: "Casa"
+    }, {
+        id: 1,
+        description: "Oficina"
+    }, {
+        id: 2,
+        description: "Bulin"
+    }, {
+        id: 3,
+        description: "Casa de fin de semana"
+    }];
+    
+    $scope.clicker = function(warwhouse){
+      $scope.warehouse = warwhouse;
+      $state.go("app.shoppinglist", {'warehouse':$scope.warehouse.description});
+  };
+    
     
 })
 

@@ -123,7 +123,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     })
 		
 	.state('app.shoppinglist', {
-        url: "/shoppinglist",
+        url: "/shoppinglist/:warehouse",
         views: {
             'menuContent': {
                 templateUrl: "templates/shoppinglist.html",
@@ -131,6 +131,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
+
+	.state('app.warehouseslist', {
+        url: "/warehouseslist",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/warehouseslist.html",
+                controller: 'warehouseslist'
+            }
+        }
+    })    
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/newsoffers');
