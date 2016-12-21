@@ -6,7 +6,7 @@
 	</ion-nav-buttons>
 
 	<ion-nav-buttons side="right">
-		<button class="button button-icon1 button-icon icon ion-ios-cart" style="color: #FFFFFF;"></button>
+		<button class="button button-icon1 button-icon icon ion-ios-refresh-empty" style="color: #FFFFFF;" ng-click="doRefresh()"></button>
 
 
 	</ion-nav-buttons>
@@ -56,95 +56,66 @@
 			white-space: nowrap;
 		}
 		
-		
 		.button-icon {
-   			font-size: larger;
+			font-size: larger;
 		}
 		
 		.button-icon.ion-ios-trash-outline {
-   			color: deeppink;
+			color: deeppink;
 		}
 		
 		.button-icon.ion-edit {
-   			color: lightsalmon;
+			color: lightsalmon;
 		}
 		
 		.button-icon.ion-checkmark-round {
-   			color: forestgreen;
+			color: forestgreen;
 		}
 		
 		.item {
-    		padding: 2px 4px 2px 4px;
-    	}
-    	
-    	.opened.item-content{
-		   background-color: #c4c4c4 !important;
-		   	padding: 2px 4px 2px 4px;
+			padding: 2px 4px 2px 4px;
 		}
 		
+		.opened.item-content {
+			background-color: #c4c4c4 !important;
+			padding: 2px 4px 2px 4px;
+		}
 	</style>
 
-	<ion-content style="background-color:#f2f2f2">
+	<ion-content style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
-		
+
 		<ion-list>
-			<ion-item>
-				<h1 class="title ng-binding" style="margin.left: 4%" align="center">
+			<ion-item style="margin: 1%; background-color: #bbe1fe; border: 1px solid rgb(201, 201, 201);">
+				<h2 class="title ng-binding" style="margin.left: 4%; background-color: #bbe1fe;" align="center">
 					{{warehousetitle}}
-				</h1>
+				</h2>
+				<p class="title ng-binding" style="margin.left: 4%; background-color: #bbe1fe;" align="left">
+					Costo Estimado $: 1.258,90
+				</p>
+				
+				<p class="title ng-binding" style="margin.left: 4%; background-color: #bbe1fe;" align="left">
+					Costo de la compra $: 1.008,90
+				</p>
 			</ion-item>
-			
-			<ion-item class="item-content" ng-repeat="item in items">
+
+			<ion-item ng-repeat="item in items">
 				<div class="row">
 					<div class="ng-binding" style="margin-top:0%; width:70%">
-						{{item.quantity}}  -  {{item.name}}
+						 
+						 {{item.name}}
+						 <br>
+						 <p style="font-size: 10px">Cant: {{item.quantity}}  P.Uni: {{item.quantity}} P.Prom: {{item.quantity}}</p>
+						 
 					</div>
 					<div style="width:30%">
-						<button class="button-icon ion-ios-trash-outline" color="deeppink" ng-click="descartado();"></button>
-						<button class="button-icon  ion-edit" ng-click="editar();"></button>
-						<button class="button-icon ion-checkmark-round" ng-click="adquirido();"></button>
+						<button class="button-icon ion-ios-trash-outline" color="deeppink" ng-click="descartado(item);"></button>
+						<button class="button-icon  ion-edit" ng-click="editar(item);"></button>
+						<button class="button-icon ion-checkmark-round" ng-click="adquirido(item);"></button>
 					</div>
 				</div>
-
-				</div>
-				<div class="item-left-edit item-delete enable-pointer-events">
-					<ion-delete-button class="ion-plus-circled button icon button-icon" ng-click="eliminar();"></ion-delete-button>
 				</div>
 			</ion-item>
-
 		</ion-list>
 	</ion-content>
 </ion-view>
-
-<!--
-<ion-view>
-  <div class="bar bar-header item-input-inset bar-positive">
-    <ion-search placeholder="buscar" filter="search"></ion-search>
-    <a class="button button-icon icon ion-ios-gear-outline" href="#/settings"></a>
-  </div>
-  <ion-content delegate-handle="ptr-content" class="has-header" on-touch="getLastRefresh()">
-    <ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'>{{lastRefresh}}</h6>"></ion-refresher>
-    <ion-list class="list item-text-wrap">
-      <ion-item ng-class="{'opened item-content':item.state}" class="item item-thumbnail-left" ng-repeat="item in news" href="#/feed/{{item.source}}/{{item.link}}/{{item.title}}" ng-click="openNews(item, 'open')">
-        <img class="gm-thumbnail" src="{{item.image}}">
-        <h2>{{item.title | limitTo: 100 }}{{item.title.length >= 100 ? '...' : ''}}</h2>
-        <div class="gm-bottom-left">
-          <h4 class="dark">{{item.source}} -
-            <span am-time-ago="item.pubDate"></span>
-          </h4>
-        </div>
-        <div class="gm-bottom-right">
-          <span class="icon ion-ios-bookmarks ng-hide dark" ng-show="item.fav"></span>
-          <span class="icon ion-ios-eye ng-hide assertive" ng-show="(lastRefreshDate | amDifference : item.pubDate : 'minutes')<=30 && !item.state"></span>
-        </div>
-        <ion-option-button class="button-assertive icon ion-ios-trash-outline" ng-click="hide(item)">
-        </ion-option-button>
-        <ion-option-button ng-class="item.state ? 'ion-ios-circle-filled' : 'ion-ios-circle-outline'" class="button-stable icon" ng-click="openNews(item)">
-        </ion-option-button>
-        <ion-option-button ng-class="item.fav ? 'ion-ios-bookmarks energized' : 'ion-ios-bookmarks-outline'" class="button-dark icon" ng-click="fav(item)">
-        </ion-option-button>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</ion-view>
--->

@@ -160,20 +160,24 @@ angular.module('starter.controllers', [])
     }];        
 
     
-    $scope.adquirido = function() {
+    $scope.adquirido = function(id_) {
         console.log("Adquirido");
+        console.log(id_);
     };
     
-    $scope.descartado = function(id_) {
-        console.log("editar" + id_);
+    $scope.editar = function(id_) {
+        console.log("Editar");
+        console.log(id_);
     }
     
     $scope.descartado = function(id_) {
-        console.log("descartado" + id_);
+        console.log("Descartado");
+        console.log(id_);
     }
     
     $scope.doRefresh = function() {
-        console.log("descartado");
+        console.log("Refrescar");
+        $scope.$broadcast('scroll.refreshComplete'); 
     }
     
 })
@@ -199,7 +203,27 @@ angular.module('starter.controllers', [])
     $scope.clicker = function(warwhouse){
       $scope.warehouse = warwhouse;
       $state.go("app.shoppinglist", {'warehouse':$scope.warehouse.description});
-  };
+    };
+  
+    $scope.share = function(id_) {
+        console.log("compartido" + id_);
+    };
+    
+    $scope.edit = function(id_) {
+        console.log("editar" + id_);
+    };
+    
+    $scope.discard = function(id_) {
+        console.log("descartado" + id_);
+    };
+
+    $scope.newwarehouse = function() {
+        console.log("agraga alamcen");
+    };
+    
+    $scope.doRefresh = function() {
+        console.log("descartado");
+    };
     
     
 })

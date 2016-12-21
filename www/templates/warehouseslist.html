@@ -6,7 +6,7 @@
 	</ion-nav-buttons>
 
 	<ion-nav-buttons side="right">
-		<button class="button button-icon1 button-icon icon ion-ios-cart" style="color: #FFFFFF;"></button>
+		<button class="button button-icon ion-ios-browsers-outline" style="color: #FFFFFF;" ng-click="newwarehouse();"></button>
 
 
 	</ion-nav-buttons>
@@ -55,45 +55,56 @@
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
+		
+				.button-icon {
+			font-size: larger;
+		}
+		
+		.button-icon.ion-ios-trash-outline {
+			color: deeppink;
+		}
+		
+		.button-icon.ion-edit {
+			color: lightsalmon;
+		}
+		
+		.button-icon.ion-android-share-alt {
+			color: blue;
+		}
+		
+		.item {
+			padding: 2px 4px 2px 4px;
+		}
+		
+		.opened.item-content {
+			background-color: #c4c4c4 !important;
+			padding: 2px 4px 2px 4px;
+		}
+		
 	</style>
 
-	<ion-content style="background-color:#f2f2f2">
-		<!--
-		<div class="list">
-			<div class="item item-text-wrap">
-        	<ion-item class="card" ng-repeat="warehouse in warehouses">
-        	    {{warehouse.description}}
-            </ion-item>
-        </div>
--->
-
-
+	
+	
+	<ion-content style="background-color:#fffff">
+		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 		<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-
-			<ion-item ng-repeat="warehouse in warehouses" 
-				warehouse="warehouse" 
-				ng-click="clicker(warehouse)">
-				{{ warehouse.description }}
-
-
-				<ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)">
-				</ion-delete-button>
-<!--				
-				<ion-option-button class="button-assertive" ng-click="edit(item)">
-					Edit
-				</ion-option-button>
-				<ion-option-button class="button-calm" ng-click="share(item)">
-					Share
-				</ion-option-button>
-				<ion-reorder-button class="ion-navicon" on-reoder="moveItem(item, fromIndex, toIndex)"></ion-reorder-button>
--->
+			<ion-item ng-repeat="warehouse in warehouses" warehouse="warehouse">
+				<div class="row">
+					<div class="ng-binding" style="margin-top:0%; width:70%"  ng-click="clicker(warehouse)">
+						{{ warehouse.description }}
+					</div>
+					<div style="width:30%">
+						<button class="button-icon ion-android-share-alt" ng-click="share(warehouse);"></button>
+						<button class="button-icon  ion-edit" ng-click="edit(warehouse);"></button>
+						<button class="button-icon ion-ios-trash-outline" color="deeppink" ng-click="discard(warehouse);"></button>
+					</div>
+				</div>
+				</div>
 			</ion-item>
-
 		</ion-list>
-
-
-
-
-
-	</ion-content>
+	</ion-content>	
+	
+	
+	
+	
 </ion-view>
