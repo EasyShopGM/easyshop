@@ -68,9 +68,11 @@
 			color: lightsalmon;
 		}
 		
+
 		.button-icon.ion-checkmark-round {
 			color: forestgreen;
 		}
+		
 		
 		.item {
 			padding: 2px 4px 2px 4px;
@@ -80,6 +82,8 @@
 			background-color: #c4c4c4 !important;
 			padding: 2px 4px 2px 4px;
 		}
+		
+		
 	</style>
 
 	<ion-content style="background-color:#fffff">
@@ -91,30 +95,29 @@
 					{{warehousetitle}}
 				</h2>
 				<p class="title ng-binding" style="margin.left: 4%; background-color: #bbe1fe;" align="left">
-					Costo Estimado $: 1.258,90
+					Costo Estimado $: {{imptotal}}
 				</p>
 				
 				<p class="title ng-binding" style="margin.left: 4%; background-color: #bbe1fe;" align="left">
-					Costo de la compra $: 1.008,90
+					Costo de la compra $: {{impparcial}}
 				</p>
 			</ion-item>
 
-			<ion-item ng-repeat="item in items">
+	   		<ion-item ng-repeat="item in items">
 				<div class="row">
 					<div class="ng-binding" style="margin-top:0%; width:70%">
-						 
 						 {{item.name}}
 						 <br>
-						 <p style="font-size: 10px">Cant: {{item.quantity}}  P.Uni: {{item.quantity}} P.Prom: {{item.quantity}}</p>
-						 
+						 <p style="font-size: 10px">Cant: {{item.quantity}} {{item.unit}}  P.Uni: {{item.price}} P.total: {{item.total}}</p>
 					</div>
 					<div style="width:30%">
 						<button class="button-icon ion-ios-trash-outline" color="deeppink" ng-click="descartado(item);"></button>
 						<button class="button-icon  ion-edit" ng-click="editar(item);"></button>
-						<button class="button-icon ion-checkmark-round" ng-click="adquirido(item);"></button>
+						<button class="button-icon ion-checkmark-round" ng-click="adquirido(item, $fromIndex, $toIndex);"></button>
 					</div>
 				</div>
 				</div>
+				
 			</ion-item>
 		</ion-list>
 	</ion-content>

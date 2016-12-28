@@ -1,0 +1,15 @@
+[
+  {
+  "id": 0,
+  "description": "Casa"
+  }, {
+    "id": 1,
+    "description": "Oficina"
+  }, {
+    "id": 2,
+    "description": "Bulin"
+  }, {
+    "id": 3,
+    "description": "Casa de fin de semana"
+  }
+]

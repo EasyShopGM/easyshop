@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "market": "carrefour",
+    "title": "Juego de Jardín Café 3 Piezas Acero Verde",
+    "price": "$ 2.500,99",
+    "priceold": "$ 9.999,99",
+    "paymentplan": "5 cuotas s/interes",
+    "link": "/img/prod-1.jpg"
+  },
+  {
+    "id": 1,
+    "market": "coto",
+    "title": "Juego de Jardín Café 3 Piezas Acero Rojo",
+    "price": "$ 3.800,52",
+    "priceold": "$ 9.999,99",
+    "paymentplan": "2 cuotas s/interes",
+    "link": "/img/prod-2.jpg"
+  },
+  {
+    "id": 2,
+    "market": "jumbo",
+    "title": "Juego de Jardín Isabella 3 Piezas Eucaliptus",
+    "price": "$ 5.200,00",
+    "priceold": "$ 9.999,99",
+    "paymentplan": "1 cuotas s/interes",
+    "link": "/img/prod-3.jpg"
+  },
+  {
+    "id": 3,
+    "market": "disco",
+    "title": "Juego de Jardín Amazonas 6 Piezas Acero",
+    "price": "$ 1.200,00",
+    "priceold": "$ 9.999,99",
+    "paymentplan": "18 cuotas s/interes",
+    "link": "/img/prod-4.jpg"
+  },
+  {
+    "id": 4,
+    "market": "carrefour",
+    "title": "Juego de Jardín Balcony 3 Piezas Acacia",
+    "price": "$ 999,99",
+    "priceold": "$ 9.999,99",
+    "paymentplan": "6 cuotas s/interes",
+    "link": "/img/prod-5.jpg"
+  },
+  {
+    "id": 5,
+    "market": "carrefour",
+    "title": "Juego de Jardín Talego 3 Piezas Resina de polipropileno",
+    "price": "$ 899,00",
+    "priceold": "$ 9.999,99",
+    "paymentplan": "3 cuotas s/interes",
+    "link": "/img/prod-6.jpg"
+  }
+]

@@ -21,62 +21,49 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('newsoffers', function($rootScope, $scope, $http, $location, $ionicPopup, $sessionStorage, $state) {
+.controller('newsoffers', function($rootScope, $scope, $http, $location, $ionicPopup, $sessionStorage, $state, $ionicLoading, SrvCall) {
 
-    $scope.products = [{
-        id: 1,
-        market: 'carrefour',
-        title: 'Juego de Jardín Café 3 Piezas Acero Verde',
-        price: '$ 2.500,99',
-        priceold: '$ 9.999,99',
-        paymentplan: '5 cuotas s/interes',
-        link: '/img/prod-1.jpg'
-    }, {
-        id: 2,
-        market: 'coto',
-        title: 'Juego de Jardín Café 3 Piezas Acero Rojo',
-        price: '$ 3.800,52',
-        priceold: '$ 9.999,99',
-        paymentplan: '2 cuotas s/interes',
-        link: '/img/prod-2.jpg'
-    }, {
-        id: 3,
-        market: 'jumbo',
-        title: 'Juego de Jardín Isabella 3 Piezas Eucaliptus',
-        price: '$ 5.200,00',
-        priceold: '$ 9.999,99',
-        paymentplan: '1 cuotas s/interes',
-        link: '/img/prod-3.jpg'
-    }, {
-        id: 4,
-        market: 'disco',
-        title: 'Juego de Jardín Amazonas 6 Piezas Acero',
-        price: '$ 1.200,00',
-        priceold: '$ 9.999,99',
-        paymentplan: '18 cuotas s/interes',
-        link: '/img/prod-4.jpg'
-    }, {
-        id: 5,
-        market: 'carrefour',
-        title: 'Juego de Jardín Balcony 3 Piezas Acacia',
-        price: '$ 999,99',
-        priceold: '$ 9.999,99',
-        paymentplan: '6 cuotas s/interes',
-        link: '/img/prod-5.jpg'
-    }, {
-        id: 6,
-        market: 'carrefour',
-        title: 'Juego de Jardín Talego 3 Piezas Resina de polipropileno',
-        price: '$ 899,00',
-        priceold: '$ 9.999,99',
-        paymentplan: '3 cuotas s/interes',
-        link: '/img/prod-6.jpg'
-    }];
-    
-    
+
+    //Inicializa la variable para que no rompa si viene vacio
+    $scope.warehouse=[{}];
+
+    //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
+    SrvCall.async('dummys/wherehouse.json', 'GET', '')
+    .success(function(resp) {
+    	$ionicLoading.hide();
+    	$scope.warehouses= resp;
+    })
+    .error(function(resp){
+        //Apaga el evento cargando
+        $ionicLoading.hide();
+        $ionicPopup.alert({
+            title: 'Ups!',
+            template: resp,
+            okText: 'OK!'
+        });     
+    });
 
     
-    
+    //Inicializa la variable para que no rompa si viene vacio
+    //$scope.products=[{}];
+
+    //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
+    SrvCall.async('dummys/products.json', 'GET', '')
+    .success(function(resp) {
+    	$ionicLoading.hide();
+    	$scope.products= resp;
+    })
+    .error(function(resp){
+        //Apaga el evento cargando
+        $ionicLoading.hide();
+        $ionicPopup.alert({
+            title: 'Ups!',
+            template: resp,
+            okText: 'OK!'
+        });     
+    });
+
+
     $scope.addlist = function(product_) {
         $scope.data = {}
             
@@ -85,7 +72,12 @@ angular.module('starter.controllers', [])
             
             var url_ = product_.link;
             var myPopup = $ionicPopup.show({
-                template: '<img src = ' + product_.link + ' style="width:50%; height:50%; margin:0% auto; display:block "> <p>Cantidad:<p/> <input type = "text" ng-model = "data.model">',
+                template: '<img src = ' + product_.link + ' style="width:50%; height:50%; margin:0% auto; display:block "> <p>Cantidad<p/> <input type = "text" ng-model = "data.model"><p>Almacen</p><select><option value="" disabled selected>Select your option</option><option value="hurr">Durr</option></select>',
+                
+                
+                
+                //<div class="list"><label class="item item-input item-select"><div class="input-label"> Lightsaber </div><select><option>Blue</option><option selected>Green</option><option>Red</option></select></label></div>
+                //templateUrl: 'templates/userprofile.html',
                 title: product_.title,
                 subTitle: product_.price,
                 scope: $scope,
@@ -133,72 +125,134 @@ angular.module('starter.controllers', [])
     
     console.log($scope.warehousetitle);
     
-    $scope.items = [{
-        id: 1,
-        name: "tomate en lata",
-        quantity: "4"
-    }, {
-        id: 2,
-        name: "Cuadril",
-        quantity: "1.4Kg"
-    }, {
-        id: 3,
-        name: "Cerveza",
-        quantity: "1"
-    }, {
-        id: 4,
-        name: "Papa blanca",
-        quantity: "1Kg"
-    }, {
-        id: 5,
-        name: "Naranja",
-        quantity: "2Kg"
-    }, {
-        id: 6,
-        name: "Lavandina",
-        quantity: "1.5L"
-    }];        
-
+    var x;
+    var imptotal = 0.0;
+    var impparcial = 0.0;
     
-    $scope.adquirido = function(id_) {
+    $scope.warehouse_ = {"warehouse": {
+    "name": "casa",
+    "product": [{
+            id: 0,
+            name: "tomate en lata",
+            unit: "",
+            quantity: 4,
+            price: 10.50,
+            total: 10.50,
+            estado: "comprado"
+        }, {
+            id: 1,
+            name: "Cuadril",
+            unit: "Kg",
+            quantity: "1.4Kg",
+            price: 10.50,
+            total: 10.50,
+            estado: "comprado"
+        }, {
+            id: 2,
+            name: "Cerveza",
+            unit: "",
+            quantity: 4,
+            price: 10.50,
+            total: 42.00,
+            estado: "pendiente"
+        }, {
+            id: 3,
+            name: "Papa blanca",
+            unit: "Kg",
+            quantity: 1,
+            price: 10.50,
+            total: 10.50,
+            estado: "pendiente"
+        }, {
+            id: 4,
+            name: "Naranja",
+            unit: "Kg",
+            quantity: 2,
+            price: 10.50,
+            total: 21.00,
+            estado: "pendiente"
+        }, {
+            id: 5,
+            name: "Lavandina",
+            unit: "",
+            quantity: 1,
+            price: 10.50,
+            total: 10.50,
+            estado: "pendiente"
+        }]
+    }};        
+
+    console.log("joda");
+    console.log($scope.warehouse_);
+    console.log($scope.warehouse_.warehouse);
+    console.log($scope.warehouse_.warehouse.name);
+    console.log($scope.warehouse_.warehouse.product);
+    $scope.items = $scope.warehouse_.warehouse.product;
+    
+    
+    for (x in  $scope.items) {
+        imptotal = imptotal +  ($scope.items[x].price * $scope.items[x].quantity);
+        if ($scope.items[x].estado == "comprado") {
+            impparcial += $scope.items[x].price * $scope.items[x].quantity;
+        }
+    }
+    
+    $scope.imptotal = imptotal;
+    $scope.impparcial = impparcial;
+    
+    console.log($scope.imptotal);
+    
+    $scope.adquirido = function(item, fromIndex, toIndex) {
         console.log("Adquirido");
-        console.log(id_);
+        console.log(item);
+        
     };
     
     $scope.editar = function(id_) {
         console.log("Editar");
         console.log(id_);
-    }
+    };
     
     $scope.descartado = function(id_) {
         console.log("Descartado");
         console.log(id_);
-    }
+    };
     
     $scope.doRefresh = function() {
         console.log("Refrescar");
         $scope.$broadcast('scroll.refreshComplete'); 
-    }
+    };
+    
+    /*
+    $scope.moveItem = function(item, fromIndex, toIndex) {
+        console.log("acac");
+        $scope.items.splice(fromIndex, 7);
+        $scope.items.splice(toIndex, 0, item);
+    };
+    */
     
 })
 
-.controller('warehouseslist', function($scope, $http, $location, $sessionStorage, $state) {
+.controller('warehouseslist', function($scope, $http, $location, $sessionStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
     
-    $scope.warehouse={};
-    
-    $scope.warehouses = [{
-        id: 0,
-        description: "Casa"
-    }, {
-        id: 1,
-        description: "Oficina"
-    }, {
-        id: 2,
-        description: "Bulin"
-    }, {
-        id: 3,
-        description: "Casa de fin de semana"
-    }];
+    //Inicializa la variable para que no rompa si viene vacio
+    $scope.warehouse=[{}];
+
+    //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
+    SrvCall.async('dummys/wherehouse.json', 'GET', '')
+    .success(function(resp) {
+    	$ionicLoading.hide();
+    	$scope.warehouses= resp;
+    })
+    .error(function(resp){
+        //Apaga el evento cargando
+        $ionicLoading.hide();
+        $ionicPopup.alert({
+            title: 'Ups!',
+            template: resp,
+            okText: 'OK!'
+        });     
+    });
     
     $scope.clicker = function(warwhouse){
       $scope.warehouse = warwhouse;
@@ -240,10 +294,12 @@ angular.module('starter.controllers', [])
     .controller('productdetail', function($scope, $http, $location) {
 
     })
-    .controller('userprofile', function($state, $rootScope, $scope, $http, $location, $sessionStorage) {
+    
+.controller('userprofile', function($state, $rootScope, $scope, $http, $location, $sessionStorage) {
         
         if ($sessionStorage.customdataloged) {
-            
+            $rootScope.customdataloged = $sessionStorage.customdataloged;
+            $rootScope.userloged = $sessionStorage.userloged;
         } else {
             $rootScope.customdataloged = {foto:'/img/ios7-contact-outline.png'};
             $sessionStorage.customdataloged = $rootScope.customdataloged;
@@ -254,7 +310,8 @@ angular.module('starter.controllers', [])
             $state.go("app.newsoffers");
         }
     })
-    .controller('login', function($state, $ionicLoading, $rootScope, $scope, $http, $location, SrvCallOauth, $sessionStorage, $ionicPopup, Base64) {
+    
+.controller('login', function($state, $ionicLoading, $rootScope, $scope, $http, $location, SrvCallOauth, $sessionStorage, $ionicPopup, Base64) {
 
         if ($sessionStorage.userloged) {
             $state.go("app.newsoffers");
