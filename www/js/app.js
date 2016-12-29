@@ -140,7 +140,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 controller: 'warehouseslist'
             }
         }
-    })    
+    })
+    
+    .state('app.newcart', {
+        url: "/newcat",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/newcart.html",
+                controller: 'newcart'
+            }
+        }
+    })
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/newsoffers');
