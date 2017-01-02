@@ -72,11 +72,13 @@ angular.module('starter.controllers', [])
             var url_ = product_.link;
             var myPopup = $ionicPopup.show({
                 template: '<img src = ' + product_.link + ' style="width:50%; height:50%; margin:0% auto; display:block ">' +
-                    '<p>Cantidad:<p/>' +
-                    '<input type = "text" ng-model = "data.model">' +
                     '<p>Almacen</p>' +
-                    '<button class="button  button-icon1 button-icon icon ion-ios-cart" ng-visible="false" ng-click="assignwarehome({{product}})"></button>',
-                //templateUrl: 'templates/newcart.html',
+                    '<div  class="row">' +
+                     '<input type = "text" ng-model = "data.almacen" disabled></input>' +
+                    '<button style="color: #58ACFA" class="button-icon icon ion-arrow-down-b" ng-visible="false" ng-click="assignwarehome({{product}})"></button>' +
+                    '</div>' +
+                    '<p>Cantidad:<p/>' +
+                    '<input type="number" placeholder="ingrese Cantidad" ng-model = "data.cantidad"></input>',
                 title: product_.title,
                 subTitle: product_.price,
                 scope: $scope,
@@ -84,14 +86,19 @@ angular.module('starter.controllers', [])
                     text: 'Cancelar'
                 }, {
                     text: '<b>Confirmar</b>',
-                    type: 'button-positive',
+                    type: 'button-calm',
                     onTap: function(e) {
-                        console.log(e);
-                        if (!$scope.data.model) {
+                        if ((!$scope.data.cantidad) || (!$scope.data.almacen)) {
                             e.preventDefault();
                         }
                         else {
-                            return $scope.data.model;
+                            
+                            var popupNew = {
+                                                "cantidad": $scope.data.cantidad,
+                                                "almacen": $scope.data.almacen
+                                            }; 
+                            console.log(popupNew);
+                            return popupNew;
                         }
                     }
                 }]
@@ -116,54 +123,37 @@ angular.module('starter.controllers', [])
     };
 
     $scope.assignwarehome = function(product_) {
+        $scope.cont = {}
         $scope.data = {}
-        var data = [{
-            "id": 0,
-            "description": "Casa"
-        }, {
-            "id": 1,
-            "description": "Oficina"
-        }, {
-            "id": 2,
-            "description": "Bulin"
-        }, {
-            "id": 3,
-            "description": "Casa de fin de semana"
-        }];
+        $scope.data = [
+                    {"id": 0,
+                     "description": "Casa"},
+                    {"id": 1,
+                    "description": "Oficina"},
+                    {"id": 2,
+                    "description": "Bulin"},
+                    {"id": 3,
+                    "description": "Casa de fin de semana"}
+                    ];
 
 
         var myPopup = $ionicPopup.show({
             template: 
-                '</ion-list ng-repeat="item in ' + data + '">' +
-                    '<ion-radio ng-model="choice" ng-value="A" selected>casa</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
-                    '<ion-radio ng-model="choice" ng-value="O">oficiana</ion-radio>' +
+                '<ion-list ng-repeat = "item in data">' +
+                '        <ion-checkbox type="checkbox" ng-model="warehouse.selected" ng-true-value="{{item.description}}" ng-false-value="">{{item.description}}</ion-checkbox>' +
                 '</ion-list>',
             title: 'Mis almacenes',
             subTitle: '',
             scope: $scope,
+            style: "color: #58ACFA",
             buttons: [{
                 text: 'Cancelar'
             }, {
                 text: '<b>Confirmar</b>',
-                type: 'button-positive',
+                type: 'button-positive',    
                 onTap: function(e) {
-                    console.log("okkk");
-                        return $scope.data.model;
-                    
+                    console.log($scope.warehouse.selected); 
+                    $scope.data.almacen = $scope.warehouse.selected;
                 }
             }]
         });
@@ -173,6 +163,7 @@ angular.module('starter.controllers', [])
         });
 
     };
+    
 
 
 })
