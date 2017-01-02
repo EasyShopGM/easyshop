@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
     $scope.warehouse = [{}];
 
     //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
-    SrvCall.async('dummys/wherehouse.json', 'GET', '')
+    SrvCall.async('dummys/warehouse.json', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.warehouses = resp;
@@ -92,31 +92,44 @@ angular.module('starter.controllers', [])
                             e.preventDefault();
                         }
                         else {
-                            
                             var popupNew = {
-                                                "cantidad": $scope.data.cantidad,
-                                                "almacen": $scope.data.almacen
+                                            "username": $sessionStorage.userloged.username,
+                                            "almacen": $scope.data.almacen,
+                                            "cantidad": $scope.data.cantidad
                                             }; 
                             console.log(popupNew);
+                            
+                            /*
+                            //Llama al servicio con los parametros para que insertar en ordenes de compra el producto
+                            SrvCall.async('dummys/order.json', 'POST', '')
+                                .success(function(resp) {
+                                    $ionicLoading.hide();
+                                    $scope.products = resp;
+                                })
+                                .error(function(resp) {
+                                    //Apaga el evento cargando
+                                    $ionicLoading.hide();
+                                    $ionicPopup.alert({
+                                        title: 'Ups!',
+                                        template: resp,
+                                        okText: 'OK!'
+                                    });
+                                });
+                            */
                             return popupNew;
                         }
                     }
                 }]
             });
-
             myPopup.then(function(product_) {
-                console.log('Tapped!', product_);
             });
         }
         else {
             var alertPopup = $ionicPopup.alert({
                 title: 'EasyShop',
                 template: '<img src = /img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
-
             });
-
             alertPopup.then(function(res) {
-
             });
             $state.go("login");
         }
@@ -124,23 +137,29 @@ angular.module('starter.controllers', [])
 
     $scope.assignwarehome = function(product_) {
         $scope.cont = {}
-        $scope.data = {}
-        $scope.data = [
-                    {"id": 0,
-                     "description": "Casa"},
-                    {"id": 1,
-                    "description": "Oficina"},
-                    {"id": 2,
-                    "description": "Bulin"},
-                    {"id": 3,
-                    "description": "Casa de fin de semana"}
-                    ];
+        $scope.warehousedata = {}
 
+        //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
+        SrvCall.async('dummys/warehouse.json', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.warehousedata = resp;
+            })
+            .error(function(resp) {
+                //Apaga el evento cargando
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                });
+            });
+        
 
         var myPopup = $ionicPopup.show({
             template: 
-                '<ion-list ng-repeat = "item in data">' +
-                '        <ion-checkbox type="checkbox" ng-model="warehouse.selected" ng-true-value="{{item.description}}" ng-false-value="">{{item.description}}</ion-checkbox>' +
+                '<ion-list ng-repeat = "warehouseitem in warehousedata">' +
+                '        <ion-checkbox type="checkbox" ng-model="warehouse.selected" ng-true-value="{{warehouseitem.description}}" ng-false-value="">{{warehouseitem.description}}</ion-checkbox>' +
                 '</ion-list>',
             title: 'Mis almacenes',
             subTitle: '',
@@ -290,7 +309,7 @@ angular.module('starter.controllers', [])
     $scope.warehouse = [{}];
 
     //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
-    SrvCall.async('dummys/wherehouse.json', 'GET', '')
+    SrvCall.async('dummys/warehouse.json', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.warehouses = resp;
