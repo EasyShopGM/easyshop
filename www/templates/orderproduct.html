@@ -25,11 +25,8 @@
 			<div style="margin-bottom: 0%; margin-left: 4%; display: block;" class="list card">
 				<div  style="border: 1px solid rgb(201, 201, 201);" class="col-40">
 					<div class="row">
-					<input type="text" Style="margin-left:2%; margin-right:18%; margin-top:2%; background-color:whitesmoke;" placeholder="Marca del producto a Buscar" ng-model = "busqueda.marca"></input>
-					</div>
-					<div class="row">
-					<input type="text" Style="margin-left:2%; margin-top:2%; background-color:whitesmoke;" placeholder="Producto a Buscar" ng-model = "busqueda.producto"></input>
-					<button  ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct(busqueda.marca, busqueda.producto)"></button>
+						<input type="text" Style="margin-left:2%; margin-top:2%; background-color:whitesmoke;" placeholder="Producto a Buscar" ng-model = "busqueda.producto"></input>
+						<button  ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct(busqueda.producto)"></button>
 					</div>
 		        </div>
 		    </div> 

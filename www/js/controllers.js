@@ -572,9 +572,9 @@ angular.module('starter.controllers', [])
         //Inicializa la variable para que no rompa si viene vacio
         $scope.products=[{}];
         
-        console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + product_ + '%20' + marca_  + '&array_sucursales=10-1-5&offset=0&limit=50&sort=-cant_sucursales_disponible');
+        console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_  + '&array_sucursales=10-1-5&offset=0&limit=50&sort=-cant_sucursales_disponible');
         //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
-        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + product_ + '%20' + marca_  + '&array_sucursales=10-1-5&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_  + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
