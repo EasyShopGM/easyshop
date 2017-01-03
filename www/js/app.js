@@ -142,12 +142,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
     })
     
-    .state('app.newcart', {
-        url: "/newcat",
+    .state('app.orderproduct', {
+        url: "/orderproduct",
         views: {
             'menuContent': {
-                templateUrl: "templates/newcart.html",
-                controller: 'newcart'
+                templateUrl: "templates/orderproduct.html",
+                controller: 'orderproduct'
             }
         }
     })

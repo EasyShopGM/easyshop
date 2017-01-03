@@ -78,7 +78,9 @@ angular.module('starter.controllers', [])
                     '<button style="color: #58ACFA" class="button-icon icon ion-arrow-down-b" ng-visible="false" ng-click="assignwarehome({{product}})"></button>' +
                     '</div>' +
                     '<p>Cantidad:<p/>' +
-                    '<input type="number" placeholder="ingrese Cantidad" ng-model = "data.cantidad"></input>',
+                    '<div  class="row">' +
+                    '<input type="number" placeholder="ingrese Cantidad" ng-model = "data.cantidad"></input>' +
+                    '</div>',
                 title: product_.title,
                 subTitle: product_.price,
                 scope: $scope,
@@ -97,8 +99,7 @@ angular.module('starter.controllers', [])
                                             "almacen": $scope.data.almacen,
                                             "cantidad": $scope.data.cantidad
                                             }; 
-                            console.log(popupNew);
-                            
+
                             /*
                             //Llama al servicio con los parametros para que insertar en ordenes de compra el producto
                             SrvCall.async('dummys/order.json', 'POST', '')
@@ -116,7 +117,8 @@ angular.module('starter.controllers', [])
                                     });
                                 });
                             */
-                            return popupNew;
+                            console.log(popupNew);
+                            //return popupNew;
                         }
                     }
                 }]
@@ -171,14 +173,12 @@ angular.module('starter.controllers', [])
                 text: '<b>Confirmar</b>',
                 type: 'button-positive',    
                 onTap: function(e) {
-                    console.log($scope.warehouse.selected); 
                     $scope.data.almacen = $scope.warehouse.selected;
                 }
             }]
         });
-
         myPopup.then(function(product_) {
-            console.log("salgo de lista de almacenes");
+            
         });
 
     };
@@ -531,6 +531,186 @@ angular.module('starter.controllers', [])
     }
 })
 
+
+
 .controller('shipping', function($scope, $http, $location) {
+
+})
+
+
+
+
+.controller('orderproduct', function($rootScope, $scope, $http, $location, $ionicPopup, $sessionStorage, $state, $ionicLoading, SrvCall) {
+
+
+    //Inicializa la variable para que no rompa si viene vacio
+    $scope.warehouse = [{}];
+
+    //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
+    SrvCall.async('dummys/warehouse.json', 'GET', '')
+        .success(function(resp) {
+            $ionicLoading.hide();
+            $scope.warehouses = resp;
+        })
+        .error(function(resp) {
+            //Apaga el evento cargando
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Ups!',
+                template: resp,
+                okText: 'OK!'
+            });
+        });
+
+
+    
+    
+
+    
+
+    $scope.findproduct = function(marca_, product_) {
+        //Inicializa la variable para que no rompa si viene vacio
+        $scope.products=[{}];
+        
+        console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + product_ + '%20' + marca_  + '&array_sucursales=10-1-5&offset=0&limit=50&sort=-cant_sucursales_disponible');
+        //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
+        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + product_ + '%20' + marca_  + '&array_sucursales=10-1-5&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.products = resp.productos;
+                console.log(resp.productos);
+            })
+            .error(function(resp) {
+                //Apaga el evento cargando
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                });
+            });
+    };
+        
+    $scope.addlist = function(product_) {
+        $scope.data = {}
+
+        if ($sessionStorage.userloged) {
+
+            var url_ = product_.link;
+            console.log(product_);
+            var myPopup = $ionicPopup.show({
+                template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block ">' +
+                    '<p>Almacen</p>' +
+                    '<div  class="row">' +
+                     '<input type = "text" ng-model = "data.almacen" disabled></input>' +
+                    '<button style="color: #58ACFA" class="button-icon icon ion-arrow-down-b" ng-visible="false" ng-click="assignwarehome({{product}})"></button>' +
+                    '</div>' +
+                    '<p>Cantidad:<p/>' +
+                    '<div  class="row">' +
+                    '<input type="number" placeholder="ingrese Cantidad" ng-model = "data.cantidad"></input>' +
+                    '</div>',
+                title: product_.title,
+                subTitle: product_.price,
+                scope: $scope,
+                buttons: [{
+                    text: 'Cancelar'
+                }, {
+                    text: '<b>Confirmar</b>',
+                    type: 'button-calm',
+                    onTap: function(e) {
+                        if ((!$scope.data.cantidad) || (!$scope.data.almacen)) {
+                            e.preventDefault();
+                        }
+                        else {
+                            var popupNew = {
+                                            "username": $sessionStorage.userloged.username,
+                                            "almacen": $scope.data.almacen,
+                                            "cantidad": $scope.data.cantidad
+                                            }; 
+
+                            /*
+                            //Llama al servicio con los parametros para que insertar en ordenes de compra el producto
+                            SrvCall.async('dummys/order.json', 'POST', '')
+                                .success(function(resp) {
+                                    $ionicLoading.hide();
+                                    $scope.products = resp;
+                                })
+                                .error(function(resp) {
+                                    //Apaga el evento cargando
+                                    $ionicLoading.hide();
+                                    $ionicPopup.alert({
+                                        title: 'Ups!',
+                                        template: resp,
+                                        okText: 'OK!'
+                                    });
+                                });
+                            */
+                            console.log(popupNew);
+                            //return popupNew;
+                        }
+                    }
+                }]
+            });
+            myPopup.then(function(product_) {
+            });
+        }
+        else {
+            var alertPopup = $ionicPopup.alert({
+                title: 'EasyShop',
+                template: '<img src = /img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
+            });
+            alertPopup.then(function(res) {
+            });
+            $state.go("login");
+        }
+    };
+
+    $scope.assignwarehome = function(product_) {
+        $scope.cont = {}
+        $scope.warehousedata = {}
+
+        //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
+        SrvCall.async('dummys/warehouse.json', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.warehousedata = resp;
+            })
+            .error(function(resp) {
+                //Apaga el evento cargando
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                });
+            });
+        
+
+        var myPopup = $ionicPopup.show({
+            template: 
+                '<ion-list ng-repeat = "warehouseitem in warehousedata">' +
+                '        <ion-checkbox type="checkbox" ng-model="warehouse.selected" ng-true-value="{{warehouseitem.description}}" ng-false-value="">{{warehouseitem.description}}</ion-checkbox>' +
+                '</ion-list>',
+            title: 'Mis almacenes',
+            subTitle: '',
+            scope: $scope,
+            style: "color: #58ACFA",
+            buttons: [{
+                text: 'Cancelar'
+            }, {
+                text: '<b>Confirmar</b>',
+                type: 'button-positive',    
+                onTap: function(e) {
+                    $scope.data.almacen = $scope.warehouse.selected;
+                }
+            }]
+        });
+        myPopup.then(function(product_) {
+            
+        });
+
+    };
+    
+
 
 })

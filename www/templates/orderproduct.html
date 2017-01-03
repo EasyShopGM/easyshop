@@ -1,0 +1,70 @@
+<ion-view title= "Ordenar porducto">
+
+	<ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon" style="color: #FFFFFF;"></button>
+		<ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> Back</ion-nav-back-button>
+	</ion-nav-buttons>
+
+<!--
+	<ion-nav-buttons side="right">
+		<button class="button button-icon1 button-icon icon ion-ios-cart" style="color: #FFFFFF;"></button>
+	</ion-nav-buttons>
+-->
+	<style>
+		.catagory_img {
+			width: 40% !important;
+		}
+		
+		.back-button {
+    display:none;
+}
+	</style>
+
+	<ion-content style="background-color:#f2f2f2">
+		<ion-item class="list card">
+			<div style="margin-bottom: 0%; margin-left: 4%; display: block;" class="list card">
+				<div  style="border: 1px solid rgb(201, 201, 201);" class="col-40">
+					<div class="row">
+					<input type="text" Style="margin-left:2%; margin-right:18%; margin-top:2%; background-color:whitesmoke;" placeholder="Marca del producto a Buscar" ng-model = "busqueda.marca"></input>
+					</div>
+					<div class="row">
+					<input type="text" Style="margin-left:2%; margin-top:2%; background-color:whitesmoke;" placeholder="Producto a Buscar" ng-model = "busqueda.producto"></input>
+					<button  ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct(busqueda.marca, busqueda.producto)"></button>
+					</div>
+		        </div>
+		    </div> 
+	    <ion-item>
+		
+		<ion-item class="list card" ng-repeat = "product in products">
+			<div style="margin-bottom: 0%; margin-left: 8%; display: block;" class="list card">
+				<div>
+					<div>
+						<p style="padding-top: 0px; color: black; font-size: 70%; padding-left: 10px;" class="">
+							<ins>{{product.marca}}</ins>
+							</br>
+							<ins>{{product.nombre}}</ins>
+						</p>
+					</div>
+				</div>
+				<div style="border-bottom: 1px solid rgb(201, 201, 201);z-index: 999;" class="item item-image">
+					<img class="catagory_img" ng-src="https://imagenes.preciosclaros.gob.ar/productos/{{product.id}}.jpg" />
+				</div>
+				<div class="row">
+					<div class="col-80">
+						<p style="padding-top: 0px;font-weight: bold; color: rgb(95, 95, 95); font-size: 12px; padding-left: 10px;" class="">
+							Precio Max.: ${{product.precioMax}} 
+							</br>
+							Precio Min.: ${{product.precioMin}}
+						</p>
+					</div>
+					<div style="padding-top: 0%;" class="col">
+						<button  ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-ios-cart" ng-visible="false" ng-click="addlist({{product}})"></button>
+					</div>
+				</div>
+			</div>
+			<div>
+				</br>
+			</div>
+		</ion-item>
+	</ion-content>
+</ion-view>
