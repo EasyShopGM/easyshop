@@ -544,7 +544,7 @@ angular.module('starter.controllers', [])
 
 
     //Inicializa la variable para que no rompa si viene vacio
-    $scope.warehouse = [{}];
+    $scope.warehouse = [];
 
     //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
     SrvCall.async('dummys/warehouse.json', 'GET', '')
@@ -569,8 +569,13 @@ angular.module('starter.controllers', [])
     
 
     $scope.findproduct = function(marca_, product_) {
+        //inicia el evento cargando y bloquea la pantalla
+        $ionicLoading.show({
+            template: 'Cargando...'
+        });
+        
         //Inicializa la variable para que no rompa si viene vacio
-        $scope.products=[{}];
+        $scope.products=[];
 
         //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
         SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_  + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
@@ -578,6 +583,16 @@ angular.module('starter.controllers', [])
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
                 console.log(resp.productos);
+                //Apaga el evento cargando
+                if ($scope.products.length == 0) {
+                    $ionicPopup.alert({
+                        title: 'Producto no encontrado',
+                        subTitle: 'con el criterio "' + marca_ + '"',
+                        template: "",
+                        okText: 'OK!'
+                    });    
+                }
+                
             })
             .error(function(resp) {
                 //Apaga el evento cargando
@@ -596,18 +611,18 @@ angular.module('starter.controllers', [])
         if ($sessionStorage.userloged) {
 
             var url_ = product_.link;
-            console.log(product_);
-            var imagenotfound = "'https://easyshop-gustavoarenas.c9users.io/img/imagenotfound.gif'";
+//            var imagenotfound = "'https://easyshop-gustavoarenas.c9users.io/img/imagenotfound.gif'";
             var myPopup = $ionicPopup.show({
-                template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block"      onerror="this.onerror=null;this.src=' + imagenotfound + ';"  >' +
-                    '<p>Almacen</p>' +
+                template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block"      onerror="this.onerror=null;this.src=' + IMAGENOTFOUND + ';"  >' +
+                    '</br>' +
+                    '<p style="font-size: 90%; border-top: 1px solid rgb(204, 204, 204);" >Almacen</p>' +
                     '<div  class="row">' +
-                     '<input type = "text" ng-model = "data.almacen" disabled></input>' +
+                     '<input type = "text" style="font-size: 90%;" ng-model = "data.almacen" disabled></input>' +
                     '<button style="color: #58ACFA" class="button-icon icon ion-arrow-down-b" ng-visible="false" ng-click="assignwarehome({{product}})"></button>' +
                     '</div>' +
-                    '<p>Cantidad:<p/>' +
+                    '<p style="font-size: 90%;">Cantidad<p/>' +
                     '<div  class="row">' +
-                    '<input type="number" placeholder="ingrese Cantidad" ng-model = "data.cantidad"></input>' +
+                    '<input type="number" placeholder="ingrese Cantidad a comprar" style="font-size: 90%;" ng-model = "data.cantidad"></input>' +
                     '</div>',
                 title: product_.nombre,
                 subTitle: "",
@@ -628,23 +643,32 @@ angular.module('starter.controllers', [])
                                             "cantidad": $scope.data.cantidad
                                             }; 
 
-                            /*
+                            
+                            $ionicLoading.show({
+                                template: 'Agregando a la lista...'
+                            }); 
                             //Llama al servicio con los parametros para que insertar en ordenes de compra el producto
-                            SrvCall.async('dummys/order.json', 'POST', '')
+                            SrvCall.async('dummys/order.json', 'get', '')
                                 .success(function(resp) {
                                     $ionicLoading.hide();
                                     $scope.products = resp;
+                                    $ionicPopup.alert({
+                                        title: 'El producto fue agregado a la lista.',
+                                        template: "",
+                                        okText: 'OK!'
+                                    });
                                 })
                                 .error(function(resp) {
                                     //Apaga el evento cargando
                                     $ionicLoading.hide();
                                     $ionicPopup.alert({
-                                        title: 'Ups!',
-                                        template: resp,
+                                        title: 'El producto no fue agregado.',
+                                        subTitle: 'Verifique la conexión e intente nuevamente.',
+                                        template: "",
                                         okText: 'OK!'
                                     });
                                 });
-                            */
+                            
                             console.log(popupNew);
                             //return popupNew;
                         }

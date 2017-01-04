@@ -75,28 +75,39 @@
         </div>
         </center>
         <ion-item nav-clear menu-close href="#/app/home" style="padding: 0px; border-bottom: 2px solid rgb(204, 204, 204); z-index:999;">
-          <img src="img/social-rss-outline.png" style="margin-right: 10px;height: 23px; margin-bottom: -4px;">Novedades
+          <img src="img/social-rss-outline.png" style="margin-right: 10px;height: 20px; margin-bottom: -4px;">Novedades
         </ion-item>
 
         <ion-item nav-clear menu-close href="#/app/warehouseslist" style="padding: 0px; border-bottom: 2px solid rgb(204, 204, 204); z-index:999;">
-          <img src="img/list.png" style="margin-right: 10px;height: 23px; margin-bottom: -4px;">Listas de Compras
+          <img src="img/list.png" style="margin-right: 10px;height: 20px; margin-bottom: -4px;">Listas de Compras
         </ion-item>
 
         <ion-item nav-clear menu-close href="#/app/orderproduct" style="padding: 0px; border-bottom: 2px solid rgb(204, 204, 204); z-index:999;">
-          <img src="img/pin-128.png" style="margin-right: 10px;height: 23px; margin-bottom: -4px;">Ordenar Prodcuto
+          <img src="img/pin-128.png" style="margin-right: 10px;height: 20px; margin-bottom: -4px;">Ordenar Prodcuto
         </ion-item>
 
         <ion-item nav-clear menu-close href="#/app/userprofile" style="padding: 0px; border-bottom: 2px solid rgb(204, 204, 204); z-index:999;">
-          <img src="img/ios7-contact-outline.png" style="margin-right: 10px;height: 23px; margin-bottom: -4px;">Perfil del Usuario
+          <img src="img/ios7-contact-outline.png" style="margin-right: 10px;height: 20px; margin-bottom: -4px;">Perfil del Usuario
         </ion-item>
 
         <ion-item nav-clear menu-close href="#/login" style="padding: 0px; border-bottom: 1px solid rgb(204, 204, 204); z-index:999;">
-          <img src="img/login.png" style="margin-right: 10px;height: 23px;margin-bottom: -4px;">Login
+          <i class="icon ion-log-in">
+          <a style="margin-left: 10px;">Login</a>
+          </i>
         </ion-item>
 
         <ion-item nav-clear menu-close href="#/login" ng-click="logout();" style="padding: 0px; border-bottom: 1px solid rgb(204, 204, 204);">
-          <img src="img/logout.png" style="margin-right: 10px;height: 23px; margin-bottom: -4px;">Logout
+          <i class="icon ion-log-out">
+            <a style="margin-left: 10px;">Logout</a>
+          </i>
         </ion-item>
+        
+        <ion-item nav-clear menu-close href="#/login" style="padding: 0px; border-top: 1px solid rgb(204, 204, 204); z-index:999;">
+          <i class="icon ion-android-exit" style="font-size="100px;">
+          <a style="margin-left: 10px;">Salir</a>
+          </i>
+        </ion-item>
+        
       </ion-list>
     </ion-content>
   </ion-side-menu>

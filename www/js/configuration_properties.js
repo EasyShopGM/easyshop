@@ -29,6 +29,7 @@ var REGISTER                = "/v1/applications/4EYncfTJgPkfPquDYKbBM/accounts";
 var AUTH                    = "/v1/applications/4EYncfTJgPkfPquDYKbBM/loginAttempts";
 var AUTH_DATA               = "/v1/accounts/";
 var AUTH_DATA_CUSTOMDATA    = "/customData";
+var IMAGENOTFOUND           = "'img/imagenotfound.gif'";
 //var SING_UP               = "/mobile/signup/";
 //var LOGIN                   = "/mobile/login.json";
 // var REGISTER             = "/mobile/register/";
