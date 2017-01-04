@@ -571,8 +571,7 @@ angular.module('starter.controllers', [])
     $scope.findproduct = function(marca_, product_) {
         //Inicializa la variable para que no rompa si viene vacio
         $scope.products=[{}];
-        
-        console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_  + '&array_sucursales=10-1-5&offset=0&limit=50&sort=-cant_sucursales_disponible');
+
         //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
         SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_  + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
             .success(function(resp) {
@@ -598,8 +597,9 @@ angular.module('starter.controllers', [])
 
             var url_ = product_.link;
             console.log(product_);
+            var imagenotfound = "'https://easyshop-gustavoarenas.c9users.io/img/imagenotfound.gif'";
             var myPopup = $ionicPopup.show({
-                template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block ">' +
+                template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block"      onerror="this.onerror=null;this.src=' + imagenotfound + ';"  >' +
                     '<p>Almacen</p>' +
                     '<div  class="row">' +
                      '<input type = "text" ng-model = "data.almacen" disabled></input>' +
@@ -609,8 +609,8 @@ angular.module('starter.controllers', [])
                     '<div  class="row">' +
                     '<input type="number" placeholder="ingrese Cantidad" ng-model = "data.cantidad"></input>' +
                     '</div>',
-                title: product_.title,
-                subTitle: product_.price,
+                title: product_.nombre,
+                subTitle: "",
                 scope: $scope,
                 buttons: [{
                     text: 'Cancelar'
