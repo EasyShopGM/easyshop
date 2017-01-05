@@ -1,8 +1,8 @@
 angular.module('starter.controllers', [])
-    .controller('AppCtrl', function($sessionStorage, $state, $rootScope, $scope, $ionicModal, $timeout, $http) {
+    .controller('AppCtrl', function($localStorage, $state, $rootScope, $scope, $ionicModal, $timeout, $http) {
         // Form data for the login modal
         $scope.logout = function() {
-            $sessionStorage.$reset();
+            $localStorage.$reset();
             //$rootScope.customdataloged = '';
             //$rootScope.tokenloged = '';
             //$rootScope.userloged = '';
@@ -21,7 +21,9 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('newsoffers', function($rootScope, $scope, $http, $location, $ionicPopup, $sessionStorage, $state, $ionicLoading, SrvCall) {
+
+
+.controller('newsoffers', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall) {
 
 
     //Inicializa la variable para que no rompa si viene vacio
@@ -67,7 +69,7 @@ angular.module('starter.controllers', [])
     $scope.addlist = function(product_) {
         $scope.data = {}
 
-        if ($sessionStorage.userloged) {
+        if ($localStorage.userloged) {
 
             var url_ = product_.link;
             var myPopup = $ionicPopup.show({
@@ -95,7 +97,7 @@ angular.module('starter.controllers', [])
                         }
                         else {
                             var popupNew = {
-                                            "username": $sessionStorage.userloged.username,
+                                            "username": $localStorage.userloged.username,
                                             "almacen": $scope.data.almacen,
                                             "cantidad": $scope.data.cantidad
                                             }; 
@@ -187,7 +189,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('shoppinglist', function($scope, $http, $location, $sessionStorage, $state, $stateParams) {
+.controller('shoppinglist', function($scope, $http, $location, $localStorage, $state, $stateParams) {
 
     $scope.warehousetitle = $stateParams.warehouse;
 
@@ -303,7 +305,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('warehouseslist', function($scope, $http, $location, $sessionStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+.controller('warehouseslist', function($scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
 
     //Inicializa la variable para que no rompa si viene vacio
     $scope.warehouse = [{}];
@@ -367,17 +369,17 @@ angular.module('starter.controllers', [])
 
     })
 
-.controller('userprofile', function($state, $rootScope, $scope, $http, $location, $sessionStorage) {
+.controller('userprofile', function($state, $rootScope, $scope, $http, $location, $localStorage) {
 
-    if ($sessionStorage.customdataloged) {
-        $rootScope.customdataloged = $sessionStorage.customdataloged;
-        $rootScope.userloged = $sessionStorage.userloged;
+    if ($localStorage.customdataloged) {
+        $rootScope.customdataloged = $localStorage.customdataloged;
+        $rootScope.userloged = $localStorage.userloged;
     }
     else {
         $rootScope.customdataloged = {
             foto: '/img/ios7-contact-outline.png'
         };
-        $sessionStorage.customdataloged = $rootScope.customdataloged;
+        $localStorage.customdataloged = $rootScope.customdataloged;
     }
 
 
@@ -386,9 +388,9 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('login', function($state, $ionicLoading, $rootScope, $scope, $http, $location, SrvCallOauth, $sessionStorage, $ionicPopup, Base64) {
+.controller('login', function($state, $rootScope, $scope, $http, $location, SrvCallOauth, $localStorage, $ionicPopup, $ionicLoading, Base64) {
 
-    if ($sessionStorage.userloged) {
+    if ($localStorage.userloged) {
         $state.go("app.newsoffers");
     }
 
@@ -443,8 +445,9 @@ angular.module('starter.controllers', [])
         SrvCallOauth.async(url_backend_oauth + AUTH_DATA + token, 'GET', '')
             .success(function(resp) {
                 $rootScope.userloged = resp;
-                $sessionStorage.userloged = $rootScope.userloged;
-                $sessionStorage.tokenloged = url_backend_oauth + AUTH_DATA + token;
+                $localStorage.userloged = $rootScope.userloged;
+                $localStorage.userloged = $rootScope.userloged;
+                $localStorage.tokenloged = url_backend_oauth + AUTH_DATA + token;
                 $scope.customlogin(url_backend_oauth + AUTH_DATA + token + AUTH_DATA_CUSTOMDATA);
             })
 
@@ -465,7 +468,7 @@ angular.module('starter.controllers', [])
         SrvCallOauth.async(customlogin_, 'GET', '')
             .success(function(resp) {
                 $rootScope.customdataloged = resp;
-                $sessionStorage.customdataloged = $rootScope.customdataloged;
+                $localStorage.customdataloged = $rootScope.customdataloged;
             })
             .error(function(resp) {
                 //Apaga el evento cargando
@@ -478,15 +481,16 @@ angular.module('starter.controllers', [])
             });
     }
 
+
     $scope.cancelar = function() {
-        $state.go("app.newsoffers");
+        $state.go('app.newsoffers');
     }
 
 
 })
 
 
-.controller('register', function($state, $ionicLoading, $rootScope, $scope, $http, $location, SrvCallOauth, $sessionStorage, $ionicPopup) {
+.controller('register', function($state, $ionicLoading, $rootScope, $scope, $http, $location, SrvCallOauth, $localStorage, $ionicPopup) {
 
 
     $scope.register = function() {
@@ -513,8 +517,8 @@ angular.module('starter.controllers', [])
                 $ionicLoading.hide();
                 $rootScope.userloged = resp;
                 console.log($rootScope.userloged);
-                $sessionStorage.userLoged = $rootScope.userloged;
-                $state.go("app.newsoffers");
+                $localStorage.userLoged = $rootScope.userloged;
+                $state.go("back");
 
             }).error(function(resp) {
 
@@ -540,7 +544,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('orderproduct', function($rootScope, $scope, $http, $location, $ionicPopup, $sessionStorage, $state, $ionicLoading, SrvCall) {
+.controller('orderproduct', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall) {
 
 
     //Inicializa la variable para que no rompa si viene vacio
@@ -598,7 +602,7 @@ angular.module('starter.controllers', [])
                 //Apaga el evento cargando
                 $ionicLoading.hide();
                 $ionicPopup.alert({
-                    title: 'Ups!',
+                    title: 'Sin respuesta.',
                     template: resp,
                     okText: 'OK!'
                 });
@@ -608,7 +612,7 @@ angular.module('starter.controllers', [])
     $scope.addlist = function(product_) {
         $scope.data = {}
 
-        if ($sessionStorage.userloged) {
+        if ($localStorage.userloged) {
 
             var url_ = product_.link;
 //            var imagenotfound = "'https://easyshop-gustavoarenas.c9users.io/img/imagenotfound.gif'";
@@ -638,7 +642,7 @@ angular.module('starter.controllers', [])
                         }
                         else {
                             var popupNew = {
-                                            "username": $sessionStorage.userloged.username,
+                                            "username": $localStorage.userloged.username,
                                             "almacen": $scope.data.almacen,
                                             "cantidad": $scope.data.cantidad
                                             }; 
@@ -685,6 +689,7 @@ angular.module('starter.controllers', [])
             });
             alertPopup.then(function(res) {
             });
+            $rootScope.page = "app.orderproduct";
             $state.go("login");
         }
     };
