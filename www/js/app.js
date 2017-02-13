@@ -77,27 +77,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
-	
-	
+
 	.state('login', {
         url: "/login",
-				
                 templateUrl: "templates/login.html",
                 controller: 'login'
-            
     })
+    
 	.state('register', {
         url: "/register",
-       
                 templateUrl: "templates/register.html",
                 controller: 'register'
-         
     })
+    
 	.state('shipping', {
         url: "/shipping",
-       
+            'menuContent': {
                 templateUrl: "templates/shipping.html",
                 controller: 'shipping'
+            }
        
     })
 

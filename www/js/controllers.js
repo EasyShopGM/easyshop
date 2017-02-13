@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic', 'ngMessages'])
     .controller('AppCtrl', function($localStorage, $state, $rootScope, $scope, $ionicModal, $timeout, $http) {
         // Form data for the login modal
         $scope.logout = function() {
@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
             //$rootScope.customdataloged = '';
             //$rootScope.tokenloged = '';
             //$rootScope.userloged = '';
-            $state.go("login");
+            //$state.go("login");
         }
 
 
@@ -311,7 +311,9 @@ angular.module('starter.controllers', [])
     $scope.warehouse = [{}];
 
     //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
-    SrvCall.async('dummys/warehouse.json', 'GET', '')
+    //dummys/warehouse.json
+    //https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?q={"email": "' + $localStorage.userloged.email +  '"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.warehouses = resp;
@@ -373,7 +375,6 @@ angular.module('starter.controllers', [])
 
     if ($localStorage.customdataloged) {
         $rootScope.customdataloged = $localStorage.customdataloged;
-        $rootScope.userloged = $localStorage.userloged;
     }
     else {
         $rootScope.customdataloged = {
@@ -389,7 +390,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('login', function($state, $rootScope, $scope, $http, $location, SrvCallOauth, $localStorage, $ionicPopup, $ionicLoading, Base64) {
-
+    
+    
     if ($localStorage.userloged) {
         $state.go("app.newsoffers");
     }
@@ -418,7 +420,8 @@ angular.module('starter.controllers', [])
                 //Apaga el evento cargando
                 $ionicLoading.hide();
                 $scope.userlogin(resp);
-                $state.go("app.newsoffers");
+                //$state.go("app.newsoffers");
+                window.history.back();
 
             })
 
@@ -427,7 +430,8 @@ angular.module('starter.controllers', [])
             $ionicLoading.hide();
             $ionicPopup.alert({
                 title: 'Autentication',
-                template: resp,
+                template: '<p>' + msgLoginErr1 + '</p>' +
+                          '<p>' + msgLoginErr2 + '</p>',
                 okText: 'OK!'
             });
         });
@@ -483,7 +487,8 @@ angular.module('starter.controllers', [])
 
 
     $scope.cancelar = function() {
-        $state.go('app.newsoffers');
+        //$state.go('app.newsoffers');
+        window.history.back();
     }
 
 
@@ -498,7 +503,9 @@ angular.module('starter.controllers', [])
         $ionicLoading.show({
             template: '<ion-spinner icon="android"></ion-spinner>'
         });
+        
 
+        
         SrvCallOauth.async(url_backend_oauth + REGISTER, 'POST', {
                 'givenName': $scope.userRegister.firstName,
                 'surname': $scope.userRegister.lastName,
@@ -507,7 +514,8 @@ angular.module('starter.controllers', [])
                 'password': $scope.userRegister.password,
                 'customData': {
                     'favoriteColor': $scope.userRegister.favcolor,
-                    'foto': 'https://www.gravatar.com/avatar/90c89a212acf87b6abe02937b388e740?s=32&d=retro'
+                    'foto': 'https://www.gravatar.com/avatar/90c89a212acf87b6abe02937b388e740?s=32&d=retro',
+                    'profile': $scope.userRegister.shared
                 }
             })
             .success(function(resp) {
@@ -516,9 +524,15 @@ angular.module('starter.controllers', [])
                     //Apaga el evento cargando
                 $ionicLoading.hide();
                 $rootScope.userloged = resp;
-                console.log($rootScope.userloged);
-                $localStorage.userLoged = $rootScope.userloged;
-                $state.go("back");
+                //console.log($rootScope.userloged);
+                //$localStorage.userLoged = $rootScope.userloged;
+                $ionicPopup.alert({
+                    title: 'Registration',
+                    template: 'Successful',
+                    okText: 'OK'
+
+                });
+                window.history.back();
 
             }).error(function(resp) {
 
@@ -526,9 +540,9 @@ angular.module('starter.controllers', [])
                     //Apaga el evento cargando
                 $ionicLoading.hide();
                 $ionicPopup.alert({
-                    title: 'Ups!',
-                    template: resp,
-                    okText: 'OK!'
+                    title: 'Registration',
+                    template: resp.message,
+                    okText: 'OK'
 
                 });
             });
@@ -551,7 +565,9 @@ angular.module('starter.controllers', [])
     $scope.warehouse = [];
 
     //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
-    SrvCall.async('dummys/warehouse.json', 'GET', '')
+    //https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3
+    //dummys/warehouse.json
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.warehouses = resp;
@@ -639,8 +655,7 @@ angular.module('starter.controllers', [])
                     onTap: function(e) {
                         if ((!$scope.data.cantidad) || (!$scope.data.almacen)) {
                             e.preventDefault();
-                        }
-                        else {
+                        } else {
                             var popupNew = {
                                             "username": $localStorage.userloged.username,
                                             "almacen": $scope.data.almacen,

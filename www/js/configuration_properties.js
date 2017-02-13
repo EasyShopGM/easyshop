@@ -45,3 +45,8 @@ var IMAGENOTFOUND           = "'img/imagenotfound.gif'";
 // var QUESTIONS               = "/mobile/questions.json";
 // var FORGOT                  = "/mobile/forgot.json";
 // var NEW_PASSWORD            = "/mobile/new_password.json";
+
+
+//Mensajes.
+var msgLoginErr1        = 'Verify your registration.';
+var msgLoginErr2        = 'Confirm your registration with the email that was sent to you.';
