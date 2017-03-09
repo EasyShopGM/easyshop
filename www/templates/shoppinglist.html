@@ -83,7 +83,18 @@
 			padding: 2px 4px 2px 4px;
 		}
 		
+		.button-icon-cant {
+    		font-size: xx-large;
+    		margin-top: -15%;
+    		color:#bbe1fe;
+    		border-bottom-color: gray;
+    border-bottom-width: thin;
+		}
 		
+		.text-button-icon-cant {
+    		margin-top: -34%;
+    		margin-left: 17%;
+		}
 	</style>
 
 	<ion-content style="background-color:#fffff">
@@ -103,22 +114,30 @@
 				</p>
 			</ion-item>
 
-	   		<ion-item ng-repeat="item in items">
+	   		<ion-item ng-repeat="product in products">
 				<div class="row">
-					<div class="ng-binding" style="margin-top:0%; width:70%">
-						 {{item.name}}
+					
+					<div class="ng-binding" style="margin-top:0%; width:13%">
+						<button class="button-icon button-icon-cant ion-ios-circle-outline"></button>
+						<p style="margin-top: -75%; margin-left: 39%;">{{product.quantity}}</p>
+					</div>	
+					<div class="ng-binding" style="margin-top:0%; width:87%; font-size: 80%;" ng-click="actionProduct(product);">
+						 {{product.nombre}}
 						 <br>
-						 <p style="font-size: 10px">Cant: {{item.quantity}} {{item.unit}}  P.Uni: {{item.price}} P.total: {{item.total}}</p>
-					</div>
-					<div style="width:30%">
-						<button class="button-icon ion-ios-trash-outline" color="deeppink" ng-click="descartado(item);"></button>
-						<button class="button-icon  ion-edit" ng-click="editar(item);"></button>
-						<button class="button-icon ion-checkmark-round" ng-click="adquirido(item, $fromIndex, $toIndex);"></button>
+						 <p style="font-size: 10px">P.Uni. Min. $: {{product.precioMin}} / P.Uni. Max. $: {{product.precioMax}}</p>
 					</div>
 				</div>
+				
+						
 				</div>
 				
 			</ion-item>
 		</ion-list>
+		
+
+		
+		
+		
+		
 	</ion-content>
 </ion-view>

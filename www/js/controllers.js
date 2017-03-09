@@ -188,96 +188,56 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 
 })
+/* ********* LISTA de COMPRAS ********* */
+.controller('shoppinglist',   function($rootScope, $scope, $http, $location, $localStorage, $state, $stateParams, SrvCall, $ionicLoading, $ionicPopup) {
 
-.controller('shoppinglist', function($scope, $http, $location, $localStorage, $state, $stateParams) {
-
-    $scope.warehousetitle = $stateParams.warehouse;
-
-    console.log($scope.warehousetitle);
-
+//    console.log("En Lista de Productos para Comprar");
+    $scope.warehousetitle = $rootScope.warehouse.description;
+//    console.log($rootScope.warehouse.description);
+//    console.log("El ID");
+//    console.log($rootScope.warehouse._id.$oid);
     var x;
     var imptotal = 0.0;
     var impparcial = 0.0;
-
-    $scope.warehouse_ = {
-        "warehouse": {
-            "name": "casa",
-            "product": [{
-                id: 0,
-                name: "tomate en lata",
-                unit: "",
-                quantity: 4,
-                price: 10.50,
-                total: 10.50,
-                estado: "comprado"
-            }, {
-                id: 1,
-                name: "Cuadril",
-                unit: "Kg",
-                quantity: "1.4Kg",
-                price: 10.50,
-                total: 10.50,
-                estado: "comprado"
-            }, {
-                id: 2,
-                name: "Cerveza",
-                unit: "",
-                quantity: 4,
-                price: 10.50,
-                total: 42.00,
-                estado: "pendiente"
-            }, {
-                id: 3,
-                name: "Papa blanca",
-                unit: "Kg",
-                quantity: 1,
-                price: 10.50,
-                total: 10.50,
-                estado: "pendiente"
-            }, {
-                id: 4,
-                name: "Naranja",
-                unit: "Kg",
-                quantity: 2,
-                price: 10.50,
-                total: 21.00,
-                estado: "pendiente"
-            }, {
-                id: 5,
-                name: "Lavandina",
-                unit: "",
-                quantity: 1,
-                price: 10.50,
-                total: 10.50,
-                estado: "pendiente"
-            }]
-        }
-    };
-
-    console.log("joda");
-    console.log($scope.warehouse_);
-    console.log($scope.warehouse_.warehouse);
-    console.log($scope.warehouse_.warehouse.name);
-    console.log($scope.warehouse_.warehouse.product);
-    $scope.items = $scope.warehouse_.warehouse.product;
+    
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}', 'GET', '')
+        .success(function(resp) {
+            $ionicLoading.hide();
+//            console.log("es el resp");
+//            console.log(resp);
+            $scope.products = resp;
+            for (x in $scope.products) {
+//                console.log(x);
+//                console.log($scope.products[x].nombre);
+                imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
+                if ($scope.products[x].estado == "C") {
+                    impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
+                }
+            }
+            //$scope.imptotal = imptotal;
+            //$scope.impparcial = impparcial;
+            //console.log($scope.imptotal);
+            $scope.adquirido = function(item, fromIndex, toIndex) {
+//                console.log("Adquirido");
+//                console.log(item);
+            };
+//esto llevarlo a una funcion
+        })
+        .error(function(resp) {
+            //Apaga el evento cargando
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Ups!',
+                template: resp,
+                okText: 'OK!'
+            });
+        });
+        
 
 
-    for (x in $scope.items) {
-        imptotal = imptotal + ($scope.items[x].price * $scope.items[x].quantity);
-        if ($scope.items[x].estado == "comprado") {
-            impparcial += $scope.items[x].price * $scope.items[x].quantity;
-        }
-    }
-
-    $scope.imptotal = imptotal;
-    $scope.impparcial = impparcial;
-
-    console.log($scope.imptotal);
-
-    $scope.adquirido = function(item, fromIndex, toIndex) {
-        console.log("Adquirido");
-        console.log(item);
-
+    $scope.actionProduct =  function(id_) {
+        console.log("action");
+        console.log(id_);
     };
 
     $scope.editar = function(id_) {
@@ -305,7 +265,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 })
 
-.controller('warehouseslist', function($scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+.controller('warehouseslist', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
 
     //Inicializa la variable para que no rompa si viene vacio
     $scope.warehouse = [{}];
@@ -313,9 +273,15 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
     //dummys/warehouse.json
     //https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3
-    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?q={"email": "' + $localStorage.userloged.email +  '"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
+    
+    //https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?q={"email": "' + $localStorage.userloged.email +  '"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3    
+    //https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?q={"email":"gustavo.arenas73@gmail.com"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3
+
+    //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?q={"email": "' + $localStorage.userloged.email +  '"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"users":"' + $localStorage.userloged.email +  '"}', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
+            resp
             $scope.warehouses = resp;
         })
         .error(function(resp) {
@@ -329,7 +295,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         });
 
     $scope.clicker = function(warwhouse) {
-        $scope.warehouse = warwhouse;
+        console.log("toma la almacen");
+        console.log(warwhouse);
+        $rootScope.warehouse = warwhouse;
+        console.log("Lo paso al root");
+        console.log($rootScope.warehouse);
+        //$scope.warehouse_index = warehouse._id.$oid;
         $state.go("app.shoppinglist", {
             'warehouse': $scope.warehouse.description
         });
@@ -567,10 +538,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
     //https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3
     //dummys/warehouse.json
-    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
+    //https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouse?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3
+    
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/wh_products?q={"id_warehouse":"58a2029bbd966f2cc1e63761"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
-            $scope.warehouses = resp;
+            $scope.wh_products = resp;
+            
         })
         .error(function(resp) {
             //Apaga el evento cargando
@@ -597,6 +571,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         //Inicializa la variable para que no rompa si viene vacio
         $scope.products=[];
 
+console.log("https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=" + marca_  + "&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible");
         //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
         SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_  + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
             .success(function(resp) {
