@@ -82,8 +82,6 @@
 		}
 		
 	</style>
-
-	
 	
 	<ion-content style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
@@ -93,8 +91,6 @@
 				<div class="row">
 					<div class="ng-binding" style="margin-top:0%; width:70%"  ng-click="clicker(warehouse)">
 						{{ warehouse.description }}
-						<br/>
-						{{ warehouse._id.$oid}}
 					</div>
 					<div style="width:30%">
 						<button class="button-icon ion-android-share-alt" ng-click="share(warehouse);"></button>

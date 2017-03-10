@@ -95,6 +95,26 @@
     		margin-top: -34%;
     		margin-left: 17%;
 		}
+		
+		.round-button {
+		    display: block;
+		    width: 35px;
+		    height: 35px;
+		    line-height: 32px;
+		    border: 1px solid #f5f5f5;
+		    border-radius: 50%;
+		    color: black;
+		    text-align: center;
+		    text-decoration: none;
+		    background: #f6fafa;
+		    box-shadow: 0 0 3px gray;
+		    font-size: 10px;
+		    font-weight: normal;
+		    border-color: #55acee;
+		}
+		.round-button:hover {
+		    background: #262626;
+		}
 	</style>
 
 	<ion-content style="background-color:#fffff">
@@ -115,13 +135,11 @@
 			</ion-item>
 
 	   		<ion-item ng-repeat="product in products">
-				<div class="row">
-					
-					<div class="ng-binding" style="margin-top:0%; width:13%">
-						<button class="button-icon button-icon-cant ion-ios-circle-outline"></button>
-						<p style="margin-top: -75%; margin-left: 39%;">{{product.quantity}}</p>
-					</div>	
-					<div class="ng-binding" style="margin-top:0%; width:87%; font-size: 80%;" ng-click="actionProduct(product);">
+				<div class="row"  >
+					<div class="round-button" >
+    					<a >{{product.quantity}}</a>
+					</div>
+					<div class="ng-binding" style="margin-left:1%; margin-top:0%; width:85%; font-size: 80%;" ng-click="actionProduct(product);">
 						 {{product.nombre}}
 						 <br>
 						 <p style="font-size: 10px">P.Uni. Min. $: {{product.precioMin}} / P.Uni. Max. $: {{product.precioMax}}</p>
