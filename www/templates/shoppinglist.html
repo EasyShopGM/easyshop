@@ -11,7 +11,6 @@
 
 	</ion-nav-buttons>
 
-
 	<style>
 		.catagory_img {
 			width: 40% !important;
@@ -111,6 +110,7 @@
 		    font-size: 10px;
 		    font-weight: normal;
 		    border-color: #55acee;
+
 		}
 		.round-button:hover {
 		    background: #262626;
@@ -136,7 +136,7 @@
 
 	   		<ion-item ng-repeat="product in products">
 				<div class="row"  >
-					<div class="round-button" >
+					<div id="objEstado" class="round-button" style="border-color: {{product.Estado}};">
     					<a >{{product.quantity}}</a>
 					</div>
 					<div class="ng-binding" style="margin-left:1%; margin-top:0%; width:85%; font-size: 80%;" ng-click="actionProduct(product);">

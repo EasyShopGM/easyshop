@@ -165,7 +165,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     var imptotal = 0.0;
     var impparcial = 0.0;
 
-    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}', 'GET', '')
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}&s={"Estado": 1}', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.products = resp;
@@ -187,9 +187,44 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         });
 
 
-    $scope.actionProduct = function(id_) {
+    $scope.actionProduct = function(product_) {
         console.log("action");
-        console.log(id_);
+        console.log(product_);
+        console.log(product_.Estado);
+        console.log(product_._id.$oid);
+    
+        var estadoProduct = '';
+
+        if (product_.Estado == '#55acee') {
+            estadoProduct = '{ "$set" : { "Estado" : "green" } }';
+        }
+        else if (product_.Estado == 'green') {
+            estadoProduct = '{ "$set" : { "Estado" : "red" } }';
+        }
+        else if (product_.Estado == 'D') {
+            estadoProduct = '{ "$set" : { "Estado" : "#55acee" } }';
+        }
+        else {
+            estadoProduct = '{ "$set" : { "Estado" : "#55acee" } }';
+        };
+
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh/' + product_._id.$oid + '?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'PUT', estadoProduct)
+            .success(function(resp) {
+                $ionicLoading.hide();
+                //$scope.warehouses = resp;
+                $scope.doRefresh();
+
+            })
+            .error(function(resp) {
+                //Apaga el evento cargando
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                });
+            });
+
     };
 
     $scope.editar = function(id_) {
@@ -205,22 +240,31 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.doRefresh = function() {
         console.log("Refrescar");
         $scope.$broadcast('scroll.refreshComplete');
+   
+    var x;
+    var imptotal = 0.0;
+    var impparcial = 0.0;
 
-        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"users":"' + $localStorage.userloged.email + '"}', 'GET', '')
-            .success(function(resp) {
-                $ionicLoading.hide();
-                $scope.warehouses = resp;
-
-            })
-            .error(function(resp) {
-                //Apaga el evento cargando
-                $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: 'Ups!',
-                    template: resp,
-                    okText: 'OK!'
-                });
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}&s={"Estado": 1}', 'GET', '')
+        .success(function(resp) {
+            $ionicLoading.hide();
+            $scope.products = resp;
+            for (x in $scope.products) {
+                imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
+                if ($scope.products[x].estado == "C") {
+                    impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
+                }
+            }
+            $scope.adquirido = function(item, fromIndex, toIndex) {};
+        })
+        .error(function(resp) {
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Ups!',
+                template: resp,
+                okText: 'OK!'
             });
+        });
     };
 
 })
@@ -365,7 +409,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                 template: 'Agregando a la lista...'
                             });
 
-                            var newWarehouese = '{"description": "' + $scope.warehouse.nombre + '","users": ["' + $localStorage.userloged.email + '"],"date_purchase": "","estado": "P"}';
+                            var newWarehouese = '{"description": "' + $scope.warehouse.nombre + '","users": ["' + $localStorage.userloged.email + '"],"date_purchase": "","estado": "#55acee"}';
                             SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'POST', newWarehouese)
                                 .success(function(resp) {
                                     $ionicLoading.hide();
