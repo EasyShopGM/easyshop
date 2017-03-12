@@ -158,11 +158,9 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 /* ********* LISTA de COMPRAS ********* */
 .controller('shoppinglist', function($rootScope, $scope, $http, $location, $localStorage, $state, $stateParams, SrvCall, $ionicLoading, $ionicPopup) {
 
-    //    console.log("En Lista de Productos para Comprar");
+
     $scope.warehousetitle = $rootScope.warehouse.description;
-    //    console.log($rootScope.s.description);
-    //    console.log("El ID");
-    //    console.log($rootScope.warehouse._id.$oid);
+
     var x;
     var imptotal = 0.0;
     var impparcial = 0.0;
@@ -250,7 +248,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             });
     }
     else {
-        //console.log("no esta logueado")
         var alertPopup = $ionicPopup.alert({
             title: 'EasyShop',
             template: '<img src = /img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
@@ -263,12 +260,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 
     $scope.clicker = function(warwhouse) {
-        //console.log("toma la almacen");
-        //console.log(warwhouse);
         $rootScope.warehouse = warwhouse;
-        //console.log("Lo paso al root");
-        //console.log($rootScope.warehouse);
-        //$scope.warehouse_index = warehouse._id.$oid;
         $state.go("app.shoppinglist", {
             'warehouse': $scope.warehouse.description
         });
@@ -304,6 +296,24 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                 okText: 'OK!'
                             });
                             $scope.doRefresh();
+                            SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'PUT', '[{"idwarehouse": "' + warwhouse._id.$oid + '"}]')
+                                .success(function(resp) {
+                                    $ionicLoading.hide();
+                                    $ionicPopup.alert({
+                                        title: 'Almacen',
+                                        template: 'Se ha eliminado la almacen',
+                                        okText: 'OK!'
+                                    });
+                                    //$scope.doRefresh();
+                                })
+                                .error(function(resp) {
+                                    $ionicLoading.hide();
+                                    $ionicPopup.alert({
+                                        title: 'Ups!',
+                                        template: resp,
+                                        okText: 'OK!'
+                                    });
+                                });
                         })
                         .error(function(resp) {
                             $ionicLoading.hide();
@@ -453,11 +463,10 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 
     if ($localStorage.userloged) {
-        $state.go("app.newsoffers");
+        //$state.go("app.newsoffers");
+        $state.go($rootScope.page);
 
     }
-
-    //console.log("aca paso por el login sin if");
 
     $scope.login = function() {
         //inicia el evento cargando y bloquea la pantalla
@@ -592,25 +601,25 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 })
 
-
+/* ****** Ordenar Producto ***** */
 .controller('orderproduct', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall) {
     $scope.warehouse = [];
-
-    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/wh_products?q={"id_warehouse":"58a2029bbd966f2cc1e63761"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
-        .success(function(resp) {
-            $ionicLoading.hide();
-            $scope.wh_products = resp;
-        })
-        .error(function(resp) {
-            //Apaga el evento cargando
-            $ionicLoading.hide();
-            $ionicPopup.alert({
-                title: 'Ups!',
-                template: resp,
-                okText: 'OK!'
+    /*
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?q={"users":"gustavo.arenas73@gmail.com"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.wherehausespopup = resp;
+            })
+            .error(function(resp) {
+                //Apaga el evento cargando
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                });
             });
-        });
-
+    */
     $scope.findproduct = function(marca_, product_) {
         $ionicLoading.show({
             template: 'Cargando...'
@@ -622,7 +631,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
-                //console.log(resp.productos);
                 //Apaga el evento cargando
                 if ($scope.products.length == 0) {
                     $ionicPopup.alert({
@@ -646,12 +654,14 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
 
     $scope.addlist = function(product_) {
+        console.log("addlist 1era linea");
+        console.log(product_);
         $scope.data = {}
 
         if ($localStorage.userloged) {
             var url_ = product_.link;
             var myPopup = $ionicPopup.show({
-                template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block"      onerror="this.onerror=null;this.src=' + IMAGENOTFOUND + ';"  >' +
+                template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block" onerror="this.onerror=null;this.src=' + IMAGENOTFOUND + ';"  >' +
                     '</br>' +
                     '<p style="font-size: 90%; border-top: 1px solid rgb(204, 204, 204);" >Almacen</p>' +
                     '<div  class="row">' +
@@ -684,7 +694,16 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                 template: 'Agregando a la lista...'
                             });
 
-                            SrvCall.async('dummys/order.json', 'get', '')
+                            //Agrega el producto a la lista seleccionada
+                            //acaaaaaa
+                            console.log("Agrega el producto a la lista seleccionada");
+                            //console.log($scope.data.oid);
+
+                            console.log("el string de producto");
+
+                            var newProduct_wh = '{"idwarehouse":"' + $scope.data.oid + '","marca":"' + product_.marca + '","id":"' + product_.id + '","precioMax":' + product_.precioMax + ',"precioMin":' + product_.precioMin + ',"nombre":"' + product_.nombre + '","presentacion":"' + product_.presentacion + '","cantSucursalesDisponible":' + product_.cantSucursalesDisponible + ',"quantity":' + $scope.data.cantidad + ',"Estado":"P"}';
+                            console.log(newProduct_wh);
+                            SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'POST', newProduct_wh)
                                 .success(function(resp) {
                                     $ionicLoading.hide();
                                     $scope.products = resp;
@@ -693,6 +712,9 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                         template: "",
                                         okText: 'OK!'
                                     });
+                                    console.log("v2");
+                                    $rootScope.page = "app.orderproduct";
+                                    $state.go("login");
                                 })
                                 .error(function(resp) {
                                     //Apaga el evento cargando
@@ -704,10 +726,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                         okText: 'OK!'
                                     });
                                 });
+                            console.log("v3");
                         }
+                        console.log("v4");
                     }
                 }]
             });
+            console.log("v5");
             myPopup.then(function(product_) {});
         }
         else {
@@ -719,15 +744,21 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             $rootScope.page = "app.orderproduct";
             $state.go("login");
         }
+        console.log("v6");
     };
 
-    $scope.assignwarehome = function(product_) {
-        $scope.cont = {}
-        $scope.warehousedata = {}
+    $scope.assignwarehome = function() {
+        $scope.cont = {};
+        $scope.warehousedata = {};
 
-        SrvCall.async('dummys/warehouse.json', 'GET', '')
+
+        console.log("en find");
+
+        //SrvCall.async('dummys/warehouse.json', 'GET', '')
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?q={"users":"' + $localStorage.userloged.email + '"}&apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
+                //se guarda el objeto almacen seleccionado
                 $scope.warehousedata = resp;
             })
             .error(function(resp) {
@@ -743,7 +774,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
         var myPopup = $ionicPopup.show({
             template: '<ion-list ng-repeat = "warehouseitem in warehousedata">' +
-                '        <ion-checkbox type="checkbox" ng-model="warehouse.selected" ng-true-value="{{warehouseitem.description}}" ng-false-value="">{{warehouseitem.description}}</ion-checkbox>' +
+                '        <ion-checkbox type="checkbox" ng-model="warehouse.value" ng-true-value="{{warehouseitem.description}} | {{warehouseitem._id.$oid}} |" ng-false-value="">{{warehouseitem.description}}</ion-checkbox>' +
                 '</ion-list>',
             title: 'Mis almacenes',
             subTitle: '',
@@ -755,13 +786,22 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 text: '<b>Confirmar</b>',
                 type: 'button-positive',
                 onTap: function(e) {
-                    $scope.data.almacen = $scope.warehouse.selected;
+
+                    var itemrecuperado = $scope.warehouse.value;
+                    console.log("v1");
+                    $scope.data.almacen = itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
+                    $scope.data.oid = itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);
                 }
             }]
-        });
-        myPopup.then(function(product_) {
 
         });
+        console.log("v7");
+        //myPopup.then(function(product_) {
+
+        //});
+
     };
+
+
 
 })
