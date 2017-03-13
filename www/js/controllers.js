@@ -192,7 +192,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         console.log(product_);
         console.log(product_.Estado);
         console.log(product_._id.$oid);
-    
+
         var estadoProduct = '';
 
         if (product_.Estado == '#55acee') {
@@ -240,31 +240,31 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.doRefresh = function() {
         console.log("Refrescar");
         $scope.$broadcast('scroll.refreshComplete');
-   
-    var x;
-    var imptotal = 0.0;
-    var impparcial = 0.0;
 
-    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}&s={"Estado": 1}', 'GET', '')
-        .success(function(resp) {
-            $ionicLoading.hide();
-            $scope.products = resp;
-            for (x in $scope.products) {
-                imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
-                if ($scope.products[x].estado == "C") {
-                    impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
+        var x;
+        var imptotal = 0.0;
+        var impparcial = 0.0;
+
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}&s={"Estado": 1}', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.products = resp;
+                for (x in $scope.products) {
+                    imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
+                    if ($scope.products[x].estado == "C") {
+                        impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
+                    }
                 }
-            }
-            $scope.adquirido = function(item, fromIndex, toIndex) {};
-        })
-        .error(function(resp) {
-            $ionicLoading.hide();
-            $ionicPopup.alert({
-                title: 'Ups!',
-                template: resp,
-                okText: 'OK!'
+                $scope.adquirido = function(item, fromIndex, toIndex) {};
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                });
             });
-        });
     };
 
 })
@@ -279,7 +279,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.warehouses = resp;
-
             })
             .error(function(resp) {
                 //Apaga el evento cargando
@@ -314,58 +313,56 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.share = function(warehouse_) {
         console.log("Shared");
         console.log(warehouse_);
-        
-        
-        
-        
-        console.log(warehouse_._id.$oid);
-        console.log(warehouse_.users);
-        
+
         $scope.shareds = warehouse_.users;
-        
-        
-         var myPopup = $ionicPopup.show({
-                template:                '<ion-list ng-repeat = "shared in shareds">' +
-                           '<ion-checkbox type="checkbox" ng-model="warehouse.selected" ng-true-value="shared" ng-false-value="">{{shared}}</ion-checkbox>' +
-                         '</ion-list>',
-                title: "Comparti tu lista",
-                subTitle: "",
-                scope: $scope,
-                buttons: [{
-                    text: 'Cancelar'
-                }, {
-                    text: '<b>Confirmar</b>',
-                    type: 'button-calm',
-                    onTap: function(e) {
-                        console.log("paso por el confirm del shared");
-                    }
-                }]
-            });
-        
 
-        
-        console.log(warehouse_._id.$oid);
-        console.log(warehouse_.users);
-        
-        var countShared = '{"$set":{"users":["magu_ta@yahoo.com.ar","gustavo.arenas73@gmail.com","gustavoalbert.arenas73@gmail.com"]}}';
-        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses/' + warehouse_._id.$oid + '?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'PUT', countShared)
-            .success(function(resp) {
-                $ionicLoading.hide();
-                //$scope.doRefresh();                
 
-            })
-            .error(function(resp) {
-                //Apaga el evento cargando
-                $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: 'Ups!',
-                    template: resp,
-                    okText: 'OK!'
-                });
-            }); 
-        
-        
-        
+        var myPopup = $ionicPopup.show({
+            template:   '<ion-list style="with:100%;" ng-repeat = "shared in shareds">' +
+                            '<div>' +
+                            '<ion-checkbox type="checkbox" ng-model="warehouse.selected" ng-true-value="shared" ng-false-value="">{{shared}}</ion-checkbox>' +
+                            '</div>' +
+                        '</ion-list>',
+            title: "Comparti tu lista",
+            subTitle: "",
+            scope: $scope,
+            buttons: [{
+                text: 'Cancelar'
+            }, {
+                text: '<b>Confirmar</b>',
+                type: 'button-calm',
+                onTap: function(e) {
+                    console.log("paso por el confirm del shared");
+
+                    //ion-ios-person-outline
+                    //ion-ios-personadd-outline
+                    //ion-ios-people-outline
+                    var countShared = '{"$set":{"users":["magu_ta@yahoo.com.ar","gustavo.arenas73@gmail.com","gustavoalbert.arenas73@gmail.com"],"shared":"ion-ios-people-outline"}}';
+                    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses/' + warehouse_._id.$oid + '?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'PUT', countShared)
+                        .success(function(resp) {
+                            $ionicLoading.hide();
+                            $scope.doRefresh();
+
+                        })
+                        .error(function(resp) {
+                            //Apaga el evento cargando
+                            $ionicLoading.hide();
+                            $ionicPopup.alert({
+                                title: 'Ups!',
+                                template: resp,
+                                okText: 'OK!'
+                            });
+                        });
+
+
+
+
+                }
+            }]
+        });
+
+
+
     };
 
     $scope.edit = function(id_) {
@@ -682,14 +679,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 });
                 console.log($scope.userRegister.eMail);
                 SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'POST', {
-                            "email": $scope.userRegister.eMail,
-                            "photo": "http:\\",
-                            "active":"1",
-                            "logined": 0,
-                            "newswarehouse": "",
-                            "newsprpducts": ""
-                        }
-                    )
+                        "email": $scope.userRegister.eMail,
+                        "photo": "http:\\",
+                        "active": "1",
+                        "logined": 0,
+                        "newswarehouse": "",
+                        "newsprpducts": ""
+                    })
                     .success(function(resp) {
                         $ionicLoading.hide();
                         $rootScope.userloged = resp;
@@ -698,18 +694,18 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                             template: 'Creamos tu perfile satifactorio.',
                             okText: 'OK'
                         });
-                        
+
                     }).
-                        error(function(resp) {
-                        $ionicLoading.hide();
-                        $ionicPopup.alert({
-                            title: 'Registration',
-                            template: resp.message,
-                            okText: 'OK'
-                        });
-                    });  
+                error(function(resp) {
+                    $ionicLoading.hide();
+                    $ionicPopup.alert({
+                        title: 'Registration',
+                        template: resp.message,
+                        okText: 'OK'
+                    });
+                });
                 window.history.back();
-                
+
             }).error(function(resp) {
                 $ionicLoading.hide();
                 $ionicPopup.alert({
@@ -928,6 +924,11 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     };
 
+
+
+})
+
+.controller('collaboration', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
 
 
 })
