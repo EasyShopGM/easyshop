@@ -323,10 +323,16 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
         var myPopup = $ionicPopup.show({
             template:   '<ion-list style="padding-left: 1%;" ng-repeat = "shared in shareds">' +
-                        '        <ion-checkbox type="checkbox" style="border-style: none; font-size: smaller; padding-left: 24%; padding-top: 3%; padding-bottom: 3%; background-color: whitesmoke;" ng-model="nuevo.shared1" ng-true-value="{{shared}}" ng-false-value="">{{shared}}</ion-checkbox>' +
-//                        '<input type = "text" style="font-size: 90%; background-color: whitesmoke;" ng-model = "shared"></input>' +                        
+                        '   <ion-checkbox type="checkbox" ' +
+                        '       style="border-style: none; font-size: smaller; padding-left: 24%; padding-top: 3%; ' +
+                        '               padding-bottom: 3%; background-color: whitesmoke;" ' +
+                        '               ng-model="isChecked" ' +
+                        '               ng-true-value="{{shared}}" ' +
+                        '               ng-false-value="">{{shared}}' +
+                        '   </ion-checkbox>' +
+//                        '   <input type = "text" style="visibility: hidden; font-size: 90%; background-color: whitesmoke;" ng-model = "shared"></input>' +
                         '</ion-list>'+
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared0"></input>' +
+                        '<input type = "text" style="visibility: hidden; font-size: 90%;" ng-model = "nuevo.shared0"></input>' +
                         '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared1"></input>' +
                         '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared2"></input>' +
                         '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared3"></input>' +
