@@ -204,9 +204,9 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         else if (product_.Estado == 'red') {
             estadoProduct = '{ "$set" : { "Estado" : "#55acee" } }';
         };
-//        else {
-//            estadoProduct = '{ "$set" : { "Estado" : "#55acee" } }';
-//        };
+        //        else {
+        //            estadoProduct = '{ "$set" : { "Estado" : "#55acee" } }';
+        //        };
 
         SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh/' + product_._id.$oid + '?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'PUT', estadoProduct)
             .success(function(resp) {
@@ -275,7 +275,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     if ($localStorage.userloged) {
 
         $scope.warehouse = [{}];
-        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"users":"' + $localStorage.userloged.email + '"}', 'GET', '')
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"users":{"ma":"' + $localStorage.userloged.email + '"}}', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.warehouses = resp;
@@ -311,37 +311,30 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
 
     $scope.share = function(warehouse_) {
-        console.log("Shared");
+        console.log("Shared.me");
         console.log(warehouse_);
+     $scope.shared_users1 = [];
+
+        $scope.shared_users = warehouse_.users;
+
+        $scope.shareds = ["pepito@jkasjd", "mevoyborrar@commit.com", "gustavo.arenas73@gmail.com", "mauro@pepe.com", "otro@yo.com"];
+        warehouse_.users.forEach(function(entry) {
+            console.log(entry);
+        });
+
+        $scope.shared_users.forEach(function(entry) {
+            console.log(entry.ma);
+        });
         
-        $scope.shared = [];
-        $scope.nuevo = [];
-
-
-        $scope.shareds = warehouse_.users;
-        $scope.shared = [];
+        console.log("fin foreach");
 
         var myPopup = $ionicPopup.show({
-            template:   '<ion-list style="padding-left: 1%;" ng-repeat = "shared in shareds">' +
-                        '   <ion-checkbox type="checkbox" ' +
-                        '       style="border-style: none; font-size: smaller; padding-left: 24%; padding-top: 3%; ' +
-                        '               padding-bottom: 3%; background-color: whitesmoke;" ' +
-                        '               ng-model="isChecked" ' +
-                        '               ng-true-value="{{shared}}" ' +
-                        '               ng-false-value="">{{shared}}' +
-                        '   </ion-checkbox>' +
-//                        '   <input type = "text" style="visibility: hidden; font-size: 90%; background-color: whitesmoke;" ng-model = "shared"></input>' +
-                        '</ion-list>'+
-                        '<input type = "text" style="visibility: hidden; font-size: 90%;" ng-model = "nuevo.shared0"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared1"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared2"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared3"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared4"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared5"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared6"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared7"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared8"></input>' +
-                        '<input type = "text" style="font-size: 90%;" ng-model = "nuevo.shared9"></input>',
+//            templateUrl: "/templates/selectTemplate.html",
+            
+            template:   '<div>' +
+                        '<select multiple="false"  class="form-control" data-ng-model="shared_users.ma" data-ng-options="shared for shared in shareds track by shared" required=""></select>' +
+                        '</div>',
+            
             title: "Comparti tu lista",
             subTitle: "",
             scope: $scope,
@@ -353,22 +346,37 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 onTap: function(e) {
 
                     console.log("paso por el confirm del shared");
-                    console.log("shared");
-                    console.log($scope.shared);
-                    console.log("campo");
-                    console.log($scope.nuevo.shared1);
-                    
-                    var compartido = '"' + 'gustavo.arenas73@gmail.com' + '"';
-
-
+                    console.log($scope.shared_users1.ma);
                     //ion-ios-person-outline
                     //ion-ios-personadd-outline
                     //ion-ios-people-outline
-                    var countShared = '{"$set":{"users":[' + compartido + '],"shared":"ion-ios-people-outline"}}';
+                    console.log("escribo el index");
+
+                    $scope.shared_users.forEach(function(entry) {
+                        console.log(entry);
+                    });
+
+                    
+                    
+                    console.log("el shared_users")
+                    console.log($scope.shared_users.ma);
+                    var usuarios = "";
+                    $scope.shared_users.ma.forEach(function(entry) {
+                        usuarios =  usuarios + '{"ma":"' + entry + '"},';
+                        console.log(entry);
+                    });
+                    usuarios =  usuarios + '{"ma":"' + $localStorage.userloged.email + '"}';
+                    var countShared = '{ "$set" : {"users": [' + usuarios + '],"shared": "ion-ios-people-outline"}}';
+                    console.log(countShared);
                     SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses/' + warehouse_._id.$oid + '?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'PUT', countShared)
                         .success(function(resp) {
                             $ionicLoading.hide();
                             $scope.doRefresh();
+                            $ionicPopup.alert({
+                                title: 'Almacén ' + warehouse_.description,
+                                template: 'Has compartido la lista.',
+                                okText: 'OK!'
+                            });
 
                         })
                         .error(function(resp) {
@@ -486,19 +494,22 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                 template: 'Agregando a la lista...'
                             });
 
-                            var newWarehouese = '{"description": "' + $scope.warehouse.nombre + '","users": ["' + $localStorage.userloged.email + '"],"date_purchase": "","estado": "#55acee","shared": "ion-ios-person-outline"}';
+                            var newWarehouese = '{"description": "' + $scope.warehouse.nombre + '","users": [{"ma":"' + $localStorage.userloged.email + '"}],"date_purchase": "","estado": "#55acee","shared": "ion-ios-person-outline"}';
                             SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'POST', newWarehouese)
                                 .success(function(resp) {
                                     $ionicLoading.hide();
                                     $scope.products = resp;
+                                    $scope.doRefresh();
                                     $ionicPopup.alert({
                                         title: 'La almacen fue agregada a tu usuario.',
                                         template: "",
                                         okText: 'OK!'
                                     });
-                                    $scope.doRefresh();
+                                    
 
-                                })
+                                }
+                                
+                                )
                                 .error(function(resp) {
                                     //Apaga el evento cargando
                                     $ionicLoading.hide();
@@ -509,6 +520,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                         okText: 'OK!'
                                     });
                                 });
+                                
                         }
                     }
                 }]
@@ -524,12 +536,14 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             $rootScope.page = "app.orderproduct";
             $state.go("login");
         }
+        
+        
     };
 
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.refreshComplete');
 
-        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"users":"' + $localStorage.userloged.email + '"}', 'GET', '')
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"users":{"ma":"' + $localStorage.userloged.email + '"}}', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.warehouses = resp;
