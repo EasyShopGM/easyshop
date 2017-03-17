@@ -313,92 +313,81 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
 
     $scope.share = function(warehouse_) {
-        console.log("Shared.me");
-        console.log(warehouse_);
         $scope.shared_users1 = [];
+        var v = '';
 
         $scope.shared_users = warehouse_.users;
+        /* CONSULTA LOS MAIL DE TODOS LOS USUARIOS DE LA APLICACION */
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                resp.forEach(function(entry) {
+                    v = v + entry.email + ',';
+                });
+                v = v.split(",");
+                /* CONSULTA LOS MAIL DE TODOS LOS USUARIOS DE LA APLICACION */
 
-        $scope.shareds = ["pepito@jkasjd", "mevoyborrar@commit.com", "gustavo.arenas73@gmail.com", "mauro@pepe.com", "otro@yo.com"];
-        warehouse_.users.forEach(function(entry) {
-            console.log(entry);
-        });
-
-        $scope.shared_users.forEach(function(entry) {
-            console.log(entry.ma);
-        });
-
-        console.log("fin foreach");
-
-        var myPopup = $ionicPopup.show({
-            //            templateUrl: "/templates/selectTemplate.html",
-
-            template: '<div>' +
-                '<select multiple="false"  class="form-control" data-ng-model="shared_users.ma" data-ng-options="shared for shared in shareds track by shared" required=""></select>' +
-                '</div>',
-
-            title: "Comparti tu lista",
-            subTitle: "",
-            scope: $scope,
-            buttons: [{
-                text: 'Cancelar'
-            }, {
-                text: '<b>Confirmar</b>',
-                type: 'button-calm',
-                onTap: function(e) {
-
-                    console.log("paso por el confirm del shared");
-                    console.log($scope.shared_users1.ma);
-                    //ion-ios-person-outline
-                    //ion-ios-personadd-outline
-                    //ion-ios-people-outline
-                    console.log("escribo el index");
-
-                    $scope.shared_users.forEach(function(entry) {
-                        console.log(entry);
-                    });
+                $scope.shareds = v;
+                $scope.shared = ["magu_ta@yahoo.com.ar"];
+                $scope.shareda = ["magu_ta@yahoo.com.ar"];
 
 
+                var myPopup = $ionicPopup.show({
+                    //            templateUrl: "/templates/selectTemplate.html",
 
-                    console.log("el shared_users")
-                    console.log($scope.shared_users.ma);
-                    var usuarios = "";
-                    $scope.shared_users.ma.forEach(function(entry) {
-                        usuarios = usuarios + '{"ma":"' + entry + '"},';
-                        console.log(entry);
-                    });
-                    usuarios = usuarios + '{"ma":"' + $localStorage.userloged.email + '"}';
-                    var countShared = '{ "$set" : {"users": [' + usuarios + '],"shared": "ion-ios-people-outline"}}';
-                    console.log(countShared);
-                    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses/' + warehouse_._id.$oid + '?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'PUT', countShared)
-                        .success(function(resp) {
-                            $ionicLoading.hide();
-                            $scope.doRefresh();
-                            $ionicPopup.alert({
-                                title: 'Almacén ' + warehouse_.description,
-                                template: 'Has compartido la lista.',
-                                okText: 'OK!'
+                    template: '<table>' +
+                    '<div Style="padding-left: 4%;overflow: scroll;width: 89%;padding-top: 1%;">' +
+                        '<select multiple="multiple" data-ng-model="shared_users.ma" data-ng-options="shared for shared in shareds track by shared" required="true">A</select>' +
+                        '</div>' + 
+                        '</table>',
+
+                    title: "Comparti tu lista",
+                    subTitle: "",
+                    scope: $scope,
+                    buttons: [{
+                        text: 'Cancelar'
+                    }, {
+                        text: '<b>Confirmar</b>',
+                        type: 'button-calm',
+                        onTap: function(e) {
+                            //ion-ios-person-outline
+                            //ion-ios-personadd-outline
+                            //ion-ios-people-outline
+
+                            var usuarios = "";
+                            $scope.shared_users.ma.forEach(function(entry) {
+                                usuarios = usuarios + '{"ma":"' + entry + '"},';
                             });
+                            usuarios = usuarios + '{"ma":"' + $localStorage.userloged.email + '"}';
+                            var countShared = '{ "$set" : {"users": [' + usuarios + '],"shared": "ion-ios-people-outline"}}';
+                            SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses/' + warehouse_._id.$oid + '?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'PUT', countShared)
+                                .success(function(resp) {
+                                    $ionicLoading.hide();
+                                    $scope.doRefresh();
+                                    $ionicPopup.alert({
+                                        title: 'Almacén ' + warehouse_.description,
+                                        template: 'Has compartido la lista.',
+                                        okText: 'OK!'
+                                    });
+                                })
+                                .error(function(resp) {
+                                    //Apaga el evento cargando
+                                    $ionicLoading.hide();
+                                    $ionicPopup.alert({
+                                        title: 'Ups!',
+                                        template: resp,
+                                        okText: 'OK!'
+                                    });
+                                });
+                        }
+                    }]
+                });
 
-                        })
-                        .error(function(resp) {
-                            //Apaga el evento cargando
-                            $ionicLoading.hide();
-                            $ionicPopup.alert({
-                                title: 'Ups!',
-                                template: resp,
-                                okText: 'OK!'
-                            });
-                        });
-
-
-
-
-                }
-            }]
-        });
-
-
+            })
+            .error(function(resp) {
+                //Apaga el evento cargando
+                $ionicLoading.hide();
+            });
 
     };
 
