@@ -46,7 +46,27 @@ var IMAGENOTFOUND           = "'img/imagenotfound.gif'";
 // var FORGOT                  = "/mobile/forgot.json";
 // var NEW_PASSWORD            = "/mobile/new_password.json";
 
+var PRECIOS_CLAROS = "https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible";
+var API_KEY = "apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3";
+var MLAB_SRV = "https://api.mlab.com/api/1/";
+var MONGODB_DB = "databases/heroku_jkpwwrbz/";
+var PRODUCTS_URL = "collections/products_wh";
+var WHEREHOUSES_URL = "collections/warehouses";
+var PROFILEUSERS_URL = "/collections/profileusers";
+
+
 
 //Mensajes.
 var msgLoginErr1        = 'Verify your registration.';
 var msgLoginErr2        = 'Confirm your registration with the email that was sent to you.';
+
+var MSG_NEWWHEREHAUSE_SUCCESS = 'El almacen fue creada con exito.';
+var MSG_WAREHOUSE_DISCARD = 'El almacen fue eliminado con exito.';
+
+//Colores
+//Azul
+var PENDIENTE           = "#dddcfe";
+//Verde
+var COMPRADO            = "#ddf8eb"; 
+//Rojo
+var DESCARTADO          = "#f6d8db";

@@ -109,7 +109,7 @@
 		    box-shadow: 0 0 3px gray;
 		    font-size: 97%;
 		    font-weight: normal;
-		    border-color: #55acee;
+		    border-color: #444;
 
 		}
 		.round-button:hover {
@@ -136,7 +136,8 @@
 
 	   		<ion-item ng-repeat="product in products">
 				<div class="row"  >
-					<div id="objEstado" class="round-button" style="border-color: {{product.Estado}};">
+					<!-- background-color border-color-->
+					<div id="objEstado" class="round-button" style="background-color: {{product.Estado}};">
     					<a >{{product.quantity}}</a>
 					</div>
 					<div class="ng-binding" style="margin-left:1%; margin-top:0%; width:85%; font-size: 80%;" ng-click="actionProduct(product);">
