@@ -173,6 +173,18 @@ angular.module('starter', ['ionic',
             }
         }
     })    
+    
+    .state('app.group', {
+        url: "/group",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/group.html",
+                controller: 'group'
+            }
+        }
+    })        
+    
+    
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/newsoffers');

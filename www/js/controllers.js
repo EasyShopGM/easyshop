@@ -528,6 +528,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.cancelar = function() {
         $state.go("app.newsoffers");
     }
+    
+    $scope.agrupar = function() {
+        $state.go("app.group");
+    }
+    
+    
 })
 
 .controller('login', function($state, $rootScope, $scope, $http, $location, SrvCallOauth, $localStorage, $ionicPopup, $ionicLoading, Base64) {
@@ -831,8 +837,15 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.assignwarehome = function() {
         $scope.cont = {};
         $scope.warehousedata = {};
-
-        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state":"valid"}', 'GET', '')
+        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  true}}]}'
+        q = {
+                "state": "valid",
+                "users": {
+                    "user": "' + $localStorage.userloged.email + '"
+                }
+            }
+            //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state":"valid"}', 'GET', '')
+        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
 
         .success(function(resp) {
                 $ionicLoading.hide();
@@ -912,9 +925,10 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         var objeto_body = '{"$set":{';
         objeto_body = objeto_body + '"users":';
         objeto_body = objeto_body + JSON.stringify($scope.shareds);
-        if ($scope.alComp > 1){
+        if ($scope.alComp > 1) {
             objeto_body = objeto_body + ',"shared": "ion-ios-people-outline"';
-        } else {
+        }
+        else {
             objeto_body = objeto_body + ',"shared": "ion-ios-person-outline"';
         }
         objeto_body = objeto_body + '}}';
@@ -941,10 +955,17 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
 
 
- $scope.comp = function(itemComparado) {
-    if ('shared' in itemComparado && itemComparado.shared == true) {
-        $scope.alComp++;   
-    };
-}
+    $scope.comp = function(itemComparado) {
+        if ('shared' in itemComparado && itemComparado.shared == true) {
+            $scope.alComp++;
+        };
+    }
+})
 
+
+.controller('group', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+        
+        
+
+    
 })
