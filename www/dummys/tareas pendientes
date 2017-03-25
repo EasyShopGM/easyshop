@@ -2,6 +2,11 @@ se agrego estructura en el DOC JSON warehuses.
 Se utiliza para asignar con quien se comparte la almacen
 
 (realizado) hay que modificar el alta de la almacen para que agregue la lista por defecto y vacia
+(realizado) regularizo el alta de la almacen tomando el grupo del profile.
+(realizado) actualiza el estado de compartido o no compartido en el icono de la lista.
+(realizado) muestra una lista de todos los integrantes del grupo amigo que contiene el profileusers
+(realizado) actualiza desde la lista de amigos compartidos quien puede acceder a la lista.
+(realizado) el usuario owner no se puede eliminar .
 
 Se debe crear pantalla de grupo para que impacte en el profile, de alli toma la info para la creacion de la almacen
 
