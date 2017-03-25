@@ -1,0 +1,10 @@
+se agrego estructura en el DOC JSON warehuses.
+Se utiliza para asignar con quien se comparte la almacen
+
+(realizado) hay que modificar el alta de la almacen para que agregue la lista por defecto y vacia
+
+Se debe crear pantalla de grupo para que impacte en el profile, de alli toma la info para la creacion de la almacen
+
+Se debe programa el refresh de lista de amigos para que valide y tome nuevos integrantes del grupo en la lista de amigos que comparte la almacen.
+
+

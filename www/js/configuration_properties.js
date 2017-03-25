@@ -65,8 +65,8 @@ var MSG_WAREHOUSE_DISCARD = 'El almacen fue eliminado con exito.';
 
 //Colores
 //Azul
-var PENDIENTE           = "#dddcfe";
+PENDIENTE           = "#dddcfe";
 //Verde
-var COMPRADO            = "#ddf8eb"; 
+COMPRADO            = "#ddf8eb"; 
 //Rojo
-var DESCARTADO          = "#f6d8db";
+DESCARTADO          = "#f6d8db";

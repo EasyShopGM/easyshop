@@ -5,7 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngStorage'])
+angular.module('starter', ['ionic', 
+                            'starter.controllers',
+                            'starter.services', 
+                            'ngStorage'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -159,6 +162,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
+    
+    
+    .state('app.findshare', {
+        url: "/findshare",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/findshare.html",
+                controller: 'findshare'
+            }
+        }
+    })    
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/newsoffers');

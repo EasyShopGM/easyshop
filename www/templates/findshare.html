@@ -1,0 +1,31 @@
+<ion-view title="Listas de amigos">
+
+	<ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon" style="color: #FFFFFF;"></button>
+
+	</ion-nav-buttons>
+
+	<ion-nav-buttons side="right">
+		<button class="button button-icon1 button-icon icon ion-ios-checkmark-outline" style="color: #FFFFFF;" ng-click="compartirLista()"></button>
+
+	</ion-nav-buttons>
+
+	<style>
+		.catagory_img {
+			width: 40% !important;
+		}
+		
+		.item {
+			padding: 4% 2% 4% 4%;
+		}
+	</style>
+
+	<ion-content style="background-color:#fffff">
+		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
+		<ion-list>
+	   		<ion-item ng-repeat="shared in shareds track by $index">
+                <ion-toggle ng-value="shared.shared" ng-model="shared.shared" toggle-class="toggle-calm">{{shared.user}}</ion-toggle>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>
