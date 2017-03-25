@@ -274,7 +274,9 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.warehouse = [{}];
         //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '"}}', 'GET', '')
 
-        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '", "shared":true}}', 'GET', '')
+        var criterio = 'q={$or: [{"state":"valid","users":{"user": "gustavo.arenas73@gmail.com","shared": true, "creator":  false}},{"state":"valid","users":{"user": "gustavo.arenas73@gmail.com","shared": true, "creator":  true}}]}'
+            //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '", "shared":true}}', 'GET', '')
+        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.warehouses = resp;
@@ -372,22 +374,22 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.newwarehouse = function() {
 
-                            SrvCall.async(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY + '&q={"email":"gustavo.arenas73@gmail.com"}&f={"group":1}', 'GET', '')
-                                .success(function(resp) {
-                                    $scope.listacompartida = resp[0].group;
-                                    console.log(JSON.stringify($scope.listacompartida));
-                                    $ionicLoading.hide();
-                                })
-                                .error(function(resp) {
-                                    $ionicLoading.hide();
-                                });
+        SrvCall.async(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY + '&q={"email":"gustavo.arenas73@gmail.com"}&f={"group":1}', 'GET', '')
+            .success(function(resp) {
+                $scope.listacompartida = resp[0].group;
+                console.log(JSON.stringify($scope.listacompartida));
+                $ionicLoading.hide();
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+            });
 
 
 
 
         $scope.warehouse = {}
         if ($localStorage.userloged) {
-            
+
             var myPopup = $ionicPopup.show({
                 template: '<p style="font-size: 90%; border-top: 1px solid rgb(204, 204, 204);" >Nombre de la neuva almacen</p>' +
                     '<div  class="row">' +
@@ -452,7 +454,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
                                     });
                                 });
-                                
+
                             $scope.doRefresh();
 
                         }
@@ -476,9 +478,9 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.refreshComplete');
 
-        //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state": "valid"}', 'GET', '')
-        //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state": "valid"}', 'GET', '')
-        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '", "shared":true}}', 'GET', '')
+        var criterio = 'q={$or: [{"state":"valid","users":{"user": "gustavo.arenas73@gmail.com","shared": true, "creator":  false}},{"state":"valid","users":{"user": "gustavo.arenas73@gmail.com","shared": true, "creator":  true}}]}'
+            //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '", "shared":true}}', 'GET', '')
+        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.warehouses = resp;
@@ -662,7 +664,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                         "logined": 0,
                         "newswarehouse": "",
                         "newsprpducts": "",
-                        "shared": [{"user": $scope.userRegister.eMail, "shared": true},{"user": "gustavoalbert.arenas73@gmail.com","shared": false}]
+                        "shared": [{
+                            "user": $scope.userRegister.eMail,
+                            "shared": true
+                        }, {
+                            "user": "gustavoalbert.arenas73@gmail.com",
+                            "shared": false
+                        }]
                     })
                     .success(function(resp) {
                         $ionicLoading.hide();
@@ -826,8 +834,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.cont = {};
         $scope.warehousedata = {};
 
-
-        //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"users":{"user":"' + $localStorage.userloged.email + '"}}', 'GET', '')
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state":"valid"}', 'GET', '')
 
         .success(function(resp) {
@@ -889,6 +895,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.shareds = resp.users;
+            console.log($scope.shareds);
             //$rootScope.listadeamigos = $scope.shareds;
         })
         .error(function(resp) {
@@ -901,12 +908,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             template: 'Actualizand...'
         });
         $ionicLoading.hide();
-        
+
         var objeto_body = '{"$set":{';
         objeto_body = objeto_body + '"users":';
         objeto_body = objeto_body + JSON.stringify($scope.shareds);
         objeto_body = objeto_body + '}}';
-                     
+
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + $rootScope.warehouse_._id.$oid + '"}}', 'PUT', objeto_body)
             .success(function(resp) {
                 $ionicLoading.hide();

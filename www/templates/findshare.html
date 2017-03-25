@@ -24,7 +24,7 @@
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 		<ion-list>
 	   		<ion-item ng-repeat="shared in shareds track by $index">
-                <ion-toggle ng-value="shared.shared" ng-model="shared.shared" toggle-class="toggle-calm">{{shared.user}}</ion-toggle>
+                <ion-toggle ng-disabled="{{shared.creator}}" ng-value="shared.shared" ng-model="shared.shared" toggle-class="toggle-calm">{{shared.user}}</ion-toggle>
 			</ion-item>
 		</ion-list>
 	</ion-content>
