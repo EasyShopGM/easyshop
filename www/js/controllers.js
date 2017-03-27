@@ -964,7 +964,16 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 
 .controller('group', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
-        
+
+
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&f={"email":1}', 'GET', '')
+    .success(function(resp) {
+        $ionicLoading.hide();
+        $scope.amigos = resp;
+    })
+    .error(function(resp) {
+        $ionicLoading.hide();
+    });
         
 
     

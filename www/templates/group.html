@@ -126,26 +126,15 @@
 	<!-- ion-content style="background-color:#fffff" -->
 	<ion-content ng-controller="group" style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
-<!--		
-		<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-			<ion-item ng-repeat="warehouse in warehouses" warehouse="warehouse">
-				<div class="row">
-					<div class="row" style="border-bottom-color: crimson; width:100%;">
-						<div class="ng-binding" style="margin-top:0%; width:10%">
-							<button class="button-icon round-button {{warehouse.shared}}" disabled></button>
-						</div>
-						<div class="ng-binding" style="margin-top:2%; margin-left: 4%; width:68%" ng-click="clicker(warehouse)">
-							{{ warehouse.description }}
-						</div>
-						<div style="width:10%">
-							<button class="button-icon ion-ios-personadd-outline" ng-click="share(warehouse);"></button>
-							<button class="button-icon ion-ios-trash-outline" ng-click="discard(warehouse);"></button>
-						</div>
-					</div>
-				</div>
+
+		<input id="search" type="search" placeholder="Search..." ng-model="$root.search">
+		<ion-list>
+	   		<ion-item ng-repeat="amigo in amigos | filter:search" item="item">
+                <ion-toggle ng-disabled="false"   toggle-class="toggle-calm">{{amigo.email}}</ion-toggle>
+                <!--ng-value="amigo.email" ng-model="amigo.emailseleccionado"-->
 			</ion-item>
 		</ion-list>
-		-->
+
 	</ion-content>
 
 
