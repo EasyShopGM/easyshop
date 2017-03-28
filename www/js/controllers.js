@@ -664,6 +664,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'POST', {
                 SrvCall.async(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY, 'POST', {
                         "email": $scope.userRegister.eMail,
+                        "username": $scope.userRegister.username,
                         "photo": "http:\\",
                         "active": "1",
                         "logined": 0,
@@ -966,7 +967,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 .controller('group', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
 
 
-    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&f={"email":1}', 'GET', '')
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&f={"email":1, "username":1}', 'GET', '')
     .success(function(resp) {
         $ionicLoading.hide();
         $scope.amigos = resp;

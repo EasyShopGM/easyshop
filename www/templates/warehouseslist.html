@@ -126,10 +126,9 @@
 	<!-- ion-content style="background-color:#fffff" -->
 	<ion-content  ng-controller="warehouseslist"  style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
+
 		<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-
 			<ion-item ng-repeat="warehouse in warehouses" warehouse="warehouse">
-
 				<div class="row" >
 					<div class="row" style="border-bottom-color: crimson; width:100%;">
 						<div class="ng-binding" style="margin-top:0%; width:10%">
@@ -144,7 +143,6 @@
 							<button class="button-icon ion-ios-trash-outline" ng-click="discard(warehouse);"></button>
 						</div>
 					</div>
-				
 				</div>
 			</ion-item>
 		</ion-list>

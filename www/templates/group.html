@@ -5,132 +5,45 @@
 	</ion-nav-buttons>
 
 	<ion-nav-buttons side="right">
-		<button class="button button-icon ion-ios-browsers-outline" style="color: #FFFFFF;" ng-click="newwarehouse();"></button>
+		<button class="button button-icon ion-android-checkmark-circle" style="color: #FFFFFF;" ng-click="addFriends();"></button>
 	</ion-nav-buttons>
 
 	<style>
-		.catagory_img {
-			width: 40% !important;
-		}
-		
-		.button2 {
-			border-color: #fff;
-			background-color: #55acee;
-			color: #FFF;
-			position: relative;
-			display: inline-block;
-			margin: 0;
-			padding: 0 12px;
-			min-width: 52px;
-			min-height: 25px;
-			border-right: 1px solid white;
-			border-style: solid;
-			border-radius: 2px;
-			vertical-align: top;
-			text-align: center;
-			text-overflow: ellipsis;
-			font-size: 16px;
-			line-height: 25px;
-			cursor: pointer;
-		}
-		
-		.button-bar>.button2 {
-			-webkit-box-flex: 1;
-			-webkit-flex: 1;
-			-moz-box-flex: 1;
-			-moz-flex: 1;
-			-ms-flex: 1;
-			font-size: 14px;
-			flex: 1;
-			display: block;
-			overflow: hidden;
-			padding: 0 16px;
-			width: 0;
-			border-radius: 0;
-			text-align: center;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-		
-		.button-icon {
-			font-size: larger;
-		}
-		
-		.button-icon.ion-ios-trash-outline {
-			color: deeppink;
-		}
-		
-		.button-icon.ion-edit {
-			color: lightsalmon;
-		}
-		
-		.button-icon.ion-android-share-alt {
-			color: blue;
-		}
-		
-		.item {
-			padding: 2px 4px 2px 4px;
-		}
-		
-		.opened.item-content {
-			background-color: #c4c4c4 !important;
-			padding: 2px 4px 2px 4px;
-		}
-		
-		.row {
-			padding-top: 2%;
-			width: 100%;
-		}
-		
-		.round-button {
-			display: block;
-			width: 35px;
-			height: 35px;
-			line-height: 32px;
-			border: 1px solid #f5f5f5;
-			border-radius: 50%;
-			color: black;
-			text-align: center;
-			text-decoration: none;
-			background: #f6fafa;
-			box-shadow: 0 0 3px gray;
-			font-size: 10px;
-			font-weight: normal;
-			border-color: #55acee;
-		}
-		
-		.round-button:hover {
-			background: #262626;
-		}
-		
-		.ion-ios-people-outline:before {
-			font-size: 260%;
-			margin-top: 4%;
-		}
-		
-		.ion-ios-person-outline:before {
-			font-size: 260%;
-			margin-top: 4%;
-		}
-		
-		.ion-ios-personadd-outline:before {
-			font-size: 120%;
-		}
-		
-		.ion-ios-trash-outline:before {
-			font-size: 120%;
-			color: black;
-		}
+	
+	.item {
+	    padding: 1% 0% 1% 2%;
+	}
+	
+	.mySearch{
+		padding-top: 2px;
+    	padding-left: 4%;	
+	}
+	
+	.detalleUsername{
+		font-weight: bold;
+	}
+	
+	.cajaTexto{
+		width: 80%;	
+	}
+	
 	</style>
 
 	<!-- ion-content style="background-color:#fffff" -->
-	<ion-content ng-controller="group" style="background-color:#fffff">
+	<ion-content class="mySearch" ng-controller="group" style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 
-		<input id="search" type="search" placeholder="Search..." ng-model="$root.search">
+		<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.search">
 		<ion-list>
 	   		<ion-item ng-repeat="amigo in amigos | filter:search" item="item">
-                <ion-toggle ng-disabled="false"   toggle-class="toggle-calm">{{amigo.email}}</ion-toggle>
+                <ion-toggle class="item-text-wrap" ng-disabled="false"   toggle-class="toggle-calm">
+                	<p class="detalleUsername">
+                		{{amigo.username}}
+                	</p>
+                	<p>
+                		{{amigo.email}}
+                	</p>
+                	</ion-toggle>
                 <!--ng-value="amigo.email" ng-model="amigo.emailseleccionado"-->
 			</ion-item>
 		</ion-list>
