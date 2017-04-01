@@ -64,9 +64,9 @@ var MSG_NEWWHEREHAUSE_SUCCESS = 'El almacen fue creada con exito.';
 var MSG_WAREHOUSE_DISCARD = 'El almacen fue eliminado con exito.';
 
 //Colores
-//Azul
-PENDIENTE           = "#dddcfe";
+//Azul 
+PENDIENTE           = "#1fd3f0";
 //Verde
-COMPRADO            = "#ddf8eb"; 
+COMPRADO            = "#66cb99"; 
 //Rojo
-DESCARTADO          = "#f6d8db";
+DESCARTADO          = "#d30929";
