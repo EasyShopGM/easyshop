@@ -34,19 +34,31 @@
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 
 		<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.search">
+		
 		<ion-list>
-	   		<ion-item ng-repeat="amigo in amigos | filter:search" item="item">
-                <ion-toggle class="item-text-wrap" ng-disabled="false"   toggle-class="toggle-calm">
-                	<p class="detalleUsername">
-                		{{amigo.username}}
-                	</p>
+	   		<ion-item ng-repeat="amigo in comunidad_amigos | filter:search"  item="item">
+                <ion-toggle ng-change="chan(amigo)" ng-model="amigo.existe_en_grupo" ng-checked="{{amigo.existe_en_grupo}}" toggle-class="toggle-calm">
+                	{{amigo.username}}
                 	<p>
-                		{{amigo.email}}
+                		{{amigo.user}}
                 	</p>
-                	</ion-toggle>
-                <!--ng-value="amigo.email" ng-model="amigo.emailseleccionado"-->
+                </ion-toggle>
 			</ion-item>
 		</ion-list>
+		
+<!--		
+		<ion-list>
+	   		<ion-item ng-repeat="amigo in comunidad_amigos.group | filter:search" item="item">
+                <ion-toggle class="item-text-wrap" ng-value="amigo.existe_en_grupo" ng-model="amigo.existe_en_grupo" toggle-class="toggle-calm">
+                	{{amigo.username}}
+                	<p>
+                		{{amigo.user}}
+                	</p>
+                	</ion-toggle>
+			</ion-item>
+		</ion-list>
+
+-->
 
 	</ion-content>
 

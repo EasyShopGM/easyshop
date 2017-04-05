@@ -374,10 +374,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.newwarehouse = function() {
 
-        SrvCall.async(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY + '&q={"email":"' + $localStorage.userloged.email + '"}&f={"shared":1}', 'GET', '')
+        SrvCall.async(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY + '&q={"email":"' + $localStorage.userloged.email + '"}&f={"group":1}', 'GET', '')
             .success(function(resp) {
-                $scope.listacompartida = resp[0].shared;
+                $scope.listacompartida = resp[0].group;
                 $ionicLoading.hide();
+                console.log(resp[0]);
+                
             })
             .error(function(resp) {
                 $ionicLoading.hide();
@@ -421,17 +423,17 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                             });
 
 
-                            var newWarehouese = '{"description": "' + $scope.warehouse.nombre + '",';
-                            //newWarehouese = newWarehouese + '"users": [{"user":"' + $localStorage.userloged.email + '"}],';
-                            newWarehouese = newWarehouese + '"users": ' + JSON.stringify($scope.listacompartida) + ',';
-                            newWarehouese = newWarehouese + '"users_discarder":"",';
-                            newWarehouese = newWarehouese + '"date_create": "' + Date.now() + '",';
-                            newWarehouese = newWarehouese + '"date_purchase": "",';
-                            newWarehouese = newWarehouese + '"date_discarded": "",';
-                            newWarehouese = newWarehouese + '"state": "valid",';
-                            newWarehouese = newWarehouese + '"shared": "ion-ios-person-outline"}';
+                            var newWarehouese ={"description": $scope.warehouse.nombre ,
+//                                                "users": [{"user":"' + $localStorage.userloged.email + '"}],';
+                                                "users": $scope.listacompartida,
+                                                "users_discarder": "",
+                                                "date_create": Date.now(),
+                                                "date_purchase": "",
+                                                "date_discarded": "",
+                                                "state": "valid",
+                                                "shared": "ion-ios-person-outline"};
 
-                            //caca
+                            
 
                             SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY, 'POST', newWarehouese)
                                 .success(function(resp) {
@@ -528,12 +530,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.cancelar = function() {
         $state.go("app.newsoffers");
     }
-    
+
     $scope.agrupar = function() {
         $state.go("app.group");
     }
-    
-    
+
+
 })
 
 .controller('login', function($state, $rootScope, $scope, $http, $location, SrvCallOauth, $localStorage, $ionicPopup, $ionicLoading, Base64) {
@@ -959,29 +961,149 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.comp = function(itemComparado) {
         if ('shared' in itemComparado && itemComparado.shared == true) {
             $scope.alComp++;
-        };
-    }
+        }
+    };
 })
+
+
+
 
 
 .controller('group', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
 
+
+
+    $scope.myGroup_select = {
+        "group": []
+    };
+    $scope.myGroup_no_select = {
+        "group": []
+    };
+    
+    
+
+//    $scope.myGroup_select = [];
+//    $scope.myGroup_no_select = [];
+
+
+
     $ionicLoading.show({
         template: 'Cargando usuarios...'
-        });
-        
-    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&f={"email":1, "username":1}', 'GET', '')
-    .success(function(resp) {
-        $ionicLoading.hide();
-        $scope.amigos = resp;
-        $ionicLoading.hide();
-    })
-    .error(function(resp) {
-        $ionicLoading.hide();
     });
-        
+
+    SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&f={"email":1, "username":1, "group":1}', 'GET', '')
+        .success(function(resp) {
+            $ionicLoading.hide();
+            $scope.amigos = resp;
+
+            $scope.amigos.find($scope.profile_group);
+            $scope.integrantes.find($scope.integrante);
+
+            for (var integrante_true in $scope.myGroup_select.group) {
+                $scope.myGroup_no_select.group[integrante_true] = $scope.myGroup_select.group[integrante_true];
+                console.log($scope.myGroup_no_select.group[integrante_true].user);
+            }
+            console.log('objeto resp');
+            console.log($scope.amigos);
+
+            $scope.comunidad_amigos = $scope.myGroup_no_select.group;
+            console.log('objeto cominidad');
+            console.log($scope.comunidad_amigos);
+            
+            $ionicLoading.hide();
+        })
+        .error(function(resp) {
+            $ionicLoading.hide();
+        });
+
+
+
+
+
     $scope.addFriends = function() {
-        $state.go('app.userprofile');
-    }
-    
+        
+        
+        
+        
+        var objeto_body = '{$set:{';
+        objeto_body = objeto_body + '"group":';
+        objeto_body = objeto_body + JSON.stringify($rootScope.objputo);
+        objeto_body = objeto_body + '}}';
+        console.log(objeto_body);
+        
+        
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"_id":{"$oid":"58bdc597f36d2837b811296d"}}', 'PUT', objeto_body)
+        .success(function(resp) {
+            $ionicLoading.hide();
+            $scope.amigos = resp;
+
+            $scope.amigos.find($scope.profile_group);
+            
+            $scope.integrantes.find($scope.integrante);
+  
+            $ionicLoading.hide();
+        })
+        .error(function(resp) {
+            $ionicLoading.hide();
+        });
+       
+        
+        //$state.go('app.userprofile');
+        
+        /*
+        se filtra el objeto por existe_in_group igual true
+        se arma un objeto con la estructura grupo
+        y se actualiza el usuario en profileusers 
+                PUT
+                
+                https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"_id":{"$oid":"58bdc597f36d2837b811296d"}}'
+                
+                {$set:
+        	{"group": [
+        	      {
+        	        "user": "gustavo.arenas73@gmail.com",
+        	        "shared": true,
+        	        "creator": true
+        	      }
+        	    ]
+          	}
+        }
+        */
+    };
+
+    $scope.profile_group = function(element, index, array) {
+        if (element.email == $localStorage.userloged.email) {
+            $scope.integrantes = element.group;
+            return 1;
+        }
+
+    };
+
+    $scope.integrante = function(element, index, array) {
+        $scope.amigo_existe = element.user;
+        $scope.amigos.find($scope.comunidad);
+    };
+
+    $scope.comunidad = function(elementComunidad, index, array) {
+        //var vv = '';
+        var aa = '';
+        //var bb = '';
+
+        if (elementComunidad.email == $scope.amigo_existe) {
+            aa = {"user": elementComunidad.email, "username": elementComunidad.username, "shared": true, "creator": false, "existe_en_grupo": true};
+            $scope.myGroup_select.group[index] = aa;
+        }
+        else {
+            aa = {"user": elementComunidad.email, "username": elementComunidad.username, "shared": true, "creator": false, "existe_en_grupo": false};
+            $scope.myGroup_no_select.group[index] = aa;
+        }
+
+    };
+
+ $scope.chan = function(amigo) {
+    console.log('Push ddd Change', amigo);
+    console.log($scope.comunidad_amigos);
+    $rootScope.objputo = $scope.comunidad_amigos;
+  };
+
 })
