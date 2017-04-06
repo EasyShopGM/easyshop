@@ -25,6 +25,15 @@
 	
 	.cajaTexto{
 		width: 80%;	
+		padding-left: 4%;
+		border-bottom-style: solid;
+	    border-bottom-width: thin;
+	    border-bottom-color: darkgray;
+	}
+	
+	.divcajaTexto{
+		padding-left: 4%;
+		
 	}
 	
 	</style>
@@ -33,11 +42,13 @@
 	<ion-content class="mySearch" ng-controller="group" style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 
-		<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.search">
+		<div class="divcajaTexto">
+		<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.group">
+		</div>
 		
 		<ion-list>
-	   		<ion-item ng-repeat="amigo in comunidad_amigos | filter:search"  item="item">
-                <ion-toggle ng-change="chan(amigo)" ng-model="amigo.existe_en_grupo" ng-checked="{{amigo.existe_en_grupo}}" toggle-class="toggle-calm">
+	   		<ion-item ng-repeat="amigo in comunidad_amigos | filter:group"  item="item">
+                <ion-toggle  ng-hide="{{amigo.visible}}" ng-change="chan(amigo)" ng-model="amigo.existe_en_grupo" ng-checked="{{amigo.existe_en_grupo}}" toggle-class="toggle-calm">
                 	{{amigo.username}}
                 	<p>
                 		{{amigo.user}}

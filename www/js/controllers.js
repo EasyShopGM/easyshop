@@ -235,6 +235,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         console.log(id_);
     };
 
+    $scope.anotarproducto = function() {
+        $state.go("app.orderproduct");
+    };
+
+
+
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.refreshComplete');
 
@@ -274,12 +280,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.warehouse = [{}];
         //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '"}}', 'GET', '')
 
-        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  true}}]}'
-            //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '", "shared":true}}', 'GET', '')
+        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';
+
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.warehouses = resp;
+            
             })
             .error(function(resp) {
                 //Apaga el evento cargando
@@ -374,6 +381,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.newwarehouse = function() {
 
+    console.log('la busqueda');
+    console.log(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY + '&q={"email":"' + $localStorage.userloged.email + '"}&f={"group":1}');
         SrvCall.async(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY + '&q={"email":"' + $localStorage.userloged.email + '"}&f={"group":1}', 'GET', '')
             .success(function(resp) {
                 $scope.listacompartida = resp[0].group;
@@ -479,7 +488,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.refreshComplete');
 
-        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  true}}]}'
+//        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  true}}]}'
+        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false, "username": "' + $localStorage.userloged.username + '"}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}}';
             //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '", "shared":true}}', 'GET', '')
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
             .success(function(resp) {
@@ -840,13 +850,14 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.assignwarehome = function() {
         $scope.cont = {};
         $scope.warehousedata = {};
-        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  true}}]}'
-        q = {
+        //var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  true}}]}'
+        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';
+        /*q = {
                 "state": "valid",
                 "users": {
                     "user": "' + $localStorage.userloged.email + '"
                 }
-            }
+            }*/
             //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state":"valid"}', 'GET', '')
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
 
@@ -925,9 +936,22 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.alComp = 0;
         var filtrado = $scope.shareds.filter($scope.comp);
 
+        var arr = [];
+        for (var item in $scope.shareds) {
+            arr.push( {
+                "user": $scope.shareds[item].user,
+                "shared": $scope.shareds[item].shared,
+                "creator": $scope.shareds[item].creator,
+                "username": $scope.shareds[item].username
+            });
+
+            }
+
         var objeto_body = '{"$set":{';
-        objeto_body = objeto_body + '"users":';
-        objeto_body = objeto_body + JSON.stringify($scope.shareds);
+        objeto_body = objeto_body + '"users": ';
+        //objeto_body = objeto_body + JSON.stringify($scope.shareds);
+        objeto_body = objeto_body + JSON.stringify(arr);
+        objeto_body = objeto_body + ' ';
         if ($scope.alComp > 1) {
             objeto_body = objeto_body + ',"shared": "ion-ios-people-outline"';
         }
@@ -971,21 +995,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 .controller('group', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
 
-
-
     $scope.myGroup_select = {
         "group": []
     };
     $scope.myGroup_no_select = {
         "group": []
     };
-    
-    
-
-//    $scope.myGroup_select = [];
-//    $scope.myGroup_no_select = [];
-
-
+  
 
     $ionicLoading.show({
         template: 'Cargando usuarios...'
@@ -1000,15 +1016,34 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             $scope.integrantes.find($scope.integrante);
 
             for (var integrante_true in $scope.myGroup_select.group) {
-                $scope.myGroup_no_select.group[integrante_true] = $scope.myGroup_select.group[integrante_true];
-                console.log($scope.myGroup_no_select.group[integrante_true].user);
-            }
-            console.log('objeto resp');
-            console.log($scope.amigos);
 
+            if ($scope.myGroup_select.group[integrante_true].user == $localStorage.userloged.email){
+                var reg =   {
+                                visible:true,
+                                creator: $scope.myGroup_select.group[integrante_true].creator,
+                                existe_en_grupo: $scope.myGroup_select.group[integrante_true].existe_en_grupo,
+                                shared: $scope.myGroup_select.group[integrante_true].shared,
+                                user: $scope.myGroup_select.group[integrante_true].user,
+                                username: $scope.myGroup_select.group[integrante_true].username
+                            };
+            } else {               
+                var reg =   {
+                                visible:false,
+                                creator: $scope.myGroup_select.group[integrante_true].creator,
+                                existe_en_grupo: $scope.myGroup_select.group[integrante_true].existe_en_grupo,
+                                shared: $scope.myGroup_select.group[integrante_true].shared,
+                                user: $scope.myGroup_select.group[integrante_true].user,
+                                username: $scope.myGroup_select.group[integrante_true].username
+                            };
+            }
+
+                $scope.myGroup_no_select.group[integrante_true] = reg;
+                console.log($scope.myGroup_select.group);
+                console.log($scope.myGroup_no_select.group);
+            }
+  
             $scope.comunidad_amigos = $scope.myGroup_no_select.group;
-            console.log('objeto cominidad');
-            console.log($scope.comunidad_amigos);
+            
             
             $ionicLoading.hide();
         })
@@ -1017,58 +1052,25 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         });
 
 
-
-
-
     $scope.addFriends = function() {
-        
-        
-        
-        
+
         var objeto_body = '{$set:{';
         objeto_body = objeto_body + '"group":';
         objeto_body = objeto_body + JSON.stringify($rootScope.objputo);
         objeto_body = objeto_body + '}}';
         console.log(objeto_body);
-        
-        
+
         SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"_id":{"$oid":"58bdc597f36d2837b811296d"}}', 'PUT', objeto_body)
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.amigos = resp;
 
-            $scope.amigos.find($scope.profile_group);
-            
-            $scope.integrantes.find($scope.integrante);
-  
             $ionicLoading.hide();
         })
         .error(function(resp) {
             $ionicLoading.hide();
         });
-       
-        
-        //$state.go('app.userprofile');
-        
-        /*
-        se filtra el objeto por existe_in_group igual true
-        se arma un objeto con la estructura grupo
-        y se actualiza el usuario en profileusers 
-                PUT
-                
-                https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"_id":{"$oid":"58bdc597f36d2837b811296d"}}'
-                
-                {$set:
-        	{"group": [
-        	      {
-        	        "user": "gustavo.arenas73@gmail.com",
-        	        "shared": true,
-        	        "creator": true
-        	      }
-        	    ]
-          	}
-        }
-        */
+
     };
 
     $scope.profile_group = function(element, index, array) {
@@ -1085,9 +1087,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
 
     $scope.comunidad = function(elementComunidad, index, array) {
-        //var vv = '';
         var aa = '';
-        //var bb = '';
 
         if (elementComunidad.email == $scope.amigo_existe) {
             aa = {"user": elementComunidad.email, "username": elementComunidad.username, "shared": true, "creator": false, "existe_en_grupo": true};
@@ -1101,9 +1101,26 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
 
  $scope.chan = function(amigo) {
-    console.log('Push ddd Change', amigo);
-    console.log($scope.comunidad_amigos);
-    $rootScope.objputo = $scope.comunidad_amigos;
+
+    $rootScope.objputo = [];
+    $scope.comunidad_amigos.filter($scope.comunidad_to_friends);
   };
+  
+  $scope.comunidad_to_friends = function(items) {
+        if ('existe_en_grupo' in items && items.existe_en_grupo == true) {
+            console.log("dentro del filter");
+            
+            if($localStorage.userloged.email == items.user){
+                $scope.owner = true;
+            } else {
+                $scope.owner = false;
+            }
+  
+            var cont = {"user": items.user, "shared": false, "creator": $scope.owner, "username": items.username};
+            $rootScope.objputo.push(cont); 
+            
+        }
+    }; 
+  
 
 })

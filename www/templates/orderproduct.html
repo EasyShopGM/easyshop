@@ -1,8 +1,9 @@
 <ion-view title="Ordenar producto">
 
 	<ion-nav-buttons side="left">
+		<ion-nav-back-button class="button back-button"><i class="icon ion-ios7-arrow-back"></i>Back</ion-nav-back-button>
 		<button menu-toggle="left" class="button button-icon icon ion-navicon" style="color: #FFFFFF;"></button>
-		<ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> Back</ion-nav-back-button>
+		
 	</ion-nav-buttons>
 
 	<style>
@@ -11,8 +12,26 @@
 		}
 		
 		.back-button {
-			display: none;
+			/*display: none;*/
 		}
+		
+		
+		.cajaTexto{
+			width: 80%;	
+			padding-left: 4%;
+			border-bottom-style: solid;
+		    border-bottom-width: thin;
+		    border-bottom-color: darkgray;
+		}
+		
+		.divcajaTexto{
+			padding-left: 4%;
+			padding-left: 4%;
+			border-bottom-style: solid;
+		    border-bottom-width: thin;
+		    border-bottom-color: darkgray;
+		}
+		
 	</style>
 
 	<ion-content ng-controller="orderproduct" style="background-color:#f2f2f2">
@@ -20,18 +39,14 @@
 			<div style="margin-bottom: 0%; margin-left: 4%; display: block;" class="list card">
 				<div style="border: 1px solid rgb(201, 201, 201);" class="col-40">
 					<div class="row">
-						<input type="text" Style="margin-left:2%; margin-top:2%; background-color:whitesmoke;" placeholder="Producto a Buscar" ng-model="busqueda.producto"></input>
-						<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct(busqueda.producto)"></button>
+						<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.Searchproductos">
+						<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct($root.Searchproductos)"></button>
 					</div>
 				</div>
 			</div>
 			<ion-item>
-<!--<ion-item  type="item-text-wrap" class="list card" ng-repeat="product in products | filter:search | limitTo:listlength">-->
-	
-<!--<ion-item  type="item-text-wrap" href="{{product.nombre}}"
-        class="list card" ng-repeat="product in products | filter:search | limitTo:listlength">
--->	
-				<ion-item class="list card" ng-repeat="product in products">
+				<ion-item class="list card" ng-repeat="product in products| filter:Searchproductos"  item="item">
+				
 					<div style="margin-bottom: 0%; margin-left: 8%; display: block;" class="list card">
 						<div>
 							<div>

@@ -15,20 +15,46 @@
 		}
 		
 		.item {
-			padding: 4% 2% 4% 4%;
+			padding: 2% 2% 2% 3%;
 			border-style: none;
     		font-size: 100%;
 		}
 		
+		.nombreUsuario{
+			font-style: italic;
+    		font-weight: bold;
+		}
 
+		.cajaTexto{
+			width: 80%;	
+			padding-left: 4%;
+			border-bottom-style: solid;
+		    border-bottom-width: thin;
+		    border-bottom-color: darkgray;
+		}
+		
+		.divcajaTexto{
+			padding-left: 4%;
+		}
 
 	</style>
 
 	<ion-content style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
+		<div class="divcajaTexto">
+			<input class="cajaTexto" id="searchShared" type="search" placeholder="Search..." ng-model="$root.search">
+		</div>
 		<ion-list>
-	   		<ion-item ng-repeat="shared in shareds track by $index">
-                <ion-toggle ng-disabled="{{shared.creator}}" ng-value="shared.shared" ng-model="shared.shared" toggle-class="toggle-calm">{{shared.user}}</ion-toggle>
+			<!--track by $index -->
+	   		<ion-item ng-repeat="shared in shareds | filter:search"  item="item">
+                <ion-toggle ng-disabled="{{shared.creator}}" ng-value="shared.shared" ng-model="shared.shared" toggle-class="toggle-calm">
+                	<p class="nombreUsuario">
+                		{{shared.username}}
+                	</p>
+                	<p>
+                		{{shared.user}}
+                	</p>
+                </ion-toggle>
 			</ion-item>
 		</ion-list>
 	</ion-content>
