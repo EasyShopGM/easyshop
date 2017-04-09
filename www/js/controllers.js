@@ -911,9 +911,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
  $scope.change123 = function(changeDescription, changeID) {
  
-    alert("aca yo");
-    /*alert(changeDescription);
-    alert(changeID);*/
     $scope.data.almacen = changeDescription;
     $scope.data.oid = changeID;
  };
