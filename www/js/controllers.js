@@ -580,7 +580,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             });
         });
 
-    }
+    };
 
 
     $scope.userlogin = function(userlogin_) {
@@ -610,7 +610,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             });
         });
 
-    }
+    };
 
     $scope.customlogin = function(customlogin_) {
         SrvCallOauth.async(customlogin_, 'GET', '')
@@ -626,13 +626,39 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                     okText: 'OK!'
                 });
             });
-    }
+    };
 
 
     $scope.cancelar = function() {
         //$state.go('app.newsoffers');
         window.history.back();
-    }
+    };
+    
+    $scope.resetPassword = function() {
+       // var base64_login = Base64.encode($scope.user.username + ':' + $scope.user.password);
+        var data_login = {
+            "email":"magu_ta@hotmail.com"
+            
+        };
+
+    alert(url_backend_oauth + RESETPASSWORD);
+
+        SrvCallOauth.async(url_backend_oauth + RESETPASSWORD, 'POST', data_login)
+            .success(function(resp) {
+                $ionicLoading.hide();
+                alert(resp);
+                
+            })
+
+        .error(function(resp) {
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Autentication',
+                template: '<p>RESET</p>',
+                okText: 'OK!'
+            });
+        });
+    };
 
 })
 

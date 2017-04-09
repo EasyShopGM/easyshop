@@ -13,7 +13,7 @@ var url_backend_oauth = "https://api.stormpath.com";
 
 //DEV Ionic only url Desa
 //var url_backend = "/backend_desa";
-//var url_backend_oauth = "/backend_prod";
+var url_backend_oauth = "/backend_prod";
 
 
 
@@ -27,6 +27,7 @@ var url_backend_oauth = "https://api.stormpath.com";
 ////URL SERVICES
 var REGISTER                = "/v1/applications/4EYncfTJgPkfPquDYKbBM/accounts";
 var AUTH                    = "/v1/applications/4EYncfTJgPkfPquDYKbBM/loginAttempts";
+var RESETPASSWORD           = "/v1/applications/4EYncfTJgPkfPquDYKbBM/passwordResetTokens";
 var AUTH_DATA               = "/v1/accounts/";
 var AUTH_DATA_CUSTOMDATA    = "/customData";
 var IMAGENOTFOUND           = "'img/imagenotfound.gif'";
