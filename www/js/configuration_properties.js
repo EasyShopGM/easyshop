@@ -8,7 +8,7 @@ api_key       = "2WU178P2EDWTHO0ZB64WXQMFC";
 api_secret    = "Vb4cBwd010xKSrfo31tavgZRmoAnYFucTjeFKWKl3nk";
 
 //Url Prod
-//var url_backend_oauth = "https://api.stormpath.com";
+var url_backend_oauth = "https://api.stormpath.com";
 
 
 //DEV Ionic only url Desa

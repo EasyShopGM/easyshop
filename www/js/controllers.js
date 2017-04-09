@@ -26,7 +26,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     SrvCall.async('dummys/warehouse.json', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
-            $scope.warehouses = resp;
+            $rootScope.warehouses = resp;
         })
         .error(function(resp) {
             //Apaga el evento cargando
@@ -99,7 +99,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         else {
             var alertPopup = $ionicPopup.alert({
                 title: 'EasyShop',
-                template: '<img src = /img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
+                template: '<img src = img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
             });
             alertPopup.then(function(res) {});
             $state.go("login");
@@ -107,8 +107,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
 
     $scope.assignwarehome = function(product_) {
-        $scope.cont = {}
-        $scope.warehousedata = {}
+        $scope.cont = {};
+        $scope.warehousedata = {};
 
         //Llama al servicio con los parametros para que traiga las almacenes que tiene asiganado el usuario
         SrvCall.async('dummys/warehouse.json', 'GET', '')
@@ -274,7 +274,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 .controller('warehouseslist', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup, $ionicModal) {
 
-
+  
     if ($localStorage.userloged) {
 
         $scope.warehouse = [{}];
@@ -285,7 +285,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
-                $scope.warehouses = resp;
+                $rootScope.warehouses = resp;
             
             })
             .error(function(resp) {
@@ -301,14 +301,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     else {
         var alertPopup = $ionicPopup.alert({
             title: 'EasyShop',
-            template: '<img src = /img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
+            template: '<img src = img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
         });
         alertPopup.then(function(res) {});
         $rootScope.page = "app.warehouseslist";
         $state.go("app.warehouseslist");
         $state.go("login");
     }
-
 
 
     $scope.clicker = function(warwhouse) {
@@ -381,13 +380,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.newwarehouse = function() {
 
-    console.log('la busqueda');
     console.log(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY + '&q={"email":"' + $localStorage.userloged.email + '"}&f={"group":1}');
         SrvCall.async(MLAB_SRV + MONGODB_DB + PROFILEUSERS_URL + '?' + API_KEY + '&q={"email":"' + $localStorage.userloged.email + '"}&f={"group":1}', 'GET', '')
             .success(function(resp) {
                 $scope.listacompartida = resp[0].group;
                 $ionicLoading.hide();
-                console.log(resp[0]);
+                console.log("lista compartida");
+                console.log($scope.listacompartida);
                 
             })
             .error(function(resp) {
@@ -476,7 +475,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         else {
             var alertPopup = $ionicPopup.alert({
                 title: 'EasyShop',
-                template: '<img src = /img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
+                template: '<img src = img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
             });
             alertPopup.then(function(res) {});
             $rootScope.page = "app.orderproduct";
@@ -494,7 +493,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
-                $scope.warehouses = resp;
+                $rootScope.warehouses = resp;
 
             })
             .error(function(resp) {
@@ -511,18 +510,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 })
 
-.controller('myorder', function($scope, $http, $location) {
-
-    })
-    .controller('productlist', function($scope, $http, $location) {
-
-    })
-    .controller('cart', function($scope, $http, $location) {
-
-    })
-    .controller('productdetail', function($scope, $http, $location) {
-
-    })
 
 .controller('userprofile', function($state, $rootScope, $scope, $http, $location, $localStorage) {
 
@@ -683,10 +670,11 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                         "newswarehouse": "",
                         "newsprpducts": "",
                         "shared": "",
-                        "shared": [{
+                        "group": [{
                             "user": $scope.userRegister.eMail,
                             "shared": true,
-                            "creator": true
+                            "creator": true,
+                            "username": $scope.userRegister.username
                         }]
                     })
                     .success(function(resp) {
@@ -766,10 +754,19 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.addlist = function(product_) {
 
-        $scope.data = {}
+        $scope.data = {};
 
         if ($localStorage.userloged) {
-            var url_ = product_.link;
+            //var url_ = product_.link;
+            alert($rootScope.page);
+            alert($rootScope.warehouse);
+            
+        //]aca
+            if ($rootScope.warehouse === undefined ) {
+            } else {
+                $scope.data.almacen = $rootScope.warehouse.description;    //itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
+                $scope.data.oid = $rootScope.warehouse._id.$oid;            //itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);
+            }
             var myPopup = $ionicPopup.show({
                 template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block" onerror="this.onerror=null;this.src=' + IMAGENOTFOUND + ';"  >' +
                     '</br>' +
@@ -839,7 +836,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         else {
             var alertPopup = $ionicPopup.alert({
                 title: 'EasyShop',
-                template: '<img src = /img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
+                template: '<img src = img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
             });
             alertPopup.then(function(res) {});
             $rootScope.page = "app.orderproduct";
@@ -849,22 +846,35 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.assignwarehome = function() {
         $scope.cont = {};
-        $scope.warehousedata = {};
+        $scope.warehousedata = [];
         //var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  true}}]}'
-        var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';
-        /*q = {
-                "state": "valid",
-                "users": {
-                    "user": "' + $localStorage.userloged.email + '"
-                }
-            }*/
-            //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state":"valid"}', 'GET', '')
+        var criterio = '';
+        
+        //leo el objeto almacen
+        alert("que hay en objeto almacen vacio");    
+        console.log($rootScope.warehouse);
+        $scope.warehousedata = $rootScope.warehouse;
+        //]aca
+        
+        if ($rootScope.warehouse === undefined ) {
+        
+        alert("entre por objeto almacen vacio");    
+        
+        
+//        if ($rootScope.warehouse.description == '') {
+            criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';            
+//        } else {
+//            criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}],"description":"' + $rootScope.warehouse.description + '"}';
+//        }
+
+        //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state":"valid"}', 'GET', '')
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
 
         .success(function(resp) {
                 $ionicLoading.hide();
                 //se guarda el objeto almacen seleccionado
                 $scope.warehousedata = resp;
+                console.log($scope.warehousedata);
             })
             .error(function(resp) {
                 //Apaga el evento cargando
@@ -876,7 +886,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 });
             });
 
-
+        
         var myPopup = $ionicPopup.show({
             template: '<ion-list ng-repeat = "warehouseitem in warehousedata">' +
                 '        <ion-checkbox type="checkbox" ng-model="warehouse.value" ng-true-value="{{warehouseitem.description}} | {{warehouseitem._id.$oid}} |" ng-false-value="">{{warehouseitem.description}}</ion-checkbox>' +
@@ -901,6 +911,10 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         });
         //myPopup.then(function(product_) {
 
+        }else{
+            $scope.data.almacen = $rootScope.warehouse.description;    //itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
+            $scope.data.oid = $rootScope.warehouse._id.$oid;            //itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);
+        }
     };
 
 
@@ -1038,8 +1052,9 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             }
 
                 $scope.myGroup_no_select.group[integrante_true] = reg;
-                console.log($scope.myGroup_select.group);
-                console.log($scope.myGroup_no_select.group);
+/*                console.log("no definido");
+                console.log($scope.myGroup_select);
+                console.log($scope.myGroup_no_select.group);*/
             }
   
             $scope.comunidad_amigos = $scope.myGroup_no_select.group;
@@ -1058,9 +1073,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         objeto_body = objeto_body + '"group":';
         objeto_body = objeto_body + JSON.stringify($rootScope.objputo);
         objeto_body = objeto_body + '}}';
-        console.log(objeto_body);
-
-        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"_id":{"$oid":"58bdc597f36d2837b811296d"}}', 'PUT', objeto_body)
+        
+        SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/profileusers?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"email":"' + $localStorage.userloged.email + '"}', 'PUT', objeto_body)
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.amigos = resp;
@@ -1111,12 +1125,17 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             console.log("dentro del filter");
             
             if($localStorage.userloged.email == items.user){
+                 console.log("paso por verdadero");
                 $scope.owner = true;
+                $scope.mylistShared = true;
             } else {
+                console.log("paso por falso");
                 $scope.owner = false;
+                $scope.mylistShared = false;
             }
   
-            var cont = {"user": items.user, "shared": false, "creator": $scope.owner, "username": items.username};
+            var cont = {"user": items.user, "shared": $scope.mylistShared, "creator": $scope.owner, "username": items.username};
+            console.log(cont);
             $rootScope.objputo.push(cont); 
             
         }

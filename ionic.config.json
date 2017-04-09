@@ -1,8 +1,8 @@
 {
   "name": "easyshop",
-  "app_id": "",
+  "app_id": "025c354d",
   "proxies": [
-     {
+    {
       "path": "/backend_prod",
       "proxyUrl": "https://api.stormpath.com"
     }

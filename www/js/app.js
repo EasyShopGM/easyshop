@@ -44,7 +44,7 @@ angular.module('starter', ['ionic',
         }
     })
 	
-	.state('app.myorder', {
+/*	.state('app.myorder', {
         url: "/myorder",
         views: {
             'menuContent': {
@@ -52,8 +52,8 @@ angular.module('starter', ['ionic',
                 controller: 'myorder'
             }
         }
-    })
-	.state('app.orderdetail', {
+    })*/
+/*	.state('app.orderdetail', {
         url: "/orderdetail",
         views: {
             'menuContent': {
@@ -61,7 +61,7 @@ angular.module('starter', ['ionic',
                 controller: 'orderdetail'
             }
         }
-    })
+    })*/
 	.state('app.productlist', {
         url: "/productlist",
         views: {
@@ -71,7 +71,7 @@ angular.module('starter', ['ionic',
             }
         }
     })
-	.state('app.cart', {
+/*	.state('app.cart', {
         url: "/cart",
         views: {
             'menuContent': {
@@ -79,7 +79,7 @@ angular.module('starter', ['ionic',
                 controller: 'cart'
             }
         }
-    })
+    })*/
 
 	.state('login', {
         url: "/login",
@@ -103,7 +103,7 @@ angular.module('starter', ['ionic',
     })
 
 	
-	.state('app.productdetail', {
+/*	.state('app.productdetail', {
         url: "/productdetail",
         views: {
             'menuContent': {
@@ -111,7 +111,7 @@ angular.module('starter', ['ionic',
                 controller: 'productdetail'
             }
         }
-    })
+    })*/
 
 	.state('app.userprofile', {
         url: "/userprofile",
