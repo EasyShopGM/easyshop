@@ -236,7 +236,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
 
     $scope.anotarproducto = function() {
-        $state.go("app.orderproduct");
+        $state.go("app.orderproductWH");
     };
 
 
@@ -277,7 +277,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
   
     if ($localStorage.userloged) {
 
-        $scope.warehouse = [{}];
+        //$scope.warehouse = [{}];
         //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '"}}', 'GET', '')
 
         var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';
@@ -313,7 +313,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.clicker = function(warwhouse) {
         $rootScope.warehouse = warwhouse;
         $state.go("app.shoppinglist", {
-            'warehouse': $scope.warehouse.description
+            'warehouse': $rootScope.warehouse.description
         });
 
     };
@@ -325,6 +325,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             'warehouse_': $scope.warehouse_
         });
 
+    };
+    
+    
+    
+    $scope.quitwarehouse = function(id_) {
+        $rootScope.warehouse = null;
     };
 
     $scope.edit = function(id_) {
@@ -716,8 +722,9 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 /* ****** Ordenar Producto ***** */
 .controller('orderproduct', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall) {
-    $scope.warehouse = [];
+    
 
+    
     $scope.findproduct = function(marca_, product_) {
         $ionicLoading.show({
             template: 'Cargando...'
@@ -757,12 +764,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.data = {};
 
         if ($localStorage.userloged) {
-            //var url_ = product_.link;
-            alert($rootScope.page);
-            alert($rootScope.warehouse);
             
-        //]aca
-            if ($rootScope.warehouse === undefined ) {
+            if (($rootScope.warehouse === undefined) || ($rootScope.warehouse == null)) {
             } else {
                 $scope.data.almacen = $rootScope.warehouse.description;    //itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
                 $scope.data.oid = $rootScope.warehouse._id.$oid;            //itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);
@@ -832,8 +835,15 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 }]
             });
             myPopup.then(function(product_) {});
-        }
-        else {
+            
+            
+            
+            
+            
+            
+            
+            
+        } else {
             var alertPopup = $ionicPopup.alert({
                 title: 'EasyShop',
                 template: '<img src = img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
@@ -847,34 +857,20 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.assignwarehome = function() {
         $scope.cont = {};
         $scope.warehousedata = [];
-        //var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  true}}]}'
         var criterio = '';
         
-        //leo el objeto almacen
-        alert("que hay en objeto almacen vacio");    
-        console.log($rootScope.warehouse);
         $scope.warehousedata = $rootScope.warehouse;
-        //]aca
-        
-        if ($rootScope.warehouse === undefined ) {
-        
-        alert("entre por objeto almacen vacio");    
-        
-        
-//        if ($rootScope.warehouse.description == '') {
-            criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';            
-//        } else {
-//            criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}],"description":"' + $rootScope.warehouse.description + '"}';
-//        }
 
-        //SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"users":{"user":"' + $localStorage.userloged.email + '"}, "state":"valid"}', 'GET', '')
+        if (($rootScope.warehouse === undefined ) || ($rootScope.warehouse == null)){
+            criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';            
+//            criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}],"description":"' + $rootScope.warehouse.description + '"}';
+
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
 
         .success(function(resp) {
                 $ionicLoading.hide();
                 //se guarda el objeto almacen seleccionado
                 $scope.warehousedata = resp;
-                console.log($scope.warehousedata);
             })
             .error(function(resp) {
                 //Apaga el evento cargando

@@ -13,7 +13,7 @@ var url_backend_oauth = "https://api.stormpath.com";
 
 //DEV Ionic only url Desa
 //var url_backend = "/backend_desa";
-var url_backend_oauth = "/backend_prod";
+//var url_backend_oauth = "/backend_prod";
 
 
 

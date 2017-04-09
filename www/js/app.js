@@ -153,6 +153,16 @@ angular.module('starter', ['ionic',
         }
     })
 
+    .state('app.orderproductWH', {
+        url: "/orderproductWH",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/orderproductWH.html",
+                controller: 'orderproduct'
+            }
+        }
+    })
+
     .state('app.collaboration', {
         url: "/collaboration",
         views: {
