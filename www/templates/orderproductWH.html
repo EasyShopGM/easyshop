@@ -43,7 +43,7 @@
 				<div style="border: 1px solid rgb(201, 201, 201);" class="col-40">
 					<div class="row">
 						<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.Searchproductos">
-						<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct($root.Searchproductos)"></button>
+						<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproductWH($root.Searchproductos)"></button>
 					</div>
 				</div>
 			</div>
@@ -72,7 +72,7 @@
 								</p>
 							</div>
 							<div style="padding-top: 0%;" class="col">
-								<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-ios-cart" ng-visible="false" ng-click="addlist({{product}})"></button>
+								<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-ios-cart" ng-visible="false" ng-click="addlistWH({{product}})"></button>
 							</div>
 						</div>
 					</div>

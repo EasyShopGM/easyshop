@@ -765,11 +765,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
         if ($localStorage.userloged) {
             
-            if (($rootScope.warehouse === undefined) || ($rootScope.warehouse == null)) {
-            } else {
-                $scope.data.almacen = $rootScope.warehouse.description;    //itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
-                $scope.data.oid = $rootScope.warehouse._id.$oid;            //itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);
-            }
+   
             var myPopup = $ionicPopup.show({
                 template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block" onerror="this.onerror=null;this.src=' + IMAGENOTFOUND + ';"  >' +
                     '</br>' +
@@ -859,6 +855,205 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.warehousedata = [];
         var criterio = '';
         
+        //$scope.warehousedata = $rootScope.warehouse;
+
+
+            criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';            
+//            criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}],"description":"' + $rootScope.warehouse.description + '"}';
+
+        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
+
+        .success(function(resp) {
+                $ionicLoading.hide();
+                //se guarda el objeto almacen seleccionado
+                $scope.warehousedata = resp;
+            })
+            .error(function(resp) {
+                //Apaga el evento cargando
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                });
+            });
+
+        
+        var myPopup = $ionicPopup.show({
+            template: '<ion-list ng-repeat = "warehouseitem in warehousedata">' +
+                '        <ion-checkbox type="checkbox" ng-change="change123(warehouseitem.description, warehouseitem._id.$oid)" ng-model="warehouse.value" ng-true-value="{{warehouseitem.description}} | {{warehouseitem._id.$oid}} |" ng-false-value="">{{warehouseitem.description}}</ion-checkbox>' +
+                '</ion-list>',
+            title: 'Mis almacenes',
+            subTitle: '',
+            scope: $scope,
+            style: "color: #58ACFA",
+            buttons: [{
+                text: 'Cancelar'
+            }, {
+                text: '<b>Confirmar</b>',
+                type: 'button-positive',
+                onTap: function(e) {
+
+                    /*var itemrecuperado = $scope.warehouse.value;
+                    $scope.data.almacen = itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
+                    $scope.data.oid = itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);*/
+                    /*$scope.data.almacen = itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
+                    $scope.data.oid = itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);*/
+                }
+            }]
+
+        });
+        //myPopup.then(function(product_) {
+
+
+    };
+
+
+ $scope.change123 = function(changeDescription, changeID) {
+ 
+    alert("aca yo");
+    /*alert(changeDescription);
+    alert(changeID);*/
+    $scope.data.almacen = changeDescription;
+    $scope.data.oid = changeID;
+ };
+ 
+
+})
+
+
+/* ****** Ordenar Producto WH***** */
+.controller('orderproductWH', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall) {
+    
+
+    
+    $scope.findproductWH = function(marca_, product_) {
+        $ionicLoading.show({
+            template: 'Cargando...'
+        });
+
+        $scope.products = [];
+
+        //SrvCall.async(PRECIOS_CLAROS, 'GET', '')
+        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.products = resp.productos;
+                //Apaga el evento cargando
+                if ($scope.products.length == 0) {
+                    $ionicPopup.alert({
+                        title: 'Producto no encontrado',
+                        subTitle: 'con el criterio "' + marca_ + '"',
+                        template: "",
+                        okText: 'OK!'
+                    });
+                }
+
+            })
+            .error(function(resp) {
+                //Apaga el evento cargando
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Sin respuesta.',
+                    template: resp,
+                    okText: 'OK!'
+                });
+            });
+    };
+
+    $scope.addlistWH = function(product_) {
+
+        $scope.data = {};
+
+        if ($localStorage.userloged) {
+            
+            if (($rootScope.warehouse === undefined) || ($rootScope.warehouse == null)) {
+            } else {
+                $scope.data.almacen = $rootScope.warehouse.description;    //itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
+                $scope.data.oid = $rootScope.warehouse._id.$oid;            //itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);
+            }
+            var myPopup = $ionicPopup.show({
+                template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block" onerror="this.onerror=null;this.src=' + IMAGENOTFOUND + ';"  >' +
+                    '</br>' +
+                    '<p style="font-size: 90%; border-top: 1px solid rgb(204, 204, 204);" >Almacen</p>' +
+                    '<div  class="row">' +
+                    '<input type = "text" style="font-size: 90%;" ng-model = "data.almacen" disabled></input>' +
+                    '<button style="color: #58ACFA" class="button-icon icon ion-arrow-down-b" ng-visible="false" ng-click="assignwarehome({{product}})"></button>' +
+                    '</div>' +
+                    '<p style="font-size: 90%;">Cantidad<p/>' +
+                    '<div  class="row">' +
+                    '<input type="number" placeholder="ingrese Cantidad a comprar" style="font-size: 90%;" ng-model = "data.cantidad"></input>' +
+                    '</div>',
+                title: product_.nombre,
+                subTitle: "",
+                scope: $scope,
+                buttons: [{
+                    text: 'Cancelar'
+                }, {
+                    text: '<b>Confirmar</b>',
+                    type: 'button-calm',
+                    onTap: function(e) {
+                        if ((!$scope.data.cantidad) || (!$scope.data.almacen)) {
+                            e.preventDefault();
+                        }
+                        else {
+                            var popupNew = {
+                                "username": $localStorage.userloged.username,
+                                "almacen": $scope.data.almacen,
+                                "cantidad": $scope.data.cantidad
+                            };
+                            $ionicLoading.show({
+                                template: 'Agregando a la lista...'
+                            });
+
+                            var newProduct_wh = '{"idwarehouse":"' + $scope.data.oid + '","marca":"' + product_.marca + '","id":"' + product_.id + '","precioMax":' + product_.precioMax + ',"precioMin":' + product_.precioMin + ',"nombre":"' + product_.nombre + '","presentacion":"' + product_.presentacion + '","cantSucursalesDisponible":' + product_.cantSucursalesDisponible + ',"quantity":' + $scope.data.cantidad + ',"Estado":"' + PENDIENTE + '"}';
+
+                            //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'POST', newProduct_wh)
+                            SrvCall.async(MLAB_SRV + MONGODB_DB + PRODUCTS_URL + '?' + API_KEY, 'POST', newProduct_wh)
+                                .success(function(resp) {
+                                    $ionicLoading.hide();
+                                    $scope.products = resp;
+                                    $ionicPopup.alert({
+                                        title: 'El producto fue agregado a la lista.',
+                                        template: "",
+                                        okText: 'OK!'
+                                    });
+
+                                    $rootScope.page = "app.orderproductWH";
+                                    $state.go("login");
+                                })
+                                .error(function(resp) {
+                                    //Apaga el evento cargando
+                                    $ionicLoading.hide();
+                                    $ionicPopup.alert({
+                                        title: 'El producto no fue agregado.',
+                                        subTitle: 'Verifique la conexión e intente nuevamente.',
+                                        template: "",
+                                        okText: 'OK!'
+                                    });
+                                });
+                        }
+                    }
+                }]
+            });
+            myPopup.then(function(product_) {});
+      
+        } else {
+            var alertPopup = $ionicPopup.alert({
+                title: 'EasyShop',
+                template: '<img src = img/alert.gif  style="width:10%; height:10%; margin-left:5%">  Debe estar autenticado.'
+            });
+            alertPopup.then(function(res) {});
+            $rootScope.page = "app.orderproductWH";
+            $state.go("login");
+        }
+    };
+
+    $scope.assignwarehomeWH = function() {
+        $scope.cont = {};
+        $scope.warehousedata = [];
+        var criterio = '';
+        
         $scope.warehousedata = $rootScope.warehouse;
 
         if (($rootScope.warehouse === undefined ) || ($rootScope.warehouse == null)){
@@ -912,9 +1107,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             $scope.data.oid = $rootScope.warehouse._id.$oid;            //itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);
         }
     };
-
-
-
 })
 
 .controller('collaboration', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {

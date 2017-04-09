@@ -158,7 +158,7 @@ angular.module('starter', ['ionic',
         views: {
             'menuContent': {
                 templateUrl: "templates/orderproductWH.html",
-                controller: 'orderproduct'
+                controller: 'orderproductWH'
             }
         }
     })
