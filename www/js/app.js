@@ -194,6 +194,15 @@ angular.module('starter', ['ionic',
         }
     })        
     
+    .state('app.resetpass', {
+        url: "/resetpass",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/resetpass.html",
+                controller: 'resetpass'
+            }
+        }
+    })
     
 
     // if none of the above states are matched, use this as the fallback

@@ -93,72 +93,31 @@
 
 
 
-<ion-content ng-controller="register">
+<ion-content ng-controller="resetpass">
 	<div style="width:100%;margin: 0%; margin-left:40%" class="list">
 		<img style="padding-top: 5%; width:20%;" src="img/logo.png"></img>
 	</div>
 	<div align=center style="border-bottom: 1px solid rgb(70, 159, 226);">
-		<h2 style="aling: middle; color: rgb(70, 159, 226);">Crea tu usuario para comenzar a compatir!!!</h2>
+		<h2 style="aling: middle; color: rgb(70, 159, 226);">Reset your password.</h2>
 	</div>
 
 	<div>
 		<div style="width:70%;margin:0 auto;" class="list">
-			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-      		<span style="font-size: 13px;" class="input-label">First Name</span>
-      		<input type="text" placeholder="First Name" ng-model="userRegister.firstName" required >
-    	</label>
-			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-      		<span style="font-size: 13px;" class="input-label">Last Name</span>
-      		<input type="text" placeholder="Last Name" ng-model="userRegister.lastName">
-    	</label>
-		</div>
-
-		<div style="width:70%;margin:0 auto;" class="list">
-			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
+<!--			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
 				<span style="font-size: 13px;" class="input-label">User Name</span>
 				<input type="text" placeholder="User Name" ng-model="userRegister.username" required>
-	  		</label>
+	  		</label>-->
 			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
 				<span style="font-size: 13px;" class="input-label">Email</span>
-				<input type="text" placeholder="Email" ng-model="userRegister.eMail">
-	  		</label>
-			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-				<span style="font-size: 13px;" class="input-label">password</span>
-				<input type="password" placeholder="password" ng-model="userRegister.password">
+				<input type="text" placeholder="Email" ng-model="reset.eMail">
 	  		</label>
 		</div>
 	</div>
-
-	<div style="width:70%;margin:0 auto;" class="list">
-
-		<!--			<label style="border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-				<span style="font-size: 13px;" class="input-label">Favorite colour</span>
-				<input type="text" placeholder="Favorite colour" ng-model="userRegister.favcolor">
-			</label>-->
-
-		<label style="margin-left:0%; font-size: 13px; border-bottom: 1px solid rgb(70, 159, 226);" class="item item-input item-floating-label">
-			<div style="margin-left:-2%; padding-top: 17px;" class="row">
-				<div style="margin-left:0%; margin-top:2%" class="col-75">
-					<b>Compartis tu perfil<b>
-				</div>
-				<div class="col-25">
-					<label style="align: right;"  class="toggle">
-	   					<input type="checkbox" ng-model="userRegister.shared" ng-true-value="Shared" ng-false-value="Not shared">
-						<div class="track">
-							<div class="handle"></div>
-						</div>
-					</label>
-				</div>
-			</div>
-		</label>
-	</div>
-
-
 
 	<div style="text-align: center;">
 		<div style="text-align: center;margin-top: 20px;">
-			<button ng-click="register();" style="width: 55%; background-color: rgb(255, 255, 255); border-color: rgb(255, 255, 255); color: rgb(70, 159, 226); border-radius: 42px; box-shadow: 0px 1px 0px rgb(104, 97, 97);" class="button button-positive">
-				Register
+			<button ng-click="sendReset();" style="width: 55%; background-color: rgb(255, 255, 255); border-color: rgb(255, 255, 255); color: rgb(70, 159, 226); border-radius: 42px; box-shadow: 0px 1px 0px rgb(104, 97, 97);" class="button button-positive">
+				Reset password
 		    </button>
 		</div>
 		<div style="text-align: center;margin-top: 20px;">
