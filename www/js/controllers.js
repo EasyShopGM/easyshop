@@ -170,9 +170,11 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             $scope.products = resp;
 
             for (x in $scope.products) {
-                imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
-                if ($scope.products[x].Estado == COMPRADO) {
-                    impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
+                if ($scope.products[x].Estado != DESCARTADO) {
+                    imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);                    
+                    if ($scope.products[x].Estado == COMPRADO) {
+                        impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
+                    }
                 }
             }
             $scope.adquirido = function(item, fromIndex, toIndex) {};
@@ -255,10 +257,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 $ionicLoading.hide();
                 $scope.products = resp;
                 for (x in $scope.products) {
-                    imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
-                    if ($scope.products[x].Estado == COMPRADO) {
-                        impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
-                    }
+                    if ($scope.products[x].Estado != DESCARTADO) {
+                        imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);                    
+                        if ($scope.products[x].Estado == COMPRADO) {
+                            impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
+                        }
+                }
                 }
                 $scope.adquirido = function(item, fromIndex, toIndex) {};
                 $scope.imptotal = imptotal.toFixed(2);
