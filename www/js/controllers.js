@@ -171,11 +171,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
             for (x in $scope.products) {
                 imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
-                if ($scope.products[x].estado == COMPRADO) {
+                if ($scope.products[x].Estado == COMPRADO) {
                     impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
                 }
             }
             $scope.adquirido = function(item, fromIndex, toIndex) {};
+            $scope.imptotal = imptotal.toFixed(2);;
+            $scope.impparcial = impparcial.toFixed(2);;
         })
         .error(function(resp) {
             $ionicLoading.hide();
@@ -185,7 +187,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 okText: 'OK!'
             });
         });
-
+        
 
     $scope.actionProduct = function(product_) {
 
@@ -254,11 +256,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 $scope.products = resp;
                 for (x in $scope.products) {
                     imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
-                    if ($scope.products[x].estado == COMPRADO) {
+                    if ($scope.products[x].Estado == COMPRADO) {
                         impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
                     }
                 }
                 $scope.adquirido = function(item, fromIndex, toIndex) {};
+                $scope.imptotal = imptotal.toFixed(2);
+                $scope.impparcial = impparcial.toFixed(2);
             })
             .error(function(resp) {
                 $ionicLoading.hide();

@@ -118,16 +118,30 @@
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 
 		<ion-list>
-			<ion-item style="margin: 1%; background-color: #bbe1fe; border: 1px solid rgb(201, 201, 201);">
-				<h2 class="title ng-binding" style="margin.left: 4%; background-color: #bbe1fe;" align="center">
+			<ion-item style="margin: 1%; background-color: #55acee; border: 1px solid rgb(201, 201, 201);">
+				<h2 class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;" align="center">
 					{{warehousetitle}}
 				</h2>
-				<p class="title ng-binding" style="margin.left: 4%; background-color: #bbe1fe;" align="left">
-					Costo Estimado $: {{imptotal}}
+				<p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">
+					<div class="row">
+						<div style="width:70%"  align="left">
+							<p style="color: white;">Total value of the purchase $: </p>
+						</div>
+						<div style="width:30%"  align="right">
+							<p style="color: white;" aling="right">{{imptotal}}</p>
+						</div>
+					</div>
 				</p>
 				
-				<p class="title ng-binding" style="margin.left: 4%; background-color: #bbe1fe;" align="left">
-					Costo de la compra $: {{impparcial}}
+				<p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">
+					<div class="row">
+						<div style="width:70%"  align="left">
+							<p style="color: white;">Value of the purchased $: </p>
+						</div>
+						<div style="width:30%"  align="right">
+							<p style="color: white;" aling="right">{{impparcial}}</p>
+						</div>
+					</div>
 				</p>
 			</ion-item>
 

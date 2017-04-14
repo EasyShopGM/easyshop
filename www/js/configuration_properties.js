@@ -72,3 +72,5 @@ PENDIENTE           = "#1fd3f0";
 COMPRADO            = "#66cb99"; 
 //Rojo
 DESCARTADO          = "#d30929";
+
+COLOR_APLICACION    = "#55ACEE";
