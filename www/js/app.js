@@ -223,24 +223,13 @@ angular.module('starter', ['ionic',
             }
         }
     })
-    
-    
-    .state('app.chainBranchOffice', {
-        url: "/chainBranchOffice",
+   
+    .state('app.branchOffices', {
+        url: "/branchOffices",
         views: {
             'menuContent': {
-                templateUrl: "templates/chainBranchOffice.html",
-                controller: 'chainBranchOffice'
-            }
-        }
-    })
-    
-    .state('app.branchoffices', {
-        url: "/branchoffices",
-        views: {
-            'menuContent': {
-                templateUrl: "templates/branchoffices.html",
-                controller: 'branchoffices'
+                templateUrl: "templates/branchOffices.html",
+                controller: 'branchOffices'
             }
         }
     })    

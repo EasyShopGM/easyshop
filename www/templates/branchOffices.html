@@ -1,14 +1,14 @@
-<ion-view title="Comercio">
+<ion-view title="Sucursales del comercio">
 
 	<ion-nav-buttons side="left">
 		<ion-nav-back-button class="button back-button"><i class="icon ion-ios7-arrow-back"></i>Back</ion-nav-back-button>
 	</ion-nav-buttons>
 
-	<ion-nav-buttons side="right">
-		<button class="button button-icon ion-ios-arrow-right" style="color: #FFFFFF;" ng-click="branchOffices();"></button>
-	</ion-nav-buttons>
-
+	<!--<ion-nav-buttons side="right">
+		<button class="button button-icon ion-ios-undo-outline" style="color: #FFFFFF;" ng-click="exitBranchOffices();"></button>
+	</ion-nav-buttons>-->
 	<style>
+	
 		.itemMy {
 			margin-bottom: 0px;
 			width: 100%;
@@ -36,25 +36,20 @@
     		border-right-style: solid;
     		border-right-color: black;
 		}
+	
 	</style>
 
-	<ion-content ng-controller="typeBranchOffice" style="background-color:#fffff">
+	
+	<ion-content ng-controller="branchOffices" style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 		
-		<div class="row myTab">
-			<a class="tab-item lineDivisor" ng-click="filterType();">
-				<i class="icon ion-ios-pricetags-outline"></i>Tipo de Cadena<br>{{typeComerce}}
-			</a>
-			<a class="tab-item" ng-click="filterChain();">
-				<i class="icon ion-ios-flag-outline"></i>Nombre de Cadena<br>{{chainComerce}}
-			</a>
-		</div>
+
 		
 		
 		<div style="margin-bottom: 0%; margin-left: 4%; display: block;" class="list card">
 			<div style="border: 1px solid rgb(201, 201, 201);" class="col-40">
 				<div class="row">
-					<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.Searchproductos">
+					<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.SearchBranch">
 					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct($root.Searchproductos)"></button>
 				</div>
 			</div>
@@ -64,18 +59,25 @@
 		<ion-list>
 			
 				<div id="selIdTodos" class="row input-label" style="padding-left: 5%;">
-					<label class="ion-ios-cart-outline itemIcon"></label>
-					<div class="ng-binding itemText" ng-click="loadTypeBranchOffice('Todos')">
-						Todos
+					<div class="ng-binding itemText row" ng-click="loadNextPage()">
+						<ion-item class="item itemMy" ng-repeat="numPage in arrCountPage">
+							<label class="ion-ios-circle-filled itemIcon" ng-click="nextPage(numPage)"></label>
+						</ion-item>
 					</div>
 				</div>
 			
 			
-			<ion-item class="item itemMy" ng-repeat="typeBranchOffice in typeBranchOffices | filter:Searchproductos"  item="item">
+			<ion-item class="item itemMy" ng-repeat="listBranchOffice in listBranchOffices | filter:SearchBranch"  item="item">
 				<div class="row input-label">
 					<label class="ion-ios-cart-outline itemIcon"></label>
-					<div class="ng-binding itemText" ng-click="loadTypeBranchOffice(typeBranchOffice)">
-						{{typeBranchOffice}}
+					<div class="ng-binding itemText" ng-click="loadTypeBranchOffice(listBranchOffice)">
+						{{listBranchOffice.banderaDescripcion}}
+						<br>
+						{{listBranchOffice.sucursalNombre}}
+						<br>
+						{{listBranchOffice.direccion}}
+						<br>
+						{{listBranchOffice.localidad}} - {{listBranchOffice.provincia}}
 					</div>
 				</div>
 			</ion-item>

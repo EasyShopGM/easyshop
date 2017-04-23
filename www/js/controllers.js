@@ -1460,8 +1460,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         });
     };    
 
-    $scope.chainBranchOffice = function() {
-        $state.go("app.chainBranchOffice");
+    $scope.branchOffices = function() {
+        $state.go("app.branchOffices");
     };
 
     $scope.loadTypeBranchOffice = function(itemTypeBranchoffice) {
@@ -1480,56 +1480,21 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 })
 
+.controller('branchOffices', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
 
-.controller('chainBranchOffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
-
-    console.log($rootScope.typeComerce);
-    $scope.typeComerceofChain = $rootScope.typeComerce;
-
-
-
-    SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=comercio_bandera_nombre', 'GET', '')
+    SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&sucursal_tipo=["Supermercado"]&comercio_bandera_nombre=["COTO CICSA"]', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
-            $scope.comerceTagNames = resp.valoresFiltrables;
+            $scope.listBranchOffices = resp.sucursales;
+            $scope.listPage = resp;
+            $scope.countPage = ($scope.listPage.total / $scope.listPage.totalPagina).toFixed();
+            $scope.arrCountPage = [0,30,60];
+            
             $ionicLoading.hide();
         })
         .error(function(resp) {
             $ionicLoading.hide();
         });
-
-
-
-    $scope.currSels = [{
-        proc: "COTO",
-        board: "Alloc"
-    }, {
-        proc: "CARREFOUR",
-        board: "Manager"
-    }, {
-        proc: "DIA",
-        board: "Ops"
-    }, {
-        proc: "VEA",
-        board: "Alloc"
-    }];
-
-    $scope.branchOffices = function() {
-        $state.go("app.branchoffices");
-    };
-})
-
-.controller('branchoffices', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
-
-    $scope.currSels = [{
-        proc: "COTO - lope de vega 4100"
-    }, {
-        proc: "CARREFOUR - Jonte 8200"
-    }, {
-        proc: "DIA Juan B justo 3102"
-    }, {
-        proc: "VEA Juan B justo 5800"
-    }];
 
     $scope.exitBranchOffices = function() {
         $state.go("app.branchoffice");
