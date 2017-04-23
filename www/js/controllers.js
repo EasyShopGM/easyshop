@@ -171,7 +171,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
             for (x in $scope.products) {
                 if ($scope.products[x].Estado != DESCARTADO) {
-                    imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);                    
+                    imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
                     if ($scope.products[x].Estado == COMPRADO) {
                         impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
                     }
@@ -189,7 +189,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 okText: 'OK!'
             });
         });
-        
+
 
     $scope.actionProduct = function(product_) {
 
@@ -258,11 +258,11 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 $scope.products = resp;
                 for (x in $scope.products) {
                     if ($scope.products[x].Estado != DESCARTADO) {
-                        imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);                    
+                        imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
                         if ($scope.products[x].Estado == COMPRADO) {
                             impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
                         }
-                }
+                    }
                 }
                 $scope.adquirido = function(item, fromIndex, toIndex) {};
                 $scope.imptotal = imptotal.toFixed(2);
@@ -523,6 +523,10 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             });
     };
 
+
+    $scope.branchOffice = function(warehouse) {
+        $state.go("app.branchoffice");
+    };
 
 })
 
@@ -1365,8 +1369,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 
     $scope.sendReset = function() {
-        
-        alert("ingreso");   
+
+        alert("ingreso");
         //$scope.reset.eMail
         var data_reset = {
             "email": $scope.reset.eMail
@@ -1379,11 +1383,11 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             .success(function(resp) {
                 $ionicLoading.hide();
                 $ionicPopup.alert({
-                title: 'Reset Password',
-                template: '<p>The password was successfully reset. Enter your email to enter the new password.</p>',
-                okText: 'OK!'
-            });
-            $state.go("app.newsoffers");
+                    title: 'Reset Password',
+                    template: '<p>The password was successfully reset. Enter your email to enter the new password.</p>',
+                    okText: 'OK!'
+                });
+                $state.go("app.newsoffers");
             })
 
         .error(function(resp) {
@@ -1397,5 +1401,138 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         });
     };
 
-    
+
+})
+
+.controller('branchoffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+
+    $scope.currSels = [{
+        proc: "los que tengo en la almacen configurado 1",
+        board: "Alloc"
+    }, {
+        proc: "los que tengo en la almacen configurado 2",
+        board: "Alloc"
+    }, {
+        proc: "los que tengo en la almacen configurado 3",
+        board: "Alloc"
+    }, {
+        proc: "los que tengo en la almacen configurado 4",
+        board: "Alloc"
+    }];
+
+    $scope.addTypeBranchOffice = function() {
+        $state.go("app.typeBranchOffice");
+    };
+
+})
+
+.controller('typeBranchOffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+
+    $rootScope.typeComerce = '';
+    $scope.chainComerce = 'Todos';
+    $scope.typeComerce = 'Todos';
+
+
+    $scope.filterType = function() {
+        
+        $scope.selecction = "type";
+        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=sucursal_tipo', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.typeBranchOffices = resp.valoresFiltrables;
+                $ionicLoading.hide();
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+            });
+    };
+
+    $scope.filterChain = function() {
+        $scope.selecction = "chain";
+        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=comercio_bandera_nombre', 'GET', '')
+        .success(function(resp) {
+            $ionicLoading.hide();
+            $scope.typeBranchOffices = resp.valoresFiltrables;
+            $ionicLoading.hide();
+        })
+        .error(function(resp) {
+            $ionicLoading.hide();
+        });
+    };    
+
+    $scope.chainBranchOffice = function() {
+        $state.go("app.chainBranchOffice");
+    };
+
+    $scope.loadTypeBranchOffice = function(itemTypeBranchoffice) {
+        if ($scope.selecction == "type") {
+            $scope.typeComerce = itemTypeBranchoffice;
+            $scope.$root.Searchproductos = '';
+        }
+        if ($scope.selecction == "chain") {
+            $scope.chainComerce = itemTypeBranchoffice;    
+            $scope.$root.Searchproductos = '';
+        }
+        
+        //$state.go("app.chainBranchOffice");
+    };
+
+
+})
+
+
+.controller('chainBranchOffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+
+    console.log($rootScope.typeComerce);
+    $scope.typeComerceofChain = $rootScope.typeComerce;
+
+
+
+    SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=comercio_bandera_nombre', 'GET', '')
+        .success(function(resp) {
+            $ionicLoading.hide();
+            $scope.comerceTagNames = resp.valoresFiltrables;
+            $ionicLoading.hide();
+        })
+        .error(function(resp) {
+            $ionicLoading.hide();
+        });
+
+
+
+    $scope.currSels = [{
+        proc: "COTO",
+        board: "Alloc"
+    }, {
+        proc: "CARREFOUR",
+        board: "Manager"
+    }, {
+        proc: "DIA",
+        board: "Ops"
+    }, {
+        proc: "VEA",
+        board: "Alloc"
+    }];
+
+    $scope.branchOffices = function() {
+        $state.go("app.branchoffices");
+    };
+})
+
+.controller('branchoffices', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+
+    $scope.currSels = [{
+        proc: "COTO - lope de vega 4100"
+    }, {
+        proc: "CARREFOUR - Jonte 8200"
+    }, {
+        proc: "DIA Juan B justo 3102"
+    }, {
+        proc: "VEA Juan B justo 5800"
+    }];
+
+    $scope.exitBranchOffices = function() {
+        $state.go("app.branchoffice");
+    };
+
 })

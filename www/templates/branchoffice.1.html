@@ -1,0 +1,87 @@
+<ion-view title="Comercios">
+
+	<ion-nav-buttons side="left">
+		<ion-nav-back-button class="button back-button"><i class="icon ion-ios7-arrow-back"></i>Back</ion-nav-back-button>
+	</ion-nav-buttons>
+
+	<ion-nav-buttons side="right">
+		<button class="button button-icon ion-android-checkmark-circle" style="color: #FFFFFF;" ng-click="addBranchOffice();"></button>
+	</ion-nav-buttons>
+
+	<style>
+	
+	.item {
+	    padding: 1% 0% 1% 2%;
+	}
+	
+	.mySearch{
+		padding-top: 2px;
+    	padding-left: 4%;	
+	}
+	
+	.detalleUsername{
+		font-weight: bold;
+	}
+	
+	.cajaTexto{
+		width: 80%;	
+		padding-left: 4%;
+		border-bottom-style: solid;
+	    border-bottom-width: thin;
+	    border-bottom-color: darkgray;
+	}
+	
+	.divcajaTexto{
+		padding-left: 4%;
+		
+	}
+	
+	</style>
+
+	<!-- ion-content style="background-color:#fffff" -->
+	<ion-content class="mySearch" ng-controller="branchoffice" style="background-color:#fffff">
+		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
+
+		<div class="divcajaTexto">
+		<input class="cajaTexto" id="tipoComercio" type="search" placeholder="Tipo de Comercio..." ng-model="$root.branchOffice.tipo">
+		</div>
+		
+		<div class="divcajaTexto">
+		<input class="cajaTexto" id="nombreCadenaComercio" type="search" placeholder="Search..." ng-model="$root.branchOffice.nombreCadenaComercio">
+		</div>
+
+		<div class="divcajaTexto">
+		<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.group">
+		</div>
+		
+		<ion-list>
+	   		<ion-item ng-repeat="amigo in comunidad_amigos | filter:group"  item="item">
+                <ion-toggle  ng-hide="{{amigo.visible}}" ng-change="chan(amigo)" ng-model="amigo.existe_en_grupo" ng-checked="{{amigo.existe_en_grupo}}" toggle-class="toggle-calm">
+                	{{amigo.username}}
+                	<p>
+                		{{amigo.user}}
+                	</p>
+                </ion-toggle>
+			</ion-item>
+		</ion-list>
+		
+<!--		
+		<ion-list>
+	   		<ion-item ng-repeat="amigo in comunidad_amigos.group | filter:search" item="item">
+                <ion-toggle class="item-text-wrap" ng-value="amigo.existe_en_grupo" ng-model="amigo.existe_en_grupo" toggle-class="toggle-calm">
+                	{{amigo.username}}
+                	<p>
+                		{{amigo.user}}
+                	</p>
+                	</ion-toggle>
+			</ion-item>
+		</ion-list>
+
+-->
+
+	</ion-content>
+
+
+
+
+</ion-view>

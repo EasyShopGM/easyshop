@@ -204,7 +204,48 @@ angular.module('starter', ['ionic',
         }
     })
     
-
+    .state('app.branchoffice', {
+        url: "/branchoffice",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/branchoffice.html",
+                controller: 'branchoffice'
+            }
+        }
+    })
+    
+    .state('app.typeBranchOffice', {
+        url: "/typeBranchOffice",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/typeBranchOffice.html",
+                controller: 'typeBranchOffice'
+            }
+        }
+    })
+    
+    
+    .state('app.chainBranchOffice', {
+        url: "/chainBranchOffice",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/chainBranchOffice.html",
+                controller: 'chainBranchOffice'
+            }
+        }
+    })
+    
+    .state('app.branchoffices', {
+        url: "/branchoffices",
+        views: {
+            'menuContent': {
+                templateUrl: "templates/branchoffices.html",
+                controller: 'branchoffices'
+            }
+        }
+    })    
+    
+    
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/newsoffers');
 });

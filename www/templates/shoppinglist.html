@@ -145,7 +145,7 @@
 				</p>
 			</ion-item>
 
-	   		<ion-item ng-repeat="product in products">
+	   		<ion-item ng-repeat="product in products track by $index">
 				<div class="row"  >
 					<!-- background-color border-color-->
 					<div id="objEstado" class="round-button" style="border-color: {{product.Estado}};">

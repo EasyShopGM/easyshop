@@ -1,0 +1,51 @@
+<ion-view title="Tipo de Comercios - " + {{typeComerceofChain}}>
+
+	<ion-nav-buttons side="left">
+		<ion-nav-back-button class="button back-button"><i class="icon ion-ios7-arrow-back"></i>Back</ion-nav-back-button>
+	</ion-nav-buttons>
+
+	<ion-nav-buttons side="right">
+		<button class="button button-icon ion-ios-arrow-right" style="color: #FFFFFF;" ng-click="branchOffices();"></button>
+	</ion-nav-buttons>
+
+	<style>
+		.itemMy {
+			margin-bottom: 0px;
+			width: 100%;
+		}
+		
+		.itemMy2 {
+			margin-bottom: 0px;
+			width: 100%;
+			padding-left: 10%;
+		}
+		.itemIcon {
+			font-size: 25px;
+			width: 20%;
+		}
+		
+		.itemText {
+			font-size: 16px;
+			width: 70%;
+			margin-top: 4%;
+		}
+
+	</style>
+    
+    
+	<ion-content style="background-color:#fffff">
+		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
+		<ion-list>
+			<div>
+				<ion-item class="item itemMy" style="border-bottom-style: solid; border-bottom-color: #b2b2b2; border-bottom-width: 2px;">
+					{{typeComerceofChain}}
+				</ion-item>
+			</div>
+			<label class="item item-input item-select rounded itemMy2" ng-repeat="comerceTagName in comerceTagNames" style="margin-bottom: 10px;">
+            	<div class="input-label">
+                	{{comerceTagName}}:
+            	</div>
+        	</label>
+		</ion-list>
+	</ion-content>
+</ion-view>

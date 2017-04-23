@@ -129,16 +129,17 @@
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 
 		<ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-			<ion-item ng-repeat="warehouse in warehouses" warehouse="warehouse">
+			<ion-item ng-repeat="warehouse in warehouses track by $index" warehouse="warehouse">
 				<div class="row" >
 					<div class="row" style="border-bottom-color: crimson; width:100%;">
 						<div class="ng-binding" style="margin-top:0%; width:10%">
 							<button class="button-icon round-button {{warehouse.shared}}" disabled></button>
 						</div>
-						<div class="ng-binding" style="margin-top:2%; margin-left: 4%; width:68%" ng-click="clicker(warehouse)">
+						<div class="ng-binding" style="margin-top:2%; margin-left: 4%; width:60%" ng-click="clicker(warehouse)">
 							{{ warehouse.description }}
 						</div>
-						<div style="width:10%">
+						<div style="width:25%">
+							<button class="button-icon ion-ios-location-outline" ng-click="branchOffice(warehouse);"></button>
 							<button class="button-icon ion-ios-personadd-outline" ng-click="share(warehouse);"></button>
 							<!-- button class="button-icon  ion-edit" ng-click="edit(warehouse);"></button -->
 							<button class="button-icon ion-ios-trash-outline" ng-click="discard(warehouse);"></button>
