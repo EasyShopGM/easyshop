@@ -41,6 +41,31 @@
 	<ion-content ng-controller="typeBranchOffice" style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 		
+		
+		<div id="selIdTodos" class="row" style="padding-bottom: 0%;padding-top: 0%;">
+				<div class="row" style="width=100%; padding: 1px;">
+					
+					<div class="row" style="margin-left: auto;margin-right: auto;width: 100%;">
+						<ion-item style="margin-right: 0px; width: 100%;">
+				
+							<div class="row myTab">
+								<a class="tab-item lineDivisor" ng-click="filterType();">
+									<i class="icon ion-ios-pricetags-outline"></i>Tipo de Cadena<br>{{typeComerce}}
+								</a>
+								<a class="tab-item" ng-click="filterChain();">
+									<i class="icon ion-ios-flag-outline"></i>Nombre de Cadena<br>{{chainComerce}}
+								</a>
+							</div>
+							
+							
+				
+						</ion-item>
+					</div>
+				</div>
+			</div>
+		
+		
+<!--		
 		<div class="row myTab">
 			<a class="tab-item lineDivisor" ng-click="filterType();">
 				<i class="icon ion-ios-pricetags-outline"></i>Tipo de Cadena<br>{{typeComerce}}
@@ -49,13 +74,14 @@
 				<i class="icon ion-ios-flag-outline"></i>Nombre de Cadena<br>{{chainComerce}}
 			</a>
 		</div>
+	-->	
 		
-		
-		<div style="margin-bottom: 0%; margin-left: 4%; display: block;" class="list card">
+		<div style="margin-bottom: 0%; margin-left: 4%; display: block; margin-top: 0px;" class="list card">
 			<div style="border: 1px solid rgb(201, 201, 201);" class="col-40">
 				<div class="row">
 					<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.Searchproductos">
-					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct($root.Searchproductos)"></button>
+					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 0%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct($root.Searchproductos)"></button>
+					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 0%; color: #58ACFA" class="button button-icon icon ion-android-close" ng-visible="false" ng-click="clearFind()"></button>
 				</div>
 			</div>
 		</div>

@@ -1499,5 +1499,32 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.exitBranchOffices = function() {
         $state.go("app.branchoffice");
     };
+    
+    $scope.loadNextPage = function(offsetPage) {
+        $ionicLoading.show({
+            template: 'Cargando nueva página...'
+        });
+        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + offsetPage + '&sucursal_tipo=["Supermercado"]&comercio_bandera_nombre=["COTO CICSA"]', 'GET', '')
+        .success(function(resp) {
+            $ionicLoading.hide();
+            $scope.listBranchOffices = resp.sucursales;
+            $scope.listPage = resp;
+            $scope.countPage = ($scope.listPage.total / $scope.listPage.totalPagina).toFixed();
+            $scope.arrCountPage = [0,30,60];
+            
+            $ionicLoading.hide();
+        })
+        .error(function(resp) {
+            $ionicLoading.hide();
+        });
+    };
+    
+    $scope.clearFind = function() {
+        $scope.$root.SearchBranch='';
+    };
+    
+    
+    
+    
 
 })

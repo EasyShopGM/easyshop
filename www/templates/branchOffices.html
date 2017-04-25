@@ -19,6 +19,10 @@
 			width: 20%;
 		}
 		
+		.itemIconColor {
+			color: #55ACEE;
+		}
+		
 		.itemText {
 			font-size: 16px;
 			width: 70%;
@@ -36,7 +40,26 @@
     		border-right-style: solid;
     		border-right-color: black;
 		}
-	
+		
+		.itemPages {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		
+		.item {
+		    border-color: #ddd;
+		    background-color: #fff;
+		    color: #444;
+		    position: relative;
+		    z-index: 2;
+		    display: block;
+		    margin: -1px;
+		    font-size: 16px;
+		    padding-left: 5%;
+		    padding-right: 5%;
+		    padding-bottom: 0%;
+		    padding-top: 0%;
+		}
 	</style>
 
 	
@@ -50,21 +73,25 @@
 			<div style="border: 1px solid rgb(201, 201, 201);" class="col-40">
 				<div class="row">
 					<input class="cajaTexto" id="search" type="search" placeholder="Search..." ng-model="$root.SearchBranch">
-					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct($root.Searchproductos)"></button>
+					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 0%; color: #58ACFA" class="button button-icon icon ion-android-search" ng-visible="false" ng-click="findproduct($root.Searchproductos)"></button>
+					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 0%; color: #58ACFA" class="button button-icon icon ion-android-close" ng-visible="false" ng-click="clearFind()"></button>
 				</div>
 			</div>
 		</div>
 		
 		
 		<ion-list>
-			
-				<div id="selIdTodos" class="row input-label" style="padding-left: 5%;">
-					<div class="ng-binding itemText row" ng-click="loadNextPage()">
-						<ion-item class="item itemMy" ng-repeat="numPage in arrCountPage">
-							<label class="ion-ios-circle-filled itemIcon" ng-click="nextPage(numPage)"></label>
+			<div id="selIdTodos" class="row" style="padding-bottom: 0%;padding-top: 0%;">
+				<div class="row" style="width=100%; padding: 1px;">
+					<div class="row" style="margin-left: auto; margin-right: auto; width: auto;">
+						<ion-item ng-repeat="numPage in arrCountPage" style="margin-right: 5px;">
+							<div style="" ng-click="loadNextPage(numPage)">
+								<label class="ion-ios-circle-filled itemIcon itemIconColor" style="font-size:large; margin-left:5px; margin-right:5px;"></label>
+							</div>
 						</ion-item>
 					</div>
 				</div>
+			</div>
 			
 			
 			<ion-item class="item itemMy" ng-repeat="listBranchOffice in listBranchOffices | filter:SearchBranch"  item="item">

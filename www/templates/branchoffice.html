@@ -14,9 +14,26 @@
 	<ion-content ng-controller="branchoffice" style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 		<ion-list>
-			<label class="item item-input item-select rounded" ng-repeat="currSel in currSels" style="margin-bottom: 10px;">
-            	<div class="input-label">
+			
+			<ion-item class="item itemMy" ng-repeat="currSel in currSels"  item="item">
+				<div class="row input-label" style="padding-right:10%">
+					<div class="ng-binding itemText" ng-click="loadTypeBranchOffice(listBranchOffice)">
+						{{currSel.proc}}
+					</div>
+					<!--<label class="ion-ios-cart-outline itemIcon"></label>-->
+					<button ng-class="{'button-hidden':!disableTagButton}" style="color: #58ACFA" class="button button-icon icon ion-android-close" ng-visible="false" ng-click="clearFind()"></button>
+				</div>
+			</ion-item>
+			
+			
+			
+			
+			<label class="item row" ng-repeat="currSel in currSels" style="margin-bottom: 10px; width:80%;">
+            	<div class="" style="width:100%; padding-top: 10px;">
                 	{{currSel.proc}}:
+            	</div>
+            	<div>
+            	<button ng-class="{'button-hidden':!disableTagButton}" style="color: #58ACFA" class="button button-icon icon ion-android-close" ng-visible="false" ng-click="clearFind()"></button>
             	</div>
         	</label>
 		</ion-list>
