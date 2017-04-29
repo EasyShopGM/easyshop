@@ -1,0 +1,5 @@
+Definicion de imagenes segun nombre de cadena de supermercado
+
+
+Nombre          ID      Archivo
+COTO CICSA -->  12 -->  12.png

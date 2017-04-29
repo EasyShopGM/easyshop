@@ -24,58 +24,47 @@
 			width: 70%;
 			margin-top: 4%;
 		}
+		
 		.myTab {
 			padding-left: 5%;
 			border-bottom-width: 0.5px;
 			border-bottom-style: solid;
-    		border-bottom-color: black;
+			border-bottom-color: black;
 		}
 		
 		.lineDivisor {
 			border-right-width: 0.5px;
-    		border-right-style: solid;
-    		border-right-color: black;
+			border-right-style: solid;
+			border-right-color: black;
 		}
 	</style>
 
 	<ion-content ng-controller="typeBranchOffice" style="background-color:#fffff">
 		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
-		
-		
+
+
 		<div id="selIdTodos" class="row" style="padding-bottom: 0%;padding-top: 0%;">
-				<div class="row" style="width=100%; padding: 1px;">
-					
-					<div class="row" style="margin-left: auto;margin-right: auto;width: 100%;">
-						<ion-item style="margin-right: 0px; width: 100%;">
-				
-							<div class="row myTab">
-								<a class="tab-item lineDivisor" ng-click="filterType();">
-									<i class="icon ion-ios-pricetags-outline"></i>Tipo de Cadena<br>{{typeComerce}}
-								</a>
-								<a class="tab-item" ng-click="filterChain();">
-									<i class="icon ion-ios-flag-outline"></i>Nombre de Cadena<br>{{chainComerce}}
-								</a>
-							</div>
-							
-							
-				
-						</ion-item>
-					</div>
+			<div class="row" style="width=100%; padding: 1px;">
+
+				<div class="row" style="margin-left: auto;margin-right: auto;width: 100%;">
+					<ion-item style="margin-right: 0px; width: 100%;">
+
+						<div class="row myTab">
+							<a class="tab-item lineDivisor" ng-click="filterType();">
+								<i class="icon ion-ios-pricetags-outline"></i>Tipo de Cadena<br>{{typeComerce}}
+							</a>
+							<a class="tab-item" ng-click="filterChain();">
+								<i class="icon ion-ios-flag-outline"></i>Nombre de Cadena<br>{{chainComerce}}
+							</a>
+						</div>
+
+
+
+					</ion-item>
 				</div>
 			</div>
-		
-		
-<!--		
-		<div class="row myTab">
-			<a class="tab-item lineDivisor" ng-click="filterType();">
-				<i class="icon ion-ios-pricetags-outline"></i>Tipo de Cadena<br>{{typeComerce}}
-			</a>
-			<a class="tab-item" ng-click="filterChain();">
-				<i class="icon ion-ios-flag-outline"></i>Nombre de Cadena<br>{{chainComerce}}
-			</a>
 		</div>
-	-->	
-		
+
 		<div style="margin-bottom: 0%; margin-left: 4%; display: block; margin-top: 0px;" class="list card">
 			<div style="border: 1px solid rgb(201, 201, 201);" class="col-40">
 				<div class="row">
@@ -85,19 +74,17 @@
 				</div>
 			</div>
 		</div>
-		
-		
+
 		<ion-list>
-			
-				<div id="selIdTodos" class="row input-label" style="padding-left: 5%;">
-					<label class="ion-ios-cart-outline itemIcon"></label>
-					<div class="ng-binding itemText" ng-click="loadTypeBranchOffice('Todos')">
-						Todos
-					</div>
+
+			<div id="selIdTodos" class="row input-label" style="padding-left: 5%;">
+				<label class="ion-ios-cart-outline itemIcon"></label>
+				<div class="ng-binding itemText" ng-click="loadTypeBranchOffice('Todos')">
+					Todos
 				</div>
-			
-			
-			<ion-item class="item itemMy" ng-repeat="typeBranchOffice in typeBranchOffices | filter:Searchproductos"  item="item">
+			</div>
+
+			<ion-item class="item itemMy" ng-repeat="typeBranchOffice in typeBranchOffices | filter:Searchproductos" item="item">
 				<div class="row input-label">
 					<label class="ion-ios-cart-outline itemIcon"></label>
 					<div class="ng-binding itemText" ng-click="loadTypeBranchOffice(typeBranchOffice)">

@@ -133,3 +133,38 @@ angular.module('starter.services', [])
   };
   return srv_response;
 })
+
+
+
+.factory('SrvCallPreciosClaros', function($http, $ionicLoading, $ionicPopup, $rootScope) {
+
+    var srv_response = {
+    async: function(urlsrv, method_, params_) {
+
+       // $http returns a promise, which has a then function, which also returns a promise
+      var promise = $http({
+                      method: method_,
+                      url: urlsrv,
+                      data: params_,
+                      headers: {
+                            'Accept' : 'application/json, text/plain, */*',
+                            /*'Accept-Encoding' : 'gzip, deflate, sdch, br',*/
+                            'Accept-Language' : 'es-ES,es;q=0.8',
+                            /*'Connection' : 'keep-alive',*/
+                            /*'Host' : '3619otk88c.execute-api.us-east-1.amazonaws.com',*/
+                            /*'Origin' :'https://www.preciosclaros.gob.ar',*/
+                            /*'Referer': 'https://www.preciosclaros.gob.ar/',*/
+                            'x-api-key': 'zIgFou7Gta7g87VFGL9dZ4BEEs19gNYS1SOQZt96'
+                      }
+                    }).success(function(response){
+                        //console.log(response.surveys);
+                       return response.data;
+                    }).error(function(data, status){
+                        return status + ': ' + data;
+                    });
+    // Return the promise to the controller
+      return promise;
+    }
+  };
+  return srv_response;
+})

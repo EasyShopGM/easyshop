@@ -734,7 +734,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 })
 
 /* ****** Ordenar Producto ***** */
-.controller('orderproduct', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall) {
+.controller('orderproduct', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall, SrvCallPreciosClaros) {
 
 
 
@@ -746,7 +746,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.products = [];
 
         //SrvCall.async(PRECIOS_CLAROS, 'GET', '')
-        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
@@ -934,7 +934,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 
 /* ****** Ordenar Producto WH***** */
-.controller('orderproductWH', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall) {
+.controller('orderproductWH', function($rootScope, $scope, $http, $location, $ionicPopup, $localStorage, $state, $ionicLoading, SrvCall, SrvCallPreciosClaros) {
 
 
 
@@ -946,7 +946,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.products = [];
 
         //SrvCall.async(PRECIOS_CLAROS, 'GET', '')
-        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
@@ -1426,17 +1426,16 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 })
 
-.controller('typeBranchOffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+.controller('typeBranchOffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, SrvCallPreciosClaros, $ionicLoading, $ionicPopup) {
 
-    $rootScope.typeComerce = '';
-    $scope.chainComerce = 'Todos';
-    $scope.typeComerce = 'Todos';
+    $rootScope.chainComerce = 'Todos';
+    $rootScope.typeComerce = 'Todos';
 
 
     $scope.filterType = function() {
-        
+
         $scope.selecction = "type";
-        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=sucursal_tipo', 'GET', '')
+        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=sucursal_tipo', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.typeBranchOffices = resp.valoresFiltrables;
@@ -1449,16 +1448,16 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.filterChain = function() {
         $scope.selecction = "chain";
-        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=comercio_bandera_nombre', 'GET', '')
-        .success(function(resp) {
-            $ionicLoading.hide();
-            $scope.typeBranchOffices = resp.valoresFiltrables;
-            $ionicLoading.hide();
-        })
-        .error(function(resp) {
-            $ionicLoading.hide();
-        });
-    };    
+        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=comercio_bandera_nombre', 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.typeBranchOffices = resp.valoresFiltrables;
+                $ionicLoading.hide();
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+            });
+    };
 
     $scope.branchOffices = function() {
         $state.go("app.branchOffices");
@@ -1466,65 +1465,194 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.loadTypeBranchOffice = function(itemTypeBranchoffice) {
         if ($scope.selecction == "type") {
-            $scope.typeComerce = itemTypeBranchoffice;
+            $rootScope.typeComerce = itemTypeBranchoffice;
             $scope.$root.Searchproductos = '';
         }
         if ($scope.selecction == "chain") {
-            $scope.chainComerce = itemTypeBranchoffice;    
+            $rootScope.chainComerce = itemTypeBranchoffice;
             $scope.$root.Searchproductos = '';
         }
-        
-        //$state.go("app.chainBranchOffice");
     };
-
 
 })
 
-.controller('branchOffices', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+.controller('branchOffices', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, SrvCallPreciosClaros, $ionicLoading, $ionicPopup) {
 
-    SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&sucursal_tipo=["Supermercado"]&comercio_bandera_nombre=["COTO CICSA"]', 'GET', '')
-        .success(function(resp) {
-            $ionicLoading.hide();
-            $scope.listBranchOffices = resp.sucursales;
-            $scope.listPage = resp;
-            $scope.countPage = ($scope.listPage.total / $scope.listPage.totalPagina).toFixed();
-            $scope.arrCountPage = [0,30,60];
-            
-            $ionicLoading.hide();
-        })
-        .error(function(resp) {
-            $ionicLoading.hide();
-        });
+
+    $scope.noMoreItemsAvailable = false;
+    $scope.nroPag = 0;
+    var varCriterioType = '';
+    var varCriterioBranchOffice = '';
+
+
+    if ($rootScope.typeComerce != 'Todos') {
+        varCriterioType = '&sucursal_tipo=["' + $rootScope.typeComerce + '"]';
+    }
+
+    if ($rootScope.chainComerce != 'Todos') {
+        varCriterioBranchOffice = '&comercio_bandera_nombre=["' + $rootScope.chainComerce + '"]';
+    }
+
+    SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=0' + varCriterioType + varCriterioBranchOffice, 'GET', '')
+    .success(function(resp) {
+        $ionicLoading.hide();
+        $scope.listBranchOffices = resp.sucursales;
+        $ionicLoading.hide();
+    })
+    .error(function(resp) {
+        $ionicLoading.hide();
+    });
+
+
 
     $scope.exitBranchOffices = function() {
         $state.go("app.branchoffice");
     };
-    
+
+/*
     $scope.loadNextPage = function(offsetPage) {
+        console.log("sergio");
         $ionicLoading.show({
             template: 'Cargando nueva página...'
         });
-        SrvCall.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + offsetPage + '&sucursal_tipo=["Supermercado"]&comercio_bandera_nombre=["COTO CICSA"]', 'GET', '')
-        .success(function(resp) {
-            $ionicLoading.hide();
-            $scope.listBranchOffices = resp.sucursales;
-            $scope.listPage = resp;
-            $scope.countPage = ($scope.listPage.total / $scope.listPage.totalPagina).toFixed();
-            $scope.arrCountPage = [0,30,60];
-            
-            $ionicLoading.hide();
-        })
-        .error(function(resp) {
-            $ionicLoading.hide();
-        });
+        
+        var varCriterioType = '';
+        var varCriterioBranchOffice = '';
+
+        if ($rootScope.typeComerce != 'Todos') {
+            varCriterioType = '&sucursal_tipo=["' + $rootScope.typeComerce + '"]';
+        }
+        
+        if ($rootScope.chainComerce != 'Todos') {
+            varCriterioBranchOffice = '&comercio_bandera_nombre=["' + $rootScope.chainComerce + '"]';
+        }
+
+console.log($rootScope.typeComerce);
+console.log($rootScope.chainComerce);
+console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + $scope.nroPagContenido + varCriterioType + varCriterioBranchOffice);
+        
+console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + offsetPage + varCriterioType + varCriterioBranchOffice);
+        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + offsetPage + varCriterioType + varCriterioBranchOffice, 'GET', '')
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $scope.listBranchOffices = resp.sucursales;
+                $scope.listPage = resp;
+                $rootScope.countPage = ($scope.listPage.total / $scope.listPage.totalPagina).toFixed();
+                $scope.arrCountPage = [0, 30, 60];
+
+                $ionicLoading.hide();
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+            });
     };
+*/    
     
+/*
     $scope.clearFind = function() {
-        $scope.$root.SearchBranch='';
+        $scope.$root.SearchBranch = '';
     };
+*/
+
+
+    $scope.doRefresh = function() {
+        
+        console.log("en el refresh");
+        
+        var varCriterioType = '';
+        var varCriterioBranchOffice = '';
+        
+        $scope.noMoreItemsAvailable = false;
+
+        if ($rootScope.typeComerce != 'Todos') {
+            varCriterioType = '&sucursal_tipo=["' + $rootScope.typeComerce + '"]';
+        }
+
+        if ($rootScope.chainComerce != 'Todos') {
+            varCriterioBranchOffice = '&comercio_bandera_nombre=["' + $rootScope.chainComerce + '"]';
+        }
+
+        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=0' + varCriterioType + varCriterioBranchOffice, 'GET', '')
+            .success(function(resp) {
+                $scope.listBranchOffices = resp.sucursales;
+                $ionicLoading.hide();
+                $scope.$broadcast('scroll.refreshComplete');
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+                $scope.$broadcast('scroll.refreshComplete');
+            });
+    };
+
+    $scope.loadMore = function() {
+            $scope.nroPagContenido = $scope.nroPag * 30;
+            $scope.nroPag = $scope.nroPag + 1;
+            var varCriterioType = '';
+            var varCriterioBranchOffice = '';
+
+            if ($rootScope.typeComerce != 'Todos') {
+                varCriterioType = '&sucursal_tipo=["' + $rootScope.typeComerce + '"]';
+            }
     
-    
-    
-    
+            if ($rootScope.chainComerce != 'Todos') {
+                varCriterioBranchOffice = '&comercio_bandera_nombre=["' + $rootScope.chainComerce + '"]';
+            }
+
+            SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + $scope.nroPagContenido + varCriterioType + varCriterioBranchOffice, 'GET', '')            
+                .success(function(resp) {
+                     
+                    $scope.listBranchOffices = $scope.listBranchOffices.concat(resp.sucursales);
+                    
+                    if (resp.totalPagina == 0) {
+                        alert(resp.totalPagina);
+                        $scope.noMoreItemsAvailable = true;
+                    } else {
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                        $scope.noMoreItemsAvailable = false;
+                    }
+                })
+                .error(function(resp) {
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                    $scope.noMoreItemsAvailable = true;
+                });
+
+    };
+
+
+    $scope.selectBranchOffice = function(itemBranchOffice, id) {
+        document.getElementById("itemBranchOffice_" + itemBranchOffice.id).style.backgroundColor="#77c2fb";
+        alert("seleccione una sucursal");
+        console.log(itemBranchOffice);
+        console.log(itemBranchOffice.id);
+//        console.log(warwhouse._id.$oid);
+        
+        
+        var objeto_Warehouse = '{"$set":{';
+        objeto_Warehouse = objeto_Warehouse + '"branch_office":"' + itemBranchOffice.id + '",';
+        objeto_Warehouse = objeto_Warehouse + '"branch_office_icon":"' + itemBranchOffice.comercioId + '.png"';
+        objeto_Warehouse = objeto_Warehouse + '}}';
+        
+        console.log(objeto_Warehouse);
+/*
+        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + warwhouse._id.$oid + '"}}',
+                'PUT',
+                objeto_Warehouse
+            )
+            .success(function(resp) {
+                $ionicLoading.hide();
+               
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Ups!',
+                    template: resp,
+                    okText: 'OK!'
+                });
+            });
+*/        
+        
+    };
+
 
 })
