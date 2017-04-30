@@ -4,9 +4,9 @@
 		<ion-nav-back-button class="button back-button"><i class="icon ion-ios7-arrow-back"></i>Back</ion-nav-back-button>
 	</ion-nav-buttons>
 
-	<!--<ion-nav-buttons side="right">
-		<button class="button button-icon ion-ios-undo-outline" style="color: #FFFFFF;" ng-click="exitBranchOffices();"></button>
-	</ion-nav-buttons>-->
+	<ion-nav-buttons side="right">
+		<button class="button button-icon ion-android-checkmark-circle" style="color: #FFFFFF;" ng-click="setBranchOffices();"></button>
+	</ion-nav-buttons>
 	<style>
 	
 		.itemMy {
@@ -63,7 +63,7 @@
 	</style>
 
 	<ion-content style="background-color:#fffff">
-		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
+		<ion-refresher on-refresh="doRefresh()" style="transform: translate3d(0px, -14px, 0px) scale(1);" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
 		<div style="margin-bottom: 0%; margin-left: 4%; display: block;" class="list card">
 			<div style="border: 1px solid rgb(201, 201, 201);" class="col-40">
 				<div class="row">

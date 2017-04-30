@@ -525,6 +525,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 
     $scope.branchOffice = function(warehouse) {
+        $rootScope.warehouse = warehouse;
         $state.go("app.branchoffice");
     };
 
@@ -1448,6 +1449,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.filterChain = function() {
         $scope.selecction = "chain";
+
+        
         SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=comercio_bandera_nombre', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
@@ -1466,10 +1469,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.loadTypeBranchOffice = function(itemTypeBranchoffice) {
         if ($scope.selecction == "type") {
             $rootScope.typeComerce = itemTypeBranchoffice;
+            $rootScope.chainComerce = 'Todos';
             $scope.$root.Searchproductos = '';
         }
         if ($scope.selecction == "chain") {
             $rootScope.chainComerce = itemTypeBranchoffice;
+            $rootScope.typeComerce = 'Todos';
             $scope.$root.Searchproductos = '';
         }
     };
@@ -1481,10 +1486,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.noMoreItemsAvailable = false;
     $scope.nroPag = 0;
+    
     var varCriterioType = '';
     var varCriterioBranchOffice = '';
+    $scope.listBranchOffices = [];
 
-
+/*
     if ($rootScope.typeComerce != 'Todos') {
         varCriterioType = '&sucursal_tipo=["' + $rootScope.typeComerce + '"]';
     }
@@ -1498,72 +1505,67 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $ionicLoading.hide();
         $scope.listBranchOffices = resp.sucursales;
         $ionicLoading.hide();
+        if (resp.totalPagina == 0) {
+            alert(resp.totalPagina);
+            $scope.noMoreItemsAvailable = true;
+        } else {
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.noMoreItemsAvailable = false;
+        }
     })
     .error(function(resp) {
         $ionicLoading.hide();
     });
+*/
 
 
-
-    $scope.exitBranchOffices = function() {
-        $state.go("app.branchoffice");
-    };
-
-/*
-    $scope.loadNextPage = function(offsetPage) {
-        console.log("sergio");
+    $scope.setBranchOffices = function(itemBranchOffice, id) {
         $ionicLoading.show({
-            template: 'Cargando nueva página...'
+            template: 'Asignando una sucursal a la lista...'
         });
         
-        var varCriterioType = '';
-        var varCriterioBranchOffice = '';
-
-        if ($rootScope.typeComerce != 'Todos') {
-            varCriterioType = '&sucursal_tipo=["' + $rootScope.typeComerce + '"]';
-        }
+        var objeto_Warehouse = '{"$set":{';
+        objeto_Warehouse = objeto_Warehouse + '"branch_office":"' + itemBranchOffice.id + '",';
+        objeto_Warehouse = objeto_Warehouse + '"branch_office_icon":"' + itemBranchOffice.comercioId + '.png"';
+        objeto_Warehouse = objeto_Warehouse + '}}';
         
-        if ($rootScope.chainComerce != 'Todos') {
-            varCriterioBranchOffice = '&comercio_bandera_nombre=["' + $rootScope.chainComerce + '"]';
-        }
-
-console.log($rootScope.typeComerce);
-console.log($rootScope.chainComerce);
-console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + $scope.nroPagContenido + varCriterioType + varCriterioBranchOffice);
-        
-console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + offsetPage + varCriterioType + varCriterioBranchOffice);
-        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + offsetPage + varCriterioType + varCriterioBranchOffice, 'GET', '')
+        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + $rootScope.warehouse._id.$oid + '"}}',
+                'PUT',
+                objeto_Warehouse
+            )
             .success(function(resp) {
                 $ionicLoading.hide();
-                $scope.listBranchOffices = resp.sucursales;
-                $scope.listPage = resp;
-                $rootScope.countPage = ($scope.listPage.total / $scope.listPage.totalPagina).toFixed();
-                $scope.arrCountPage = [0, 30, 60];
-
-                $ionicLoading.hide();
+                $state.go("app.branchoffice");
             })
             .error(function(resp) {
                 $ionicLoading.hide();
-            });
+                $ionicPopup.alert({
+                    title: 'Asignación de comercio',
+                    template: 'No se pudo realiar la operación.',
+                    okText: 'OK!'
+                });
+            });        
+        
+        $state.go("app.branchoffice");
     };
-*/    
-    
-/*
-    $scope.clearFind = function() {
-        $scope.$root.SearchBranch = '';
-    };
-*/
-
 
     $scope.doRefresh = function() {
         
         console.log("en el refresh");
-        
+        $scope.noMoreItemsAvailable = false;
         var varCriterioType = '';
         var varCriterioBranchOffice = '';
         
         $scope.noMoreItemsAvailable = false;
-
+        $scope.nroPag = 0;
+        
+        $scope.listBranchOffices = [];
+        $ionicLoading.hide();
+        
+        $scope.noMoreItemsAvailable = false;
+        $scope.loadMore();
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+/*
         if ($rootScope.typeComerce != 'Todos') {
             varCriterioType = '&sucursal_tipo=["' + $rootScope.typeComerce + '"]';
         }
@@ -1577,11 +1579,19 @@ console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursal
                 $scope.listBranchOffices = resp.sucursales;
                 $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
+                if (resp.totalPagina == 0) {
+                        alert(resp.totalPagina);
+                        $scope.noMoreItemsAvailable = true;
+                    } else {
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                        $scope.noMoreItemsAvailable = false;
+                    }
             })
             .error(function(resp) {
                 $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
             });
+*/            
     };
 
     $scope.loadMore = function() {
@@ -1604,7 +1614,6 @@ console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursal
                     $scope.listBranchOffices = $scope.listBranchOffices.concat(resp.sucursales);
                     
                     if (resp.totalPagina == 0) {
-                        alert(resp.totalPagina);
                         $scope.noMoreItemsAvailable = true;
                     } else {
                         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -1620,37 +1629,16 @@ console.log('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursal
 
 
     $scope.selectBranchOffice = function(itemBranchOffice, id) {
-        document.getElementById("itemBranchOffice_" + itemBranchOffice.id).style.backgroundColor="#77c2fb";
-        alert("seleccione una sucursal");
-        console.log(itemBranchOffice);
-        console.log(itemBranchOffice.id);
-//        console.log(warwhouse._id.$oid);
-        
-        
-        var objeto_Warehouse = '{"$set":{';
-        objeto_Warehouse = objeto_Warehouse + '"branch_office":"' + itemBranchOffice.id + '",';
-        objeto_Warehouse = objeto_Warehouse + '"branch_office_icon":"' + itemBranchOffice.comercioId + '.png"';
-        objeto_Warehouse = objeto_Warehouse + '}}';
-        
-        console.log(objeto_Warehouse);
-/*
-        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + warwhouse._id.$oid + '"}}',
-                'PUT',
-                objeto_Warehouse
-            )
-            .success(function(resp) {
-                $ionicLoading.hide();
-               
-            })
-            .error(function(resp) {
-                $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: 'Ups!',
-                    template: resp,
-                    okText: 'OK!'
-                });
-            });
-*/        
+
+        if (document.getElementById("itemBranchOffice_" + itemBranchOffice.id).style.backgroundColor == "rgb(119, 194, 251)") {
+            document.getElementById("itemBranchOffice_" + itemBranchOffice.id).style.backgroundColor="White";
+        } else {
+            document.getElementById("itemBranchOffice_" + itemBranchOffice.id).style.backgroundColor="rgb(119, 194, 251)";
+        }
+
+
+    
+    
         
     };
 
