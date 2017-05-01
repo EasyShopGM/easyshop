@@ -10,7 +10,6 @@
 
 
 	<style>
-	
 		.itemMy {
 			margin-bottom: 0px;
 			width: 100%;
@@ -30,17 +29,18 @@
 			width: 70%;
 			margin-top: 4%;
 		}
+		
 		.myTab {
 			padding-left: 5%;
 			border-bottom-width: 0.5px;
 			border-bottom-style: solid;
-    		border-bottom-color: black;
+			border-bottom-color: black;
 		}
 		
 		.lineDivisor {
 			border-right-width: 0.5px;
-    		border-right-style: solid;
-    		border-right-color: black;
+			border-right-style: solid;
+			border-right-color: black;
 		}
 		
 		.itemPages {
@@ -49,47 +49,61 @@
 		}
 		
 		.item {
-		    border-color: #ddd;
-		    background-color: #fff;
-		    color: #444;
-		    position: relative;
-		    z-index: 2;
-		    display: block;
-		    margin: -1px;
-		    font-size: 16px;
-		    padding-left: 5%;
-		    padding-right: 5%;
-		    padding-bottom: 0%;
-		    padding-top: 0%;
+			border-color: #ddd;
+			background-color: #fff;
+			color: #444;
+			position: relative;
+			z-index: 2;
+			display: block;
+			margin: -1px;
+			font-size: 16px;
+			padding-left: 5%;
+			padding-right: 5%;
+			padding-bottom: 0%;
+			padding-top: 0%;
 		}
 	</style>
 
 	<!-- ion-content style="background-color:#fffff" -->
 	<ion-content ng-controller="branchoffice" style="background-color:#fffff">
-		<ion-refresher on-refresh="doRefresh()" pulling-text="<h6 class='no-margin'></h6>"></ion-refresher>
-		<ion-list>
-			
-			<ion-item class="item itemMy" ng-repeat="currSel in currSels"  item="item">
-				<div class="row input-label" style="padding-right:10%">
-					<div class="ng-binding itemText" ng-click="loadTypeBranchOffice(listBranchOffice)">
-						{{currSel.proc}}
+		<ion-item class="list card" ng-repeat="currSel in currSels">
+			<div style="margin-bottom: 0%; margin-left: 8%; display: block;" class="list card">
+				<div>
+					<div>
+						<p style="padding-top: 0px; font-weight: bold; color: black; font-size: 90%; padding-left: 10px;" class="">
+							<ins>{{currSel.sucursalNombre}}</ins>
+						</p>
 					</div>
-					<!--<label class="ion-ios-cart-outline itemIcon"></label>-->
-					<button ng-class="{'button-hidden':!disableTagButton}" style="color: #58ACFA" class="button button-icon icon ion-android-close" ng-visible="false" ng-click="clearFind()"></button>
 				</div>
-			</ion-item>
-			
-			
-			
-			
-			<label class="item row" ng-repeat="currSel in currSels" style="margin-bottom: 10px; width:80%;">
-            	<div class="" style="width:100%; padding-top: 10px;">
-                	{{currSel.proc}}:
-            	</div>
-            	<div>
-            	<button ng-class="{'button-hidden':!disableTagButton}" style="color: #58ACFA" class="button button-icon icon ion-android-close" ng-visible="false" ng-click="clearFind()"></button>
-            	</div>
-        	</label>
-		</ion-list>
+				<div style="border-bottom: 1px solid rgb(201, 201, 201);z-index: 999;" class="item item-image">
+					<img class="catagory_img" ng-src="{{product.link}}" />
+				</div>
+				<div class="row">
+					<div class="col-50">
+						<p style="padding-top: 0px;font-weight: bold; color: rgb(95, 95, 95); font-size: 12px; padding-left: 10px;" class="">
+							{{currSel.banderaDescripcion}}
+						</p>
+						<p style="padding-top: 0px;font-weight: bold; color: rgb(95, 95, 95); font-size: 12px; padding-left: 10px;" class="">
+							{{currSel.direccion}}
+						</p>
+						<p style="padding-top: 0px;font-weight: bold; color: rgb(95, 95, 95); font-size: 12px; padding-left: 10px;" class="">
+							{{currSel.localidad}}
+						</p>
+					</div>
+					<div class="col" style="padding-left: 32%;">
+						<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-calculator-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
+					</div>
+				</div>
+			</div>
+			<div style="padding-top: -30%;" class="row">
+				<div style="width: 100%">
+					<img style="padding-top: 0%; width: 19%; margin-left: 9%;" ng-src="img/{{currSel.comercioId}}-{{currSel.banderaId}}.png" onerror="this.onerror=null;this.src='img/imagenotfound.gif';" />
+				</div>
+				<div style="width: 40%">
+					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-shuffle" ng-visible="false" ng-click="addlist({{product}})"></button>
+					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-trash-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
+				</div>
+			</div>
+		</ion-item>
 	</ion-content>
 </ion-view>

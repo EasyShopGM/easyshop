@@ -525,6 +525,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.branchOffice = function(warehouse) {
         $rootScope.warehouse = warehouse;
+        console.log(warehouse);
         $state.go("app.branchoffice");
     };
 
@@ -1396,19 +1397,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 .controller('branchoffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
 
-    $scope.currSels = [{
-        proc: "los que tengo en la almacen configurado 1",
-        board: "Alloc"
-    }, {
-        proc: "los que tengo en la almacen configurado 2",
-        board: "Alloc"
-    }, {
-        proc: "los que tengo en la almacen configurado 3",
-        board: "Alloc"
-    }, {
-        proc: "los que tengo en la almacen configurado 4",
-        board: "Alloc"
-    }];
+    $scope.currSels = $rootScope.warehouse.branch_office;
+    
 
     $scope.addTypeBranchOffice = function() {
         $state.go("app.typeBranchOffice");
@@ -1496,7 +1486,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             )
             .success(function(resp) {
                 $ionicLoading.hide();
-                $state.go("app.branchoffice");
+                $ionicPopup.alert({
+                    title: 'Asignación de comercio',
+                    template: 'Se actualizo correctamente.',
+                    okText: 'OK!'
+                });
+                $state.go("app.warehouseslist");
             })
             .error(function(resp) {
                 $ionicLoading.hide();
@@ -1506,9 +1501,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                     okText: 'OK!'
                 });
             });
-
-        $state.go("app.branchoffice");
-        
     };
 
     $scope.doRefresh = function() {
