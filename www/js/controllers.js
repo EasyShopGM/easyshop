@@ -743,7 +743,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.products = [];
 
         //SrvCall.async(PRECIOS_CLAROS, 'GET', '')
-        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
@@ -942,7 +942,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.products = [];
 
         //SrvCall.async(PRECIOS_CLAROS, 'GET', '')
-        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
@@ -1395,9 +1395,47 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 })
 
-.controller('branchoffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup) {
+.controller('branchoffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup, SrvCallPreciosClaros) {
 
     $scope.currSels = $rootScope.warehouse.branch_office;
+    //console.log($scope.currSels);
+    
+    var item = '';
+    var obj = '';
+    $scope.currSelsNew = [];
+
+    //var headerBranchOffice = ''; 
+    
+    $scope.currSels.forEach(function(itemBranchOffice) {
+        
+        //console.log(itemBranchOffice.id);
+        //console.log(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=7790130000065,7792710000182'); 
+        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=7790130000065,7792710000182', 'GET', '')
+            .success(function(resp) {
+      
+                console.log(resp);
+      
+                item = {
+                    "quantityProductsFound": resp.totalProductos ,
+                    "totalValueProductsFound": resp.sucursales[0].sumaPrecioListaTotal
+                    };
+                obj = Object.assign({}, itemBranchOffice, item);
+                $scope.currSelsNew.push(obj);
+                
+/*                console.log($scope.currSelsNew);
+                console.log($scope.currSels);*/
+            
+            })
+            .error(function(resp) {
+                console.log("salio por error");
+            });
+        
+    });
+        
+
+    
+    
+            
     
 
     $scope.addTypeBranchOffice = function() {
@@ -1415,7 +1453,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.filterType = function() {
 
         $scope.selecction = "type";
-        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=sucursal_tipo', 'GET', '')
+        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/dev/filtros?field=sucursal_tipo', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.typeBranchOffices = resp.valoresFiltrables;
@@ -1430,7 +1468,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.selecction = "chain";
 
 
-        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/filtros?field=comercio_bandera_nombre', 'GET', '')
+        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/dev/filtros?field=comercio_bandera_nombre', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.typeBranchOffices = resp.valoresFiltrables;
@@ -1535,7 +1573,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             varCriterioBranchOffice = '&comercio_bandera_nombre=["' + $rootScope.chainComerce + '"]';
         }
 
-        SrvCallPreciosClaros.async('https://3619otk88c.execute-api.us-east-1.amazonaws.com/dev/sucursales?limit=30&offset=' + $scope.nroPagContenido + varCriterioType + varCriterioBranchOffice, 'GET', '')
+        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/dev/sucursales?limit=30&offset=' + $scope.nroPagContenido + varCriterioType + varCriterioBranchOffice, 'GET', '')
             .success(function(resp) {
 
                 $scope.listBranchOffices = $scope.listBranchOffices.concat(resp.sucursales);

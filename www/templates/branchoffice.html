@@ -62,16 +62,28 @@
 			padding-bottom: 0%;
 			padding-top: 0%;
 		}
+		
+		.card {
+		    padding-top: 1px;
+		    padding-bottom: 1px;
+		    box-shadow: -13px 2px 27px rgba(0, 0, 0, 0.35);
+		}
 	</style>
 
 	<!-- ion-content style="background-color:#fffff" -->
-	<ion-content ng-controller="branchoffice" style="background-color:#fffff">
-		<ion-item class="list card" ng-repeat="currSel in currSels">
+	<ion-content style="background-color:#fffff">
+		<ion-item class="list card" ng-repeat="currSel in currSelsNew">
 			<div style="margin-bottom: 0%; margin-left: 8%; display: block;" class="list card">
 				<div>
 					<div>
 						<p style="padding-top: 0px; font-weight: bold; color: black; font-size: 90%; padding-left: 10px;" class="">
 							<ins>{{currSel.sucursalNombre}}</ins>
+						</p>
+						<p style="padding-top: 0px; font-weight: normal; color: black; font-size: 90%; padding-left: 10px;" class="">
+							Cantidad de product encontados: {{currSel.quantityProductsFound}}
+						</p>
+						<p style="padding-top: 0px; font-weight: normal; color: black; font-size: 90%; padding-left: 10px;" class="">
+							Suma total de la lista: {{currSel.totalValueProductsFound}} 
 						</p>
 					</div>
 				</div>
@@ -91,7 +103,7 @@
 						</p>
 					</div>
 					<div class="col" style="padding-left: 32%;">
-						<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-calculator-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
+						<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-heart-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
 					</div>
 				</div>
 			</div>
@@ -100,7 +112,7 @@
 					<img style="padding-top: 0%; width: 19%; margin-left: 9%;" ng-src="img/{{currSel.comercioId}}-{{currSel.banderaId}}.png" onerror="this.onerror=null;this.src='img/imagenotfound.gif';" />
 				</div>
 				<div style="width: 40%">
-					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-shuffle" ng-visible="false" ng-click="addlist({{product}})"></button>
+					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-glasses-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
 					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-trash-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
 				</div>
 			</div>
