@@ -1397,8 +1397,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 .controller('branchoffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup, SrvCallPreciosClaros) {
 
-
-
     SrvCall.async(MLAB_SRV + MONGODB_DB + PRODUCTS_URL + '?' + API_KEY + '&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}&s={"Estado": 1}', 'GET', '')
         .success(function(resp) {
             $ionicLoading.hide();
@@ -1406,52 +1404,66 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             //console.log(resp);
 
             var listProducts = resp;
-            
+
             var arrayParamListProd = '';
-            
-            listProducts.forEach(function(itemListProduct) {
-               arrayParamListProd = arrayParamListProd + itemListProduct.id + ',';
-            });
-            
-            arrayParamListProd = arrayParamListProd + arrayParamListProd.substring(0, arrayParamListProd.length - 1);
-        
-            console.log(arrayParamListProd);
+
+            if (listProducts.length > 0) {
+
+                listProducts.forEach(function(itemListProduct) {
+                    arrayParamListProd = arrayParamListProd + itemListProduct.id + ',';
+                });
+
+                arrayParamListProd = arrayParamListProd + arrayParamListProd.substring(0, arrayParamListProd.length - 1);
+
+            }
+            //console.log(arrayParamListProd);
 
             $scope.currSels = $rootScope.warehouse.branch_office;
             //console.log($scope.currSels);
-            
+
             var item = '';
             var obj = '';
             $scope.currSelsNew = [];
-        
+            console.log("Lista de productos seleccionados 2");
+
             //var headerBranchOffice = ''; 
-            
-            $scope.currSels.forEach(function(itemBranchOffice) {
-        
-                SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd, 'GET', '')
-                    .success(function(resp) {
-                        item = {
-                            "quantityProductsFound": resp.totalProductos ,
-                            "totalValueProductsFound": resp.sucursales[0].sumaPrecioListaTotal
-                            };
-                        obj = Object.assign({}, itemBranchOffice, item);
-                        $scope.currSelsNew.push(obj);
-                    })
-                    .error(function(resp) {
-        
-                    });
-                
-            });
+            console.log("que es branch office");
+            console.log($scope.currSels);
+            if (($scope.currSels === undefined) || ($scope.currSels == null)) {}
+            else {
+
+
+                $scope.currSels.forEach(function(itemBranchOffice) {
+
+                    console.log(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd);
+                    SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd, 'GET', '')
+                        .success(function(resp) {
+                            if ((resp.totalProductos === undefined) || (resp.totalProductos == null)) {
+                                item = {
+                                    "quantityProductsFound": 0.00,
+                                    "totalValueProductsFound": 0.00
+                                };
+                            }
+                            else {
+                                item = {
+                                    "quantityProductsFound": resp.totalProductos,
+                                    "totalValueProductsFound": resp.sucursales[0].sumaPrecioListaTotal
+                                };
+                            }
+                            obj = Object.assign({}, itemBranchOffice, item);
+                            $scope.currSelsNew.push(obj);
+                        })
+                        .error(function(resp) {
+
+                        });
+
+                });
+            }
         })
         .error(function(resp) {
 
         });
-
     
-    
-            
-    
-
     $scope.addTypeBranchOffice = function() {
         $state.go("app.typeBranchOffice");
     };
