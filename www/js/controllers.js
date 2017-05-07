@@ -1397,41 +1397,55 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 .controller('branchoffice', function($rootScope, $scope, $http, $location, $localStorage, $state, SrvCall, $ionicLoading, $ionicPopup, SrvCallPreciosClaros) {
 
-    $scope.currSels = $rootScope.warehouse.branch_office;
-    //console.log($scope.currSels);
-    
-    var item = '';
-    var obj = '';
-    $scope.currSelsNew = [];
 
-    //var headerBranchOffice = ''; 
-    
-    $scope.currSels.forEach(function(itemBranchOffice) {
-        
-        //console.log(itemBranchOffice.id);
-        //console.log(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=7790130000065,7792710000182'); 
-        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=7790130000065,7792710000182', 'GET', '')
-            .success(function(resp) {
-      
-                console.log(resp);
-      
-                item = {
-                    "quantityProductsFound": resp.totalProductos ,
-                    "totalValueProductsFound": resp.sucursales[0].sumaPrecioListaTotal
-                    };
-                obj = Object.assign({}, itemBranchOffice, item);
-                $scope.currSelsNew.push(obj);
-                
-/*                console.log($scope.currSelsNew);
-                console.log($scope.currSels);*/
+
+    SrvCall.async(MLAB_SRV + MONGODB_DB + PRODUCTS_URL + '?' + API_KEY + '&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}&s={"Estado": 1}', 'GET', '')
+        .success(function(resp) {
+            $ionicLoading.hide();
+            console.log("Lista de productos seleccionados");
+            //console.log(resp);
+
+            var listProducts = resp;
             
-            })
-            .error(function(resp) {
-                console.log("salio por error");
+            var arrayParamListProd = '';
+            
+            listProducts.forEach(function(itemListProduct) {
+               arrayParamListProd = arrayParamListProd + itemListProduct.id + ',';
             });
+            
+            arrayParamListProd = arrayParamListProd + arrayParamListProd.substring(0, arrayParamListProd.length - 1);
         
-    });
+            console.log(arrayParamListProd);
+
+            $scope.currSels = $rootScope.warehouse.branch_office;
+            //console.log($scope.currSels);
+            
+            var item = '';
+            var obj = '';
+            $scope.currSelsNew = [];
         
+            //var headerBranchOffice = ''; 
+            
+            $scope.currSels.forEach(function(itemBranchOffice) {
+        
+                SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd, 'GET', '')
+                    .success(function(resp) {
+                        item = {
+                            "quantityProductsFound": resp.totalProductos ,
+                            "totalValueProductsFound": resp.sucursales[0].sumaPrecioListaTotal
+                            };
+                        obj = Object.assign({}, itemBranchOffice, item);
+                        $scope.currSelsNew.push(obj);
+                    })
+                    .error(function(resp) {
+        
+                    });
+                
+            });
+        })
+        .error(function(resp) {
+
+        });
 
     
     

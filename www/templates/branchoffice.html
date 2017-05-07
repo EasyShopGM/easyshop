@@ -79,11 +79,14 @@
 						<p style="padding-top: 0px; font-weight: bold; color: black; font-size: 90%; padding-left: 10px;" class="">
 							<ins>{{currSel.sucursalNombre}}</ins>
 						</p>
-						<p style="padding-top: 0px; font-weight: normal; color: black; font-size: 90%; padding-left: 10px;" class="">
-							Cantidad de product encontados: {{currSel.quantityProductsFound}}
+						<div style="border-bottom: 1px solid rgb(201, 201, 201);z-index: 999;" class="item item-image">
+							<img class="catagory_img" ng-src="{{product.link}}" />
+						</div>
+						<p style="padding-top: 10px; font-weight: normal; color: black; font-size: 90%; padding-left: 10px;" class="">
+							Cantidad de productos disponibles: {{currSel.quantityProductsFound}}
 						</p>
-						<p style="padding-top: 0px; font-weight: normal; color: black; font-size: 90%; padding-left: 10px;" class="">
-							Suma total de la lista: {{currSel.totalValueProductsFound}} 
+						<p style="padding-top: 5px; padding-bottom:0px; font-weight: normal; color: black; font-size: 90%; padding-left: 10px;" class="">
+							Importe total de la compra: $ {{currSel.totalValueProductsFound}} 
 						</p>
 					</div>
 				</div>
