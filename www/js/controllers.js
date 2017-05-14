@@ -1467,6 +1467,67 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.addTypeBranchOffice = function() {
         $state.go("app.typeBranchOffice");
     };
+    
+    $scope.branchFavorit = function(ob) {
+        
+        falta probar
+        console.log(ob.id);
+       /*
+        var objeto_Warehouse = '{ "$set" : { "branch_favorit" : ' + ob.id + ' } }';
+
+        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + $rootScope.warehouse._id.$oid + '"}}',
+                'PUT',
+                objeto_Warehouse
+            )
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Asignación de comercio',
+                    template: 'Se establecio el comercio correctamente.',
+                    okText: 'OK!'
+                });
+                $state.go("app.warehouseslist");
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Asignación de comercio',
+                    template: 'No se pudo realiar la operación.',
+                    okText: 'OK!'
+                });
+            });
+            */
+        
+    };
+    
+    $scope.removeItem = function(id_item) {
+        console.log("pasas " + id_item);
+        $rootScope.warehouse.branch_office.splice(id_item,1);
+        var objeto_Warehouse = '{ "$set" : { "branch_office" : ' + JSON.stringify($rootScope.warehouse.branch_office) + ' } }';
+
+        SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + $rootScope.warehouse._id.$oid + '"}}',
+                'PUT',
+                objeto_Warehouse
+            )
+            .success(function(resp) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Asignación de comercio',
+                    template: 'Se elimino correctamente.',
+                    okText: 'OK!'
+                });
+                $state.go("app.warehouseslist");
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Asignación de comercio',
+                    template: 'No se pudo realiar la operación.',
+                    okText: 'OK!'
+                });
+            });
+        
+    };
 
 })
 
@@ -1539,10 +1600,18 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             template: 'Asignando una sucursal a la lista...'
         });
 
-        console.log($scope.arrAddSucursal);
+        //console.log($scope.arrAddSucursal);
+        console.log("hare the branch select");
+        console.log($rootScope.warehouse.branch_office);
+        var myobjCaajo = $rootScope.warehouse.branch_office;
+        $rootScope.warehouse.branch_office = myobjCaajo.concat($scope.arrAddSucursal);
+        myobjCaajo = '';
         
-        var objeto_Warehouse = '{ "$set" : { "branch_office" : ' + JSON.stringify($scope.arrAddSucursal) + ' } }';
-
+        
+        console.log("mi puto array");
+        console.log(myobjCaajo);
+        
+        var objeto_Warehouse = '{ "$set" : { "branch_office" : ' + JSON.stringify($rootScope.warehouse.branch_office) + ' } }';
 
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + $rootScope.warehouse._id.$oid + '"}}',
                 'PUT',

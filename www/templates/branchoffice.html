@@ -106,7 +106,7 @@
 						</p>
 					</div>
 					<div class="col" style="padding-left: 32%;">
-						<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-heart-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
+						<button style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-heart-outline" ng-visible="false" ng-click="branchFavorit({{currSel}})"></button>
 					</div>
 				</div>
 			</div>
@@ -115,8 +115,8 @@
 					<img style="padding-top: 0%; width: 19%; margin-left: 9%;" ng-src="img/{{currSel.comercioId}}-{{currSel.banderaId}}.png" onerror="this.onerror=null;this.src='img/imagenotfound.gif';" />
 				</div>
 				<div style="width: 40%">
-					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-glasses-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
-					<button ng-class="{'button-hidden':!disableTagButton}" style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-trash-outline" ng-visible="false" ng-click="addlist({{product}})"></button>
+					<button style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-glasses-outline" ng-visible="false" ng-click="branchFavorit({{currSel}})"></button>
+					<button style="margin-left: 5%; color: #58ACFA" class="button  button-icon1 button-icon icon ion-ios-trash-outline" ng-click="removeItem($index)"></button>
 				</div>
 			</div>
 		</ion-item>
