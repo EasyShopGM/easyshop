@@ -942,7 +942,11 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         $scope.products = [];
 
         //SrvCall.async(PRECIOS_CLAROS, 'GET', '')
-        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+        //SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/productos?string=' + marca_ + '&array_sucursales=10-1-5,10-3-678,11-3-1090,12-1-125,10-3-658,10-3-595,10-3-726,23-1-6225,10-3-553,10-3-626,12-1-83,10-3-727,12-1-35,10-3-326,10-3-688,10-3-733,10-3-398,12-1-90,10-3-722,10-3-643,23-1-6276,23-1-6219,23-1-6287,10-3-314,10-2-515,11-3-1047,23-1-6228,10-3-649,10-3-673,10-3-625&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
+        
+        console.log($rootScope.warehouse.branch_favorit);
+        
+        SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/productos?string=' + marca_ + '&array_sucursales=' + $rootScope.warehouse.branch_favorit + '&offset=0&limit=50&sort=-cant_sucursales_disponible', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
@@ -1421,6 +1425,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             $scope.currSels = $rootScope.warehouse.branch_office;
             //console.log($scope.currSels);
 
+            var branchHeart = '';
             var item = '';
             var obj = '';
             $scope.currSelsNew = [];
@@ -1435,7 +1440,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
                 $scope.currSels.forEach(function(itemBranchOffice) {
 
-                    console.log(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd);
+                    //console.log(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd);
                     SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd, 'GET', '')
                         .success(function(resp) {
                             if ((resp.totalProductos === undefined) || (resp.totalProductos == null)) {
@@ -1445,9 +1450,19 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                 };
                             }
                             else {
+                                console.log(resp.sucursales[0]);
+                                console.log(resp.sucursales[0].id);
+                                console.log($rootScope.warehouse.branch_favorit);
+                                if (resp.sucursales[0].id == $rootScope.warehouse.branch_favorit) {
+                                    branchHeart = 'ion-ios-heart';
+                                } else {
+                                    branchHeart = 'ion-ios-heart-outline';
+                                }
+                                console.log(resp.sucursales[0].branchHeart);
                                 item = {
                                     "quantityProductsFound": resp.totalProductos,
-                                    "totalValueProductsFound": resp.sucursales[0].sumaPrecioListaTotal
+                                    "totalValueProductsFound": resp.sucursales[0].sumaPrecioListaTotal,
+                                    "branchHeart": branchHeart
                                 };
                             }
                             obj = Object.assign({}, itemBranchOffice, item);
@@ -1470,10 +1485,12 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     
     $scope.branchFavorit = function(ob) {
         
-        falta probar
+        //falta probar
         console.log(ob.id);
-       /*
-        var objeto_Warehouse = '{ "$set" : { "branch_favorit" : ' + ob.id + ' } }';
+        console.log("agrega hoy");
+       
+//falta agregar nombre y ubicacion
+        var objeto_Warehouse = '{ "$set" : { "branch_favorit" : "' + ob.id + '", "location_favorit" : "' + ob.banderaDescripcion + ' - ' + ob.sucursalNombre + '"} }';
 
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + $rootScope.warehouse._id.$oid + '"}}',
                 'PUT',
@@ -1496,7 +1513,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                     okText: 'OK!'
                 });
             });
-            */
+       
         
     };
     
