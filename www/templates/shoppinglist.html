@@ -119,16 +119,21 @@
 
 		<ion-list>
 			<ion-item style="margin: 1%; background-color: #55acee; border: 1px solid rgb(201, 201, 201);">
-				<h2 class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;" align="center">
+				<h3 class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;" align="center">
 					{{warehousetitle}}
-				</h2>
-				<p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">
+				</h3>
+				<h4 class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;" align="center">
+					{{detailFavorited}}
+				</h4>
+				
+                <p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">
+				<!--<p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">					-->
 					<div class="row">
 						<div style="width:70%"  align="left">
-							<p style="color: white;">Total value of the purchase $: </p>
+							<h5 style="color: white;">Total value of the purchase $: </h5>
 						</div>
 						<div style="width:30%"  align="right">
-							<p style="color: white;" aling="right">{{imptotal}}</p>
+							<h5 style="color: white;" aling="right">{{imptotal}}</h5>
 						</div>
 					</div>
 				</p>
@@ -136,10 +141,10 @@
 				<p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">
 					<div class="row">
 						<div style="width:70%"  align="left">
-							<p style="color: white;">Value of the purchased $: </p>
+							<h5 style="color: white;">Value of the purchased $: </h5>
 						</div>
 						<div style="width:30%"  align="right">
-							<p style="color: white;" aling="right">{{impparcial}}</p>
+							<h5 style="color: white;" aling="right">{{impparcial}}</h5>
 						</div>
 					</div>
 				</p>

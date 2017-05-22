@@ -167,7 +167,8 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         .success(function(resp) {
             $ionicLoading.hide();
             $scope.products = resp;
-
+            $scope.detailFavorited = $rootScope.warehouse.location_favorit;
+                console.log($rootScope.warehouse.location_favorit);
             for (x in $scope.products) {
                 if ($scope.products[x].Estado != DESCARTADO) {
                     imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
@@ -192,6 +193,10 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.actionProduct = function(product_) {
 
+        
+        $ionicLoading.show({
+            template: 'Modificando estado del producto.'
+        });
         var estadoProduct = '';
 
         if (product_.Estado == PENDIENTE) {
@@ -251,10 +256,14 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
         var imptotal = 0.0;
         var impparcial = 0.0;
 
+        
+
         SrvCall.async(MLAB_SRV + MONGODB_DB + PRODUCTS_URL + '?' + API_KEY + '&q={"idwarehouse":"' + $rootScope.warehouse._id.$oid + '"}&s={"Estado": 1}', 'GET', '')
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp;
+                $scope.detailFavorited = $rootScope.warehouse.location_favorit;
+                console.log($rootScope.warehouse.location_favorit);
                 for (x in $scope.products) {
                     if ($scope.products[x].Estado != DESCARTADO) {
                         imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
@@ -1436,10 +1445,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             console.log($scope.currSels);
             if (($scope.currSels === undefined) || ($scope.currSels == null)) {}
             else {
-
-
                 $scope.currSels.forEach(function(itemBranchOffice) {
-
                     //console.log(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd);
                     SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd, 'GET', '')
                         .success(function(resp) {
@@ -1450,9 +1456,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                 };
                             }
                             else {
-                                console.log(resp.sucursales[0]);
-                                console.log(resp.sucursales[0].id);
-                                console.log($rootScope.warehouse.branch_favorit);
                                 if (resp.sucursales[0].id == $rootScope.warehouse.branch_favorit) {
                                     branchHeart = 'ion-ios-heart';
                                 } else {
