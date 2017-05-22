@@ -1449,22 +1449,23 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                     //console.log(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd);
                     SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + '/prod/comparativa?array_sucursales=' + itemBranchOffice.id + '&array_productos=' + arrayParamListProd, 'GET', '')
                         .success(function(resp) {
-                            if ((resp.totalProductos === undefined) || (resp.totalProductos == null)) {
+                            $scope.compartiveBreanches = resp;
+                            if (($scope.compartiveBreanches.totalProductos === undefined) || ($scope.compartiveBreanches.totalProductos == null)) {
                                 item = {
                                     "quantityProductsFound": 0.00,
                                     "totalValueProductsFound": 0.00
                                 };
                             }
                             else {
-                                if (resp.sucursales[0].id == $rootScope.warehouse.branch_favorit) {
+                                if ($scope.compartiveBreanches.sucursales[0].id == $rootScope.warehouse.branch_favorit) {
                                     branchHeart = 'ion-ios-heart';
                                 } else {
                                     branchHeart = 'ion-ios-heart-outline';
                                 }
-                                console.log(resp.sucursales[0].branchHeart);
+                                //console.log($scope.compartiveBreanches.sucursales[0].branchHeart);
                                 item = {
-                                    "quantityProductsFound": resp.totalProductos,
-                                    "totalValueProductsFound": resp.sucursales[0].sumaPrecioListaTotal,
+                                    "quantityProductsFound": $scope.compartiveBreanches.totalProductos,
+                                    "totalValueProductsFound": $scope.compartiveBreanches.sucursales[0].sumaPrecioListaTotal,
                                     "branchHeart": branchHeart
                                 };
                             }
@@ -1488,11 +1489,9 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     
     $scope.branchFavorit = function(ob) {
         
-        //falta probar
-        console.log(ob.id);
-        console.log("agrega hoy");
-       
-//falta agregar nombre y ubicacion
+        $ionicLoading.show({
+            template: 'Estableciendo comercio favorito.'
+        });
         var objeto_Warehouse = '{ "$set" : { "branch_favorit" : "' + ob.id + '", "location_favorit" : "' + ob.banderaDescripcion + ' - ' + ob.sucursalNombre + '"} }';
 
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + $rootScope.warehouse._id.$oid + '"}}',
@@ -1506,6 +1505,36 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                     template: 'Se establecio el comercio correctamente.',
                     okText: 'OK!'
                 });
+
+                
+/*
+            SrvCall.async(MLAB_SRV + MONGODB_DB + PRODUCTS_URL + '?' + API_KEY + '&q={"_id":{"$oid":"' + $rootScope.warehouse._id.$oid + '"}}', 
+                'PUT', 
+                objeto_Warehouse)
+            .success(function(resp) {
+                $ionicLoading.hide();
+
+            })
+            .error(function(resp) {
+                $ionicLoading.hide();
+
+            });
+
+*/
+
+                //console.log($scope.compartiveBreanches.sucursales);
+                //el objeto de sucursal favorita
+                console.log(ob);
+                console.log(ob.id);
+                //ID de almacen a la que se setea
+                console.log($rootScope.warehouse._id.$oid);
+                console.log("Le pego al docuemnto products_wh.");
+                //busco todos los precios
+                console.log($scope.compartiveBreanches);
+                
+                
+                
+                
                 $state.go("app.warehouseslist");
             })
             .error(function(resp) {
@@ -1521,7 +1550,11 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     };
     
     $scope.removeItem = function(id_item) {
-        console.log("pasas " + id_item);
+
+        $ionicLoading.show({
+            template: 'Eliminando comercio de la lista.'
+        });
+
         $rootScope.warehouse.branch_office.splice(id_item,1);
         var objeto_Warehouse = '{ "$set" : { "branch_office" : ' + JSON.stringify($rootScope.warehouse.branch_office) + ' } }';
 

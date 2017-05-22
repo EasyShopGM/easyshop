@@ -130,7 +130,7 @@
 				<!--<p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">					-->
 					<div class="row">
 						<div style="width:70%"  align="left">
-							<h5 style="color: white;">Total value of the purchase $: </h5>
+							<h5 style="color: white;">Valor total de la compra $: </h5>
 						</div>
 						<div style="width:30%"  align="right">
 							<h5 style="color: white;" aling="right">{{imptotal}}</h5>
@@ -141,13 +141,25 @@
 				<p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">
 					<div class="row">
 						<div style="width:70%"  align="left">
-							<h5 style="color: white;">Value of the purchased $: </h5>
+							<h5 style="color: white;">Valor total de la compra con promo $: </h5>
+						</div>
+						<div style="width:30%"  align="right">
+							<h5 style="color: white;" aling="right">{{imptotal}}</h5>
+						</div>
+					</div>
+				</p>
+				
+				<p class="title ng-binding" style="margin.left: 4%; color: #feffff; background-color: #55acee;">
+					<div class="row">
+						<div style="width:70%"  align="left">
+							<h5 style="color: white;">Valor de lo comprado $: </h5>
 						</div>
 						<div style="width:30%"  align="right">
 							<h5 style="color: white;" aling="right">{{impparcial}}</h5>
 						</div>
 					</div>
 				</p>
+
 			</ion-item>
 
 	   		<ion-item ng-repeat="product in products track by $index">
@@ -156,14 +168,30 @@
 					<div id="objEstado" class="round-button" style="border-color: {{product.Estado}};">
     					<a>{{product.quantity}}</a>
 					</div>
-					<div class="ng-binding" style="margin-left:3%; margin-top:0%; width:85%; font-size: 80%;" ng-click="actionProduct(product);">
+					<div class="ng-binding" style="margin-left:3%; margin-top:0%; width:85%; font-size: 70%;" ng-click="actionProduct(product);">
 						 <a class="item-text-wrap" >{{product.nombre}} </a>
-						 <p style="font-size: 10px">P.Uni. Min. $: {{product.precioMin}} / P.Uni. Max. $: {{product.precioMax}}</p>
+						 
+						 <p class="row" style="font-size: 10px; width:100%">
+						 	<a style="width:75%;" align="left">Precio lista $: </a>
+						 	<a style="width:25%" align="right">{{product.precioMax}}</a>
+						 </p>
+						 
+						 <div class="row" style="font-size: 10px; width:100%">
+						 	<a style="width:75%;" align="left">15%  Descuento con Clarin 365 Plus</a>
+						 	<a style="width:25%" align="right">{{product.precioMin}}</a>
+						 </div>
+						 
+						 <p class="row" style="font-size: 10px; width:100%">
+						 	<a style="width:75%;" align="left"></a>
+						 	<a style="width:25%" align="right">--</a>
+						 	<br>
+
+						 </p>
+
 					</div>
+					
 				</div>
-				
-						
-				</div>
+				<!--</div>-->
 				
 			</ion-item>
 		</ion-list>
