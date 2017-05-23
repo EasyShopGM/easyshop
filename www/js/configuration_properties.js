@@ -59,7 +59,7 @@ var MONGODB_DB = "databases/heroku_jkpwwrbz/";
 var PRODUCTS_URL = "collections/products_wh";
 var WHEREHOUSES_URL = "collections/warehouses";
 var PROFILEUSERS_URL = "/collections/profileusers";
-
+var COMPARATIVA = "/prod/comparativa";
 
 
 //Mensajes.

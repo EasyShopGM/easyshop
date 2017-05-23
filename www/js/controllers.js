@@ -292,10 +292,6 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
 
     if ($localStorage.userloged) {
-
-        //$scope.warehouse = [{}];
-        //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/warehouses?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3&q={"state": "valid", "users":{"user":"' + $localStorage.userloged.email + '"}}', 'GET', '')
-
         var criterio = 'q={$or: [{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator":  false}},{"state":"valid","users":{"user": "' + $localStorage.userloged.email + '","shared": true, "creator": true, "username": "' + $localStorage.userloged.username + '"}}]}';
 
         SrvCall.async(MLAB_SRV + MONGODB_DB + WHEREHOUSES_URL + '?' + API_KEY + '&' + criterio, 'GET', '')
@@ -328,10 +324,13 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
 
     $scope.clicker = function(warwhouse) {
         $rootScope.warehouse = warwhouse;
-        $state.go("app.shoppinglist", {
-            'warehouse': $rootScope.warehouse.description
-        });
-
+        //aca poner si no esta definido si no tiene sucursal no podes agregar productos.
+        //actualizar precios con la nueva sucursal.
+        if ($rootScope.warehouse.branch_favorit != '' ){
+            $state.go("app.shoppinglist", {
+                'warehouse': $rootScope.warehouse.description
+            });
+        }
     };
 
     /* lista de amigos*/
@@ -959,6 +958,7 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
             .success(function(resp) {
                 $ionicLoading.hide();
                 $scope.products = resp.productos;
+                console.log(resp);
                 //Apaga el evento cargando
                 if ($scope.products.length == 0) {
                     $ionicPopup.alert({
@@ -984,17 +984,71 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
     $scope.addlistWH = function(product_) {
 
         $scope.data = {};
+        $scope.productsAnalitic = '';
 
         if ($localStorage.userloged) {
 
-            if (($rootScope.warehouse === undefined) || ($rootScope.warehouse == null)) {}
-            else {
+            console.log(product_);
+            console.log(product_.id);
+            console.log($rootScope.warehouse.branch_favorit);
+           
+
+
+
+
+
+            if (($rootScope.warehouse === undefined) || ($rootScope.warehouse == null)) {
+             var myPopup = $ionicPopup.show({
+                template: 'Seleccione una sucursal.',
+                title: 'Productos',
+                style: "color: #58ACFA",
+                buttons: [{
+                    text: 'Cancelar'
+                }, {
+                    text: '<b>Confirmar</b>',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                    }
+                }]
+
+            });   
+            } else {
                 $scope.data.almacen = $rootScope.warehouse.description; //itemrecuperado.substring(0, itemrecuperado.indexOf(" | "));
                 $scope.data.oid = $rootScope.warehouse._id.$oid; //itemrecuperado.substring(itemrecuperado.indexOf(" | ") + 3, itemrecuperado.length - 2);
+                
+                 //aca la segunda consulta
+
+
+
+                SrvCallPreciosClaros.async(HOST_PRECIOSCLAROS + COMPARATIVA + '?array_sucursales=' + $rootScope.warehouse.branch_favorit + '&array_productos=' + product_.id, 'GET', '')
+                    .success(function(resp) {
+                        console.log("recuoero del producto con detalle de comparativa")
+                        console.log(resp);
+                        console.log(resp.sucursales[0].productos[0])
+                        console.log(resp.sucursales[0].productos[0].promo1)
+                        console.log(resp.sucursales[0].productos[0].promo2)
+                        $scope.productsAnalitic =  resp;
+                        
+
+                    
+                
+                console.log("tomo el valor");
+            console.log($scope.productsAnalitic);
+            
+            var cuerpoPromo = '';
+            if ($scope.productsAnalitic.sucursales[0].productos[0].promo1.precio != '') {
+                cuerpoPromo = cuerpoPromo + '<p style="font-size: 90%; border-top: 1px solid rgb(204, 204, 204);" >Promo: $' + $scope.productsAnalitic.sucursales[0].productos[0].promo1.precio + '</p>'
+                cuerpoPromo = cuerpoPromo + '<p style="font-size: 90%;" >' + $scope.productsAnalitic.sucursales[0].productos[0].promo1.descripcion + '</p>'
             }
+            if ($scope.productsAnalitic.sucursales[0].productos[0].promo2.precio != '') {
+                cuerpoPromo = cuerpoPromo + '<p style="font-size: 90%; border-top: 1px solid rgb(204, 204, 204);" >Promo: $' + $scope.productsAnalitic.sucursales[0].productos[0].promo2.precio + '</p>'
+                cuerpoPromo = cuerpoPromo + '<p style="color: red; font-size: 65%;" >' + $scope.productsAnalitic.sucursales[0].productos[0].promo2.descripcion + '</p>'
+            }
+            
+            
             var myPopup = $ionicPopup.show({
                 template: '<img src = https://imagenes.preciosclaros.gob.ar/productos/' + product_.id + '.jpg style="width:50%; height:50%; margin:0% auto; display:block" onerror="this.onerror=null;this.src=' + IMAGENOTFOUND + ';"  >' +
-                    '</br>' +
+                    '</br>' + cuerpoPromo + 
                     '<p style="font-size: 90%; border-top: 1px solid rgb(204, 204, 204);" >Almacen</p>' +
                     '<div  class="row">' +
                     '<input type = "text" style="font-size: 90%;" ng-model = "data.almacen" disabled></input>' +
@@ -1056,8 +1110,18 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                     }
                 }]
             });
-            myPopup.then(function(product_) {});
+            
+            
+            
+            
+                    })
+                    .error(function(resp) {
 
+                    });
+            
+            
+            //myPopup.then(function(product_) {});
+            }
         }
         else {
             var alertPopup = $ionicPopup.alert({
