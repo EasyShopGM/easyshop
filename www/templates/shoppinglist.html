@@ -163,26 +163,27 @@
 			</ion-item>
 
 	   		<ion-item ng-repeat="product in products track by $index">
-				<div class="ng-binding" style="margin-left:3%; margin-top:0%; width:85%; font-size: 77%;" ng-click="actionProduct(product);">
-					 <a class="item-text-wrap" >{{product.nombre}} </a>
-				</div>
+				
 				<div class="row" style="padding-top: 0px;"  >
 					<div id="objEstado" class="round-button" style="border-color: {{product.Estado}};">
     					<a>{{product.quantity}}</a>
 					</div>
-					<div class="ng-binding" style="margin-left:3%; margin-top:-2%; width:85%; font-size: 77%;" ng-click="actionProduct(product);">
+					<div class="ng-binding" style="margin-left:3%; margin-top:0%; width:85%; font-size: 77%;" ng-click="actionProduct(product);">
+						<div class="ng-binding" style="margin-left: 2%; margin-top:0%; width:85%; font-size: 77%;" ng-click="actionProduct(product);">
+					 <a class="item-text-wrap" >{{product.nombre}} </a>
+				</div>
 						 <!--<a class="item-text-wrap" >{{product.nombre}} </a>-->
-						 <p class="row" style="font-size: 10px; width:99%">
+						 <p class="row" style="font-size: 10px; width:99%;" >
 						 	<a style="width:75%;" align="left">Precio lista $: </a>
-						 	<a style="width:24%" align="right">{{product.precioMax}}</a>
+						 	<a style="width:24%" align="right">{{product.precioLista}}</a>
 						 </p>
-						 <div class="row" style="font-size: 10px; width:99%">
-						 	<a style="width:75%;" align="left">15%  Descuento con Clarin 365 Plus</a>
-						 	<a style="width:24%" align="right">{{product.precioMin}}</a>
-						 </div>
-						 <p class="row" style="font-size: 10px; width:99%">
-						 	<a style="width:75%;" align="left"></a>
-						 	<a style="width:24%" align="right">--</a>
+						 <p class="row" style="font-size: 10px; width:99%;">
+						 	<a class="item-text-wrap" style="font-size: 8px; width:75%;" align="left">{{product.promo1.descripcion}}</a>
+						 	<a style="width:24%" align="right">{{product.promo1.precio}}</a>
+						 </p>
+						 <p class="row" style="font-size: 10px; width:99%;">
+						 	<a class="item-text-wrap" style="font-size: 8px; width:75%;" align="left">{{product.promo2.descripcion}}</a>
+						 	<a style="width:24%" align="right">{{product.promo2.precio}}</a>
 						 </p>
 					</div>
 				</div>

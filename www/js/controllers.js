@@ -171,15 +171,15 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                 console.log($rootScope.warehouse.location_favorit);
             for (x in $scope.products) {
                 if ($scope.products[x].Estado != DESCARTADO) {
-                    imptotal = imptotal + ($scope.products[x].precioMax * $scope.products[x].quantity);
+                    imptotal = imptotal + ($scope.products[x].precioLista * $scope.products[x].quantity);
                     if ($scope.products[x].Estado == COMPRADO) {
-                        impparcial += $scope.products[x].precioMax * $scope.products[x].quantity;
+                        impparcial += $scope.products[x].precioLista * $scope.products[x].quantity;
                     }
                 }
             }
             $scope.adquirido = function(item, fromIndex, toIndex) {};
-            $scope.imptotal = imptotal.toFixed(2);;
-            $scope.impparcial = impparcial.toFixed(2);;
+            $scope.imptotal = imptotal.toFixed(2);
+            $scope.impparcial = impparcial.toFixed(2);
         })
         .error(function(resp) {
             $ionicLoading.hide();
@@ -1080,8 +1080,46 @@ angular.module('starter.controllers', ['ionic', 'ngMessages'])
                                 template: 'Agregando a la lista...'
                             });
 
-                            var newProduct_wh = '{"idwarehouse":"' + $scope.data.oid + '","marca":"' + product_.marca + '","id":"' + product_.id + '","precioMax":' + product_.precioMax + ',"precioMin":' + product_.precioMin + ',"nombre":"' + product_.nombre + '","presentacion":"' + product_.presentacion + '","cantSucursalesDisponible":' + product_.cantSucursalesDisponible + ',"quantity":' + $scope.data.cantidad + ',"Estado":"' + PENDIENTE + '"}';
-
+                            //var newProduct_wh = '{"idwarehouse":"' + $scope.data.oid + '","marca":"' + product_.marca + '","id":"' + product_.id + '","precioMax":' + product_.precioMax + ',"precioMin":' + product_.precioMin + ',"nombre":"' + product_.nombre + '","presentacion":"' + product_.presentacion + '","cantSucursalesDisponible":' + product_.cantSucursalesDisponible + ',"quantity":' + $scope.data.cantidad + ',"Estado":"' + PENDIENTE + '"}';
+                            
+                            /*joya
+                            var newProduct_wh = {"idwarehouse": $scope.data.oid, 
+                                                 "marca": product_.marca, 
+                                                 "id": product_.id, 
+                                                 "precioMax": product_.precioMax, 
+                                                 "precioMin": product_.precioMin, 
+                                                 "nombre": product_.nombre, 
+                                                 "presentacion": product_.presentacion, 
+                                                 "cantSucursalesDisponible": product_.cantSucursalesDisponible, 
+                                                 "quantity": $scope.data.cantidad, 
+                                                 "Estado": PENDIENTE};
+                            */                     
+                            var newProduct_wh = {"idwarehouse": $scope.data.oid, 
+                                                    "quantity": $scope.data.cantidad, 
+                                                    "Estado": PENDIENTE,
+                                                    "id":$scope.productsAnalitic.sucursales[0].productos[0].id,
+                                                    "marca":$scope.productsAnalitic.sucursales[0].productos[0].marca,
+                                                    "nombre":$scope.productsAnalitic.sucursales[0].productos[0].nombre,
+                                                    "precioLista":$scope.productsAnalitic.sucursales[0].productos[0].precioLista,
+                                                    "precio_unitario_con_iva":$scope.productsAnalitic.sucursales[0].productos[0].precio_unitario_con_iva,
+                                                    "precio_unitario_sin_iva":$scope.productsAnalitic.sucursales[0].productos[0].precio_unitario_sin_iva,
+                                                    "presentacion":$scope.productsAnalitic.sucursales[0].productos[0].presentacion,
+                                                    "unidad_venta":$scope.productsAnalitic.sucursales[0].productos[0].unidad_venta,
+                                                    "promo1":{
+                                                                "descripcion":$scope.productsAnalitic.sucursales[0].productos[0].promo1.descripcion,
+                                                                "precio":$scope.productsAnalitic.sucursales[0].productos[0].promo1.precio,
+                                                                "precio_unitario_con_iva":$scope.productsAnalitic.sucursales[0].productos[0].promo1.precio_unitario_con_iva,
+                                                                "precio_unitario_sin_iva":$scope.productsAnalitic.sucursales[0].productos[0].promo1.precio_unitario_sin_iva
+                                                            },
+                                                    "promo2":{
+                                                                "descripcion":$scope.productsAnalitic.sucursales[0].productos[0].promo2.descripcion,
+                                                                "precio":$scope.productsAnalitic.sucursales[0].productos[0].promo2.precio,
+                                                                "precio_unitario_con_iva":$scope.productsAnalitic.sucursales[0].productos[0].promo2.precio_unitario_con_iva,
+                                                                "precio_unitario_sin_iva":$scope.productsAnalitic.sucursales[0].productos[0].promo2.precio_unitario_sin_iva
+                                                            }
+                                                };
+                            
+                            
                             //SrvCall.async('https://api.mlab.com/api/1/databases/heroku_jkpwwrbz/collections/products_wh?apiKey=CgwK5eyYYM1j5IYMs7tvmP6hPy990Cq3', 'POST', newProduct_wh)
                             SrvCall.async(MLAB_SRV + MONGODB_DB + PRODUCTS_URL + '?' + API_KEY, 'POST', newProduct_wh)
                                 .success(function(resp) {
